@@ -10,255 +10,277 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#1a1f2e;--bg2:#222840;--bg3:#2a3050;
-  --sur:#2e3560;--sur2:#363e72;
+  --bg:#1a1f2e;--bg2:#222840;--bg3:#2a3050;--sur:#2e3560;--sur2:#363e72;
   --bd:rgba(255,255,255,.10);--bd2:rgba(255,255,255,.18);
   --tx:#e8edf8;--tx2:#9aa3c0;--tx3:#5c6488;
-  --atk:#ff6b35;--def:#38d4f0;
-  --acc:#ffe44d;--grn:#69e060;--red:#ff5252;
-  --r:14px;--rs:9px;--rx:6px;
-  --F:'Noto Sans JP',sans-serif;--FP:'Press Start 2P',monospace;
+  --atk:#ff6b35;--def:#38d4f0;--acc:#ffe44d;--grn:#69e060;--red:#ff5252;
+  --r:12px;--rs:8px;--rx:5px;
+  --F:"Noto Sans JP",sans-serif;--FP:"Press Start 2P",monospace;
+  --lw:560px;
 }
 html{font-size:14px}
-body{font-family:var(--F);background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden}
+body{font-family:var(--F);background:var(--bg);color:var(--tx);min-height:100vh}
 input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
 input[type=number]{-moz-appearance:textfield}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:3px}
-
 .dotbg{position:fixed;inset:0;z-index:0;pointer-events:none;
   background-image:radial-gradient(rgba(255,228,77,.06) 1px,transparent 1px);background-size:28px 28px}
 
-.hdr{position:sticky;top:0;z-index:200;background:rgba(20,24,44,.93);backdrop-filter:blur(14px);
-  border-bottom:2px solid var(--acc);padding:.6rem 1.25rem;box-shadow:0 2px 20px rgba(255,228,77,.12)}
-.hdr__in{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
-.hdr__logo{display:flex;align-items:center;gap:10px}
-.hdr__ttl{font-family:var(--FP);font-size:10px;color:var(--acc);letter-spacing:.04em;line-height:1.7}
-.hdr__sub{font-size:10px;color:var(--tx3);letter-spacing:.06em;margin-top:2px}
-.hdr__badge{font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(255,82,82,.2);color:#ff9090;border:1px solid rgba(255,82,82,.4)}
+/* ===== Header ===== */
+.hdr{position:sticky;top:0;z-index:200;background:rgba(20,24,44,.95);backdrop-filter:blur(12px);
+  border-bottom:2px solid var(--acc);padding:.55rem 1rem;box-shadow:0 2px 16px rgba(255,228,77,.1)}
+.hdr__in{max-width:1380px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.hdr__logo{display:flex;align-items:center;gap:9px}
+.hdr__ttl{font-family:var(--FP);font-size:9px;color:var(--acc);letter-spacing:.04em;line-height:1.8}
+.hdr__sub{font-size:10px;color:var(--tx3);letter-spacing:.05em;margin-top:1px}
+.hdr__badge{font-size:10px;padding:2px 7px;border-radius:20px;background:rgba(255,82,82,.2);color:#ff9090;border:1px solid rgba(255,82,82,.35)}
 
-.main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:1.25rem 1rem 4rem;display:flex;flex-direction:column;gap:1rem}
+/* ===== App Layout ===== */
+.app{position:relative;z-index:1;max-width:1380px;margin:0 auto;
+  display:grid;grid-template-columns:var(--lw) 1fr;
+  gap:0 .85rem;padding:.85rem .85rem 2rem;align-items:start}
+.left{grid-column:1;grid-row:1/99;display:flex;flex-direction:column;gap:.65rem}
+.right{grid-column:2;grid-row:1/99;position:sticky;top:58px;display:flex;flex-direction:column;gap:.65rem}
 
-.pbox{background:var(--bg2);border:1px solid var(--bd2);border-radius:var(--r);overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.3)}
-.pbox__hd{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:.6rem 1rem;
-  font-size:13px;font-weight:700;letter-spacing:.04em;background:var(--bg3);border-bottom:1px solid var(--bd)}
-.pbox__note{font-size:11px;color:var(--tx3);font-weight:400;margin-left:4px}
-.atk-hd{color:var(--atk);box-shadow:inset 0 -2px 0 var(--atk)}
-.def-hd{color:var(--def);box-shadow:inset 0 -2px 0 var(--def)}
+/* ===== Panel ===== */
+.pbox{background:var(--bg2);border:1px solid var(--bd2);border-radius:var(--r);overflow:hidden}
+.pbox__hd{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:.5rem .85rem;
+  font-size:12px;font-weight:700;background:var(--bg3);border-bottom:1px solid var(--bd);letter-spacing:.04em}
+.pbox__note{font-size:10px;color:var(--tx3);font-weight:400;margin-left:3px}
+.ah{color:var(--atk);box-shadow:inset 0 -2px 0 var(--atk)}
+.dh{color:var(--def);box-shadow:inset 0 -2px 0 var(--def)}
 
-/* Field */
-.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--bd)}
-.fi{background:var(--bg2);padding:.7rem 1rem;display:flex;flex-direction:column;gap:6px}
-.fck{display:flex;align-items:center;gap:8px;cursor:pointer;flex-wrap:wrap}
+/* ===== Battle 3-col ===== */
+.brow{display:grid;grid-template-columns:1fr 32px 1fr;align-items:start}
+.midsw{display:flex;justify-content:center;padding-top:40px}
+.swapbtn{width:28px;height:28px;border-radius:50%;background:var(--bg3);border:2px solid var(--bd2);
+  color:var(--tx2);font-size:14px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.swapbtn:hover{border-color:var(--acc);color:var(--acc);transform:rotate(180deg)}
+
+/* ===== Field ===== */
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--bd)}
+.fi{background:var(--bg2);padding:.5rem .8rem;display:flex;flex-direction:column;gap:4px}
+.fck{display:flex;align-items:center;gap:6px;cursor:pointer}
 .fck input{display:none}
-.fck__box{width:18px;height:18px;flex-shrink:0;border:2px solid var(--bd2);border-radius:4px;background:var(--bg3);position:relative;transition:all .15s}
+.fck__box{width:14px;height:14px;flex-shrink:0;border:2px solid var(--bd2);border-radius:3px;
+  background:var(--bg3);position:relative;transition:all .15s}
 .fck input:checked+.fck__box{background:var(--acc);border-color:var(--acc)}
-.fck input:checked+.fck__box::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:#222}
-.fck__lbl{font-size:13px;font-weight:500}
+.fck input:checked+.fck__box::after{content:"✓";position:absolute;inset:0;display:flex;
+  align-items:center;justify-content:center;font-size:9px;color:#222}
+.fck__lbl{font-size:12px;font-weight:500}
 .fck__note{font-size:10px;color:var(--tx3)}
-.lr{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.lbtns{display:flex;gap:3px;flex-wrap:wrap}
-.lbtn{padding:3px 8px;font-size:11px;font-family:var(--F);border:1px solid var(--bd2);border-radius:20px;background:var(--bg3);color:var(--tx2);cursor:pointer;transition:all .15s}
+.lr{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.lbtns{display:flex;gap:2px}
+.lbtn{padding:2px 6px;font-size:10px;font-family:var(--F);border:1px solid var(--bd2);
+  border-radius:20px;background:var(--bg3);color:var(--tx2);cursor:pointer;transition:all .12s}
 .lbtn:hover{border-color:var(--acc);color:var(--acc)}
 .lbtn.on{background:var(--acc);color:#222;border-color:var(--acc);font-weight:700}
-.fr{display:none;align-items:baseline;gap:8px;padding:4px 8px;background:rgba(255,82,82,.1);border-radius:var(--rx);border-left:2px solid var(--red)}
+.fr{display:none;align-items:baseline;gap:5px;padding:2px 6px;
+  background:rgba(255,82,82,.1);border-radius:var(--rx);border-left:2px solid var(--red)}
 .fr.show{display:flex}
-.fr__v{font-size:15px;font-weight:700;color:var(--red)}
-.fr__p{font-size:12px;color:var(--tx2)}
-
-.hpbar{padding:.7rem 1rem;border-top:1px solid var(--bd)}
-.hpbar__meta{display:flex;justify-content:space-between;font-size:12px;color:var(--tx2);margin-bottom:6px}
+.fr__v{font-size:12px;font-weight:700;color:var(--red)}
+.fr__p{font-size:10px;color:var(--tx2)}
+.hpbar{padding:.5rem .8rem;border-top:1px solid var(--bd)}
+.hpbar__meta{display:flex;justify-content:space-between;font-size:11px;color:var(--tx2);margin-bottom:4px}
 .hpbar__pct{font-weight:700;color:var(--grn)}
-.hpbar__track{height:10px;background:var(--bg3);border-radius:5px;overflow:hidden;border:1px solid var(--bd)}
-.hpbar__fill{height:100%;border-radius:5px;transition:width .4s,background .4s}
-.hpbar__detail{font-size:11px;color:var(--tx3);margin-top:5px}
+.hpbar__track{height:7px;background:var(--bg3);border-radius:4px;overflow:hidden}
+.hpbar__fill{height:100%;border-radius:4px;transition:width .4s,background .4s}
+.hpbar__detail{font-size:10px;color:var(--tx3);margin-top:3px}
 
-/* Battle row */
-.brow{display:grid;grid-template-columns:1fr 52px 1fr;align-items:start}
+/* ===== Poke select (combo) ===== */
+.poke-area{padding:.5rem .8rem;border-bottom:1px solid var(--bd);display:flex;flex-direction:column;gap:6px}
+.combo-wrap{position:relative}
+.combo-input{width:100%;padding:6px 28px 6px 9px;background:var(--bg3);border:2px solid var(--bd2);
+  color:var(--tx);border-radius:var(--rx);font-size:12px;font-family:var(--F);cursor:pointer}
+.combo-input:focus{outline:none;border-color:var(--acc)}
+.combo-arrow{position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  font-size:10px;color:var(--tx3);pointer-events:none}
+.combo-drop{position:absolute;top:calc(100% + 3px);left:0;right:0;z-index:100;
+  background:var(--bg2);border:1px solid var(--bd2);border-radius:var(--rs);
+  max-height:240px;overflow-y:auto;display:none;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+.combo-drop.open{display:block}
+.combo-search{padding:6px 9px;border-bottom:1px solid var(--bd);position:sticky;top:0;background:var(--bg2)}
+.combo-search input{width:100%;padding:4px 8px;background:var(--bg3);border:1px solid var(--bd2);
+  color:var(--tx);border-radius:var(--rx);font-size:12px;font-family:var(--F)}
+.combo-search input:focus{outline:none;border-color:var(--acc)}
+.combo-group-label{padding:4px 9px;font-size:10px;color:var(--tx3);
+  background:var(--bg3);border-bottom:1px solid var(--bd);letter-spacing:.05em;font-weight:700}
+.combo-item{padding:5px 12px;font-size:12px;cursor:pointer;transition:background .1s;
+  border-bottom:1px solid rgba(255,255,255,.04)}
+.combo-item:last-child{border-bottom:none}
+.combo-item:hover,.combo-item.focused{background:var(--sur)}
+.combo-item.selected{background:rgba(255,228,77,.08);color:var(--acc)}
+.pcard{display:flex;align-items:center;gap:8px;padding:6px;background:var(--bg3);
+  border-radius:var(--rs);border:1px solid var(--bd)}
+.spr{width:52px;height:52px;image-rendering:pixelated}
+.pname{font-size:13px;font-weight:700}
+.pno{font-size:10px;color:var(--tx3);margin:2px 0}
+.trow{display:flex;gap:3px;flex-wrap:wrap}
+.tbadge{font-size:10px;padding:1px 6px;border-radius:20px;font-weight:700}
 
-/* Poke area */
-.poke-area{padding:.7rem 1rem;border-bottom:1px solid var(--bd);display:flex;flex-direction:column;gap:8px}
-.fin{width:100%;padding:7px 12px;background:var(--bg3);border:1px solid var(--bd2);color:var(--tx);border-radius:var(--rx);font-size:13px;font-family:var(--F)}
-.fin:focus{outline:none;border-color:var(--acc)}
-.fin::placeholder{color:var(--tx3)}
-.psel{width:100%;padding:7px 10px;background:var(--bg3);border:2px solid var(--bd2);color:var(--tx);border-radius:var(--rx);font-size:13px;font-family:var(--F);cursor:pointer}
-.psel:focus{outline:none;border-color:var(--acc)}
-.psel option{background:var(--bg2)}
-.pcard{display:flex;align-items:center;gap:12px;padding:8px;background:var(--bg3);border-radius:var(--rs);border:1px solid var(--bd)}
-.spr{width:72px;height:72px;image-rendering:pixelated}
-.pname{font-size:15px;font-weight:700}
-.pno{font-size:11px;color:var(--tx3);margin:2px 0 4px}
-.trow{display:flex;gap:4px;flex-wrap:wrap}
-.tbadge{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:700;letter-spacing:.03em}
-
-/* Stats */
-.sarea{padding:.7rem 1rem;display:flex;flex-direction:column;gap:10px}
-.nrow{display:flex;align-items:center;gap:8px}
-.fl{font-size:12px;color:var(--tx3);white-space:nowrap}
-.nsel{flex:1;padding:5px 8px;background:var(--bg3);border:1px solid var(--bd2);color:var(--tx);border-radius:var(--rx);font-size:12px;font-family:var(--F)}
-.nsel:focus{outline:none;border-color:var(--acc)}
-
-/* Item */
-.irow{display:flex;align-items:center;gap:8px}
-.isel{flex:1;padding:5px 8px;background:var(--bg3);border:1px solid var(--bd2);color:var(--tx);border-radius:var(--rx);font-size:12px;font-family:var(--F)}
+/* ===== Stats area ===== */
+.sarea{padding:.5rem .8rem;display:flex;flex-direction:column;gap:6px}
+.row2{display:flex;align-items:center;gap:6px}
+.fl{font-size:11px;color:var(--tx3);white-space:nowrap;min-width:28px}
+.isel{flex:1;padding:3px 6px;background:var(--bg3);border:1px solid var(--bd2);
+  color:var(--tx);border-radius:var(--rx);font-size:11px;font-family:var(--F)}
 .isel:focus{outline:none;border-color:var(--acc)}
 
-/* Stat rows - new slider design */
-.svg{display:flex;flex-direction:column;gap:6px}
+/* ===== Ability selector ===== */
+.abl-wrap{display:flex;flex-direction:column;gap:3px}
+.abl-sel-row{display:flex;align-items:center;gap:6px}
+.abl-badge{flex-shrink:0;font-size:11px;font-weight:700;color:var(--acc);white-space:nowrap}
+.abl-sel{flex:1;padding:3px 6px;background:var(--bg3);border:1px solid var(--bd2);
+  color:var(--tx);border-radius:var(--rx);font-size:11px;font-family:var(--F)}
+.abl-sel:focus{outline:none;border-color:var(--acc)}
+.abl-desc{font-size:10px;color:var(--tx3);line-height:1.5;padding:2px 0}
+
+/* ===== Stat rows ===== */
+.svg{display:flex;flex-direction:column;gap:4px}
 .svr{background:var(--bg3);border-radius:var(--rs);border:1px solid var(--bd);
-  border-left:3px solid transparent;transition:border-left-color .2s;padding:7px 10px;
-  display:flex;flex-direction:column;gap:5px}
+  border-left:3px solid transparent;padding:5px 7px}
 .svr.nat-up{border-left-color:var(--atk)}
 .svr.nat-dn{border-left-color:var(--def)}
-.svr__top{display:grid;grid-template-columns:58px 1fr auto 52px;align-items:center;gap:8px}
-.svname{font-size:11px;color:var(--tx3)}
+.svr__top{display:grid;grid-template-columns:50px minmax(0,1fr) auto 52px;align-items:center;gap:5px}
+.svname{font-size:11px;color:var(--tx3);white-space:nowrap}
 .sv-hp{color:var(--grn);font-weight:700}
 .sv-spe{color:#a78bfa;font-weight:700}
-/* slider */
-.ev-slider-wrap{display:flex;align-items:center;gap:5px}
-.ev-edge{padding:2px 6px;font-size:10px;border:1px solid var(--bd2);border-radius:4px;
-  background:var(--bg2);color:var(--tx3);cursor:pointer;line-height:1.4;white-space:nowrap}
-.ev-edge:hover{border-color:var(--acc);color:var(--acc)}
-input[type=range].ev-range{
-  flex:1;height:4px;accent-color:var(--acc);cursor:pointer;
-  background:var(--sur2);border-radius:2px;
-}
-.ev-val-lbl{font-size:12px;font-weight:700;color:var(--acc);min-width:22px;text-align:center}
-/* nature 3-button */
-.nat3{display:flex;gap:2px}
-.nat3 button{padding:3px 6px;font-size:10px;font-family:var(--F);border-radius:4px;
-  border:1px solid var(--bd2);background:var(--bg2);color:var(--tx3);cursor:pointer;transition:all .12s;line-height:1.4}
-.nat3 button:hover{border-color:var(--acc)}
-.nat3 button.n-up{border-color:var(--atk);background:rgba(255,107,53,.15);color:var(--atk)}
-.nat3 button.n-mid{}
-.nat3 button.n-dn{border-color:var(--def);background:rgba(56,212,240,.15);color:var(--def)}
-.nat3 button.active{font-weight:700}
-.nat3 button.active.n-up{background:var(--atk);color:#111}
-.nat3 button.active.n-mid{background:var(--acc);color:#111;border-color:var(--acc)}
-.nat3 button.active.n-dn{background:var(--def);color:#111}
-/* real val */
-.rvi{width:100%;text-align:center;padding:5px 4px;background:var(--sur);border:1px solid var(--bd2);
-  color:var(--tx);border-radius:var(--rx);font-size:14px;font-weight:700}
+.ev-sw{display:flex;align-items:center;gap:3px;min-width:0}
+.ev-e{flex-shrink:0;padding:1px 4px;font-size:10px;border:1px solid var(--bd2);
+  border-radius:3px;background:var(--bg2);color:var(--tx3);cursor:pointer;line-height:1.6}
+.ev-e:hover{border-color:var(--acc);color:var(--acc)}
+input[type=range].ev-r{flex:1;min-width:0;height:3px;accent-color:var(--acc);cursor:pointer;background:var(--sur2);border-radius:2px}
+.ev-v{flex-shrink:0;font-size:11px;font-weight:700;color:var(--acc);min-width:16px;text-align:center}
+.nat3{display:flex;gap:2px;flex-shrink:0}
+.nat3 button{padding:2px 4px;font-size:10px;font-family:var(--F);border-radius:3px;
+  border:1px solid var(--bd2);background:var(--bg2);color:var(--tx3);cursor:pointer;line-height:1.5;transition:all .1s}
+.nat3 button.nu{border-color:rgba(255,107,53,.5);color:var(--atk)}
+.nat3 button.nd{border-color:rgba(56,212,240,.5);color:var(--def)}
+.nat3 button.act.nu{background:var(--atk);color:#111;border-color:var(--atk)}
+.nat3 button.act.nm{background:var(--acc);color:#111;border-color:var(--acc)}
+.nat3 button.act.nd{background:var(--def);color:#111;border-color:var(--def)}
+.rvi{width:100%;text-align:center;padding:3px 2px;background:var(--sur);
+  border:1px solid var(--bd2);color:var(--tx);border-radius:var(--rx);font-size:13px;font-weight:700}
 .rvi:focus{outline:none;border-color:var(--acc)}
-/* ability row */
-.abl-row{display:flex;align-items:center;gap:8px;padding:5px 10px;
-  background:var(--bg3);border-radius:var(--rs);border:1px solid var(--bd)}
-.abl-label{font-size:11px;color:var(--tx3);white-space:nowrap;min-width:30px}
-.abl-name{font-size:12px;font-weight:500;color:var(--acc);flex:1}
-.abl-desc{font-size:11px;color:var(--tx3);flex:2;line-height:1.4}
 
-.mrow{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
-.fg{display:flex;flex-direction:column;gap:4px}
-.msel{padding:5px 8px;background:var(--bg3);border:1px solid var(--bd2);color:var(--tx);border-radius:var(--rx);font-size:12px;font-family:var(--F);cursor:pointer}
+/* ===== Rank / Level ===== */
+.meta-row{display:flex;gap:6px;flex-wrap:wrap;align-items:flex-end}
+.fg{display:flex;flex-direction:column;gap:2px}
+.msel{padding:3px 6px;background:var(--bg3);border:1px solid var(--bd2);color:var(--tx);
+  border-radius:var(--rx);font-size:11px;font-family:var(--F);cursor:pointer}
 .msel:focus{outline:none;border-color:var(--acc)}
-.mnum{width:56px;text-align:center;padding:5px;background:var(--bg3);border:1px solid var(--bd2);color:var(--tx);border-radius:var(--rx);font-size:13px}
+.mnum{width:44px;text-align:center;padding:3px;background:var(--bg3);
+  border:1px solid var(--bd2);color:var(--tx);border-radius:var(--rx);font-size:12px}
 .mnum:focus{outline:none;border-color:var(--acc)}
 
-/* Move panel */
+/* ===== Hits (多段技) ===== */
+.hits-row{display:flex;align-items:center;gap:6px}
+.hits-lbl{font-size:11px;color:var(--tx3)}
+.hits-btn{padding:2px 8px;font-size:11px;font-family:var(--F);border:1px solid var(--bd2);
+  border-radius:20px;background:var(--bg3);color:var(--tx2);cursor:pointer;transition:all .12s}
+.hits-btn:hover{border-color:var(--acc);color:var(--acc)}
+.hits-btn.on{background:var(--acc);color:#222;border-color:var(--acc);font-weight:700}
+
+/* ===== Move panel ===== */
 .mpanel{border:1px solid var(--bd);border-radius:var(--rs);overflow:hidden}
-.mpanel__hd{display:flex;align-items:center;justify-content:space-between;padding:.4rem .75rem;background:var(--bg3);border-bottom:1px solid var(--bd)}
-.mpanel__ttl{font-size:11px;color:var(--tx3);letter-spacing:.06em;text-transform:uppercase}
-.mtabs{display:flex;gap:4px}
-.mtab{padding:3px 12px;font-size:11px;font-family:var(--F);border:1px solid var(--bd2);border-radius:20px;background:transparent;color:var(--tx2);cursor:pointer;transition:all .15s}
+.mpanel__hd{display:flex;align-items:center;justify-content:space-between;
+  padding:.3rem .65rem;background:var(--bg3);border-bottom:1px solid var(--bd)}
+.mpanel__ttl{font-size:10px;color:var(--tx3);letter-spacing:.06em;text-transform:uppercase}
+.mtabs{display:flex;gap:3px}
+.mtab{padding:2px 9px;font-size:11px;font-family:var(--F);border:1px solid var(--bd2);
+  border-radius:20px;background:transparent;color:var(--tx2);cursor:pointer;transition:all .12s}
 .mtab:hover{border-color:var(--acc);color:var(--acc)}
 .mtab.on{background:var(--acc);color:#222;border-color:var(--acc);font-weight:700}
-.mlist{max-height:220px;overflow-y:auto}
-.mempty{padding:1rem;font-size:12px;color:var(--tx3);text-align:center}
-.mi{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:8px;
-  padding:.45rem .75rem;border-bottom:1px solid var(--bd);cursor:pointer;transition:background .12s}
+.mlist{max-height:185px;overflow-y:auto}
+.mempty{padding:.7rem;font-size:12px;color:var(--tx3);text-align:center}
+.mi{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:6px;
+  padding:.35rem .65rem;border-bottom:1px solid var(--bd);cursor:pointer;transition:background .1s}
 .mi:last-child{border-bottom:none}
 .mi:hover{background:var(--sur)}
 .mi.sel{background:rgba(255,228,77,.08);border-left:3px solid var(--acc)}
-.miname{font-size:13px}
-.mipow{font-size:13px;font-weight:700;color:var(--atk);min-width:28px;text-align:right}
-.mitype{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:700;min-width:54px;text-align:center}
+.miname{font-size:12px}
+.mipow{font-size:12px;font-weight:700;color:var(--atk);min-width:25px;text-align:right}
+.mitype{font-size:10px;padding:1px 6px;border-radius:20px;font-weight:700;min-width:48px;text-align:center}
 
-/* Mid col */
-.midcol{display:flex;flex-direction:column;align-items:center;padding-top:52px;gap:12px}
-.swapbtn{width:38px;height:38px;border-radius:50%;background:var(--bg3);border:2px solid var(--bd2);
-  color:var(--tx2);font-size:18px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
-.swapbtn:hover{border-color:var(--acc);color:var(--acc);transform:rotate(180deg)}
-.calcbtn{width:38px;padding:14px 0;background:var(--acc);border:none;border-radius:20px;
-  color:#1a1f2e;font-family:var(--FP);font-size:8px;font-weight:400;line-height:2;letter-spacing:.05em;
-  text-align:center;cursor:pointer;transition:opacity .15s,transform .1s;box-shadow:0 0 18px rgba(255,228,77,.4)}
-.calcbtn:hover{opacity:.9}
-.calcbtn:active{transform:scale(.95)}
-
-/* Mod bar */
-.modin{padding:.7rem 1rem;display:flex;flex-wrap:wrap;gap:.8rem;align-items:center}
-.modg{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
-.mglbl{font-size:11px;color:var(--tx3);letter-spacing:.05em;white-space:nowrap}
-.cpill{display:flex;align-items:center;gap:5px;cursor:pointer;padding:4px 11px;border-radius:20px;
-  border:1px solid var(--bd2);background:var(--bg3);font-size:12px;color:var(--tx2);transition:all .15s;user-select:none}
+/* ===== Mod bar ===== */
+.modin{padding:.5rem .85rem;display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.modg{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
+.mglbl{font-size:11px;color:var(--tx3);white-space:nowrap}
+.cpill{display:flex;align-items:center;gap:4px;cursor:pointer;padding:3px 9px;
+  border-radius:20px;border:1px solid var(--bd2);background:var(--bg3);
+  font-size:11px;color:var(--tx2);transition:all .12s;user-select:none}
 .cpill input{display:none}
 .cpill:has(input:checked){background:rgba(255,228,77,.15);border-color:var(--acc);color:var(--acc);font-weight:700}
 .cpill:hover{border-color:var(--acc)}
 
-/* Result */
-.rsec{animation:fadeUp .3s ease}
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.rcard{background:var(--bg2);border:2px solid var(--acc);border-radius:var(--r);box-shadow:0 0 30px rgba(255,228,77,.18);overflow:hidden}
-.rvs{display:flex;align-items:center;justify-content:space-between;padding:.7rem 1.25rem;
-  background:var(--bg3);border-bottom:1px solid var(--bd);flex-wrap:wrap;gap:8px}
-.rvs-side{display:flex;align-items:center;gap:8px}
-.rvs-spr{width:40px;height:40px;image-rendering:pixelated}
-.rvs-name{font-size:13px;font-weight:700}
+/* ===== Right col result ===== */
+.rph{background:var(--bg2);border:1px dashed var(--bd2);border-radius:var(--r);
+  padding:2.5rem 1.5rem;text-align:center;color:var(--tx3);font-size:12px;line-height:2.2}
+.rph span{font-size:32px;display:block;margin-bottom:.5rem;opacity:.3}
+.rcard{background:var(--bg2);border:2px solid var(--acc);border-radius:var(--r);
+  overflow:hidden;animation:fi .2s ease;box-shadow:0 0 22px rgba(255,228,77,.14)}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.rvs{display:flex;align-items:center;justify-content:space-between;padding:.5rem .85rem;
+  background:var(--bg3);border-bottom:1px solid var(--bd);flex-wrap:wrap;gap:5px}
+.rvs-side{display:flex;align-items:center;gap:6px}
+.rvs-spr{width:32px;height:32px;image-rendering:pixelated}
+.rvs-name{font-size:12px;font-weight:700}
 .rvs-side.ak .rvs-name{color:var(--atk)}
 .rvs-side.dk .rvs-name{color:var(--def)}
-.rvs-mid{display:flex;align-items:center;flex-direction:column;gap:4px}
-.rvs-arr{font-size:16px;color:var(--tx3)}
-.rvs-move{font-size:14px;font-weight:700;color:var(--acc)}
-
-.rfield{margin:.7rem 1.25rem;padding:.7rem;background:rgba(255,82,82,.08);border:1px solid rgba(255,82,82,.3);border-radius:var(--rs)}
-.rfield-ttl{font-size:12px;font-weight:700;color:var(--tx3);margin-bottom:6px}
-.rflines{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
-.rfl{display:flex;justify-content:space-between;font-size:13px}
+.rvs-mid{display:flex;align-items:center;flex-direction:column;gap:2px}
+.rvs-arr{font-size:12px;color:var(--tx3)}
+.rvs-move{font-size:12px;font-weight:700;color:var(--acc)}
+.rfield{margin:.5rem .85rem;padding:.5rem;background:rgba(255,82,82,.07);
+  border:1px solid rgba(255,82,82,.3);border-radius:var(--rs)}
+.rfield-ttl{font-size:10px;font-weight:700;color:var(--tx3);margin-bottom:4px}
+.rflines{display:flex;flex-direction:column;gap:2px;margin-bottom:5px}
+.rfl{display:flex;justify-content:space-between;font-size:11px}
 .rfl-l{color:var(--tx2)}.rfl-v{font-weight:700;color:var(--red)}
-.rfhp{font-size:12px;color:var(--tx2);padding-top:6px;border-top:1px solid rgba(255,255,255,.08)}
-.rfhp strong{color:var(--acc);font-size:14px}
-
-.ritem{margin:.3rem 1.25rem;padding:.5rem .75rem;background:rgba(255,228,77,.06);border:1px solid rgba(255,228,77,.2);border-radius:var(--rs);font-size:12px;color:var(--tx2)}
+.rfhp{font-size:11px;color:var(--tx2);padding-top:4px;border-top:1px solid rgba(255,255,255,.07)}
+.rfhp strong{color:var(--acc)}
+.ritem{margin:.25rem .85rem;padding:.35rem .65rem;background:rgba(255,228,77,.05);
+  border:1px solid rgba(255,228,77,.18);border-radius:var(--rs);font-size:11px;color:var(--tx2)}
 .ritem strong{color:var(--acc)}
-
-.rmain{display:flex;align-items:center;gap:1.5rem;padding:1rem 1.25rem}
-.rdmg-block{display:flex;align-items:baseline;gap:8px}
-.rdmg{font-family:var(--FP);font-size:22px;color:var(--tx)}
-.rdmg-u{font-size:13px;color:var(--tx3)}
-.rpct-block{display:flex;align-items:baseline;gap:6px}
-.rpct{font-family:var(--FP);font-size:16px;color:var(--acc)}
-.rpct-u{font-size:12px;color:var(--tx3)}
-
-.rtags{display:flex;flex-wrap:wrap;gap:5px;padding:0 1.25rem .7rem}
-.rtag{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:700}
-.rg{background:rgba(105,224,96,.15);color:#a0f0a0;border:1px solid rgba(105,224,96,.3)}
-.rr{background:rgba(255,82,82,.15);color:#ff9090;border:1px solid rgba(255,82,82,.3)}
-.ry{background:rgba(255,228,77,.15);color:var(--acc);border:1px solid rgba(255,228,77,.3)}
-.rb{background:rgba(56,212,240,.15);color:var(--def);border:1px solid rgba(56,212,240,.3)}
+.rmain{display:flex;align-items:center;gap:1rem;padding:.8rem .85rem}
+.rdmg-block{display:flex;align-items:baseline;gap:6px}
+.rdmg{font-family:var(--FP);font-size:18px;color:var(--tx)}
+.rdmg-u{font-size:11px;color:var(--tx3)}
+.rpct-block{display:flex;align-items:baseline;gap:4px}
+.rpct{font-family:var(--FP);font-size:13px;color:var(--acc)}
+.rpct-u{font-size:11px;color:var(--tx3)}
+.rtags{display:flex;flex-wrap:wrap;gap:3px;padding:0 .85rem .5rem}
+.rtag{font-size:11px;padding:2px 7px;border-radius:20px;font-weight:700}
+.rg{background:rgba(105,224,96,.15);color:#a0f0a0;border:1px solid rgba(105,224,96,.25)}
+.rr{background:rgba(255,82,82,.15);color:#ff9090;border:1px solid rgba(255,82,82,.25)}
+.ry{background:rgba(255,228,77,.15);color:var(--acc);border:1px solid rgba(255,228,77,.25)}
+.rb{background:rgba(56,212,240,.15);color:var(--def);border:1px solid rgba(56,212,240,.25)}
 .rn{background:rgba(148,163,184,.1);color:var(--tx2);border:1px solid var(--bd2)}
+.rollswrap{padding:0 .85rem .5rem}
+.rollslbl{font-size:10px;color:var(--tx3);margin-bottom:4px;letter-spacing:.04em}
+.rollsrow{display:flex;flex-wrap:wrap;gap:3px}
+.rc{font-size:11px;padding:2px 5px;border-radius:var(--rx);background:var(--bg3);color:var(--tx2);border:1px solid var(--bd)}
+.rc.lo{background:rgba(56,212,240,.12);color:var(--def);border-color:rgba(56,212,240,.25)}
+.rc.hi{background:rgba(255,107,53,.12);color:var(--atk);border-color:rgba(255,107,53,.25)}
+.kowrap{padding:0 .85rem .8rem;display:flex;flex-direction:column;gap:4px}
+.korow{display:grid;grid-template-columns:28px 1fr 96px;align-items:center;gap:7px}
+.kon{font-size:11px;font-weight:700;color:var(--acc)}
+.kobar{height:4px;background:var(--bg3);border-radius:2px;overflow:hidden}
+.kofill{height:100%;background:linear-gradient(90deg,var(--acc),var(--atk));border-radius:2px;transition:width .5s}
+.kopct{font-size:11px;color:var(--tx2);text-align:right}
 
-.rollswrap{padding:0 1.25rem .7rem}
-.rollslbl{font-size:11px;color:var(--tx3);margin-bottom:6px;letter-spacing:.04em}
-.rollsrow{display:flex;flex-wrap:wrap;gap:4px}
-.rc{font-size:12px;padding:3px 7px;border-radius:var(--rx);background:var(--bg3);color:var(--tx2);border:1px solid var(--bd)}
-.rc.lo{background:rgba(56,212,240,.12);color:var(--def);border-color:rgba(56,212,240,.3)}
-.rc.hi{background:rgba(255,107,53,.12);color:var(--atk);border-color:rgba(255,107,53,.3)}
-
-.kowrap{padding:0 1.25rem 1rem;display:flex;flex-direction:column;gap:6px}
-.korow{display:grid;grid-template-columns:36px 1fr 130px;align-items:center;gap:10px}
-.kon{font-size:12px;font-weight:700;color:var(--acc)}
-.kobar{height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;border:1px solid var(--bd)}
-.kofill{height:100%;background:linear-gradient(90deg,var(--acc),var(--atk));border-radius:3px;transition:width .5s}
-.kopct{font-size:12px;color:var(--tx2);text-align:right}
-
-.footer{position:relative;z-index:1;text-align:center;padding:1.5rem 1rem;font-size:10px;color:var(--tx3);border-top:1px solid var(--bd);line-height:2}
+.footer{position:relative;z-index:1;text-align:center;padding:1.2rem 1rem;
+  font-size:10px;color:var(--tx3);border-top:1px solid var(--bd);line-height:2.2}
 .footer a{color:var(--acc);text-decoration:none}
 .footer a:hover{text-decoration:underline}
 
-@media(max-width:700px){
+@media(max-width:1000px){
+  .app{grid-template-columns:1fr;padding:.7rem}
+  .left,.right{grid-column:1;grid-row:auto;position:static}
+  :root{--lw:100%}
+}
+@media(max-width:560px){
   .brow{grid-template-columns:1fr}
-  .midcol{flex-direction:row;padding-top:0;padding:.5rem 0;justify-content:center}
-  .swapbtn:hover{transform:rotate(90deg)}
-  .calcbtn{width:auto;padding:10px 24px;writing-mode:horizontal-tb}
-  .svr{grid-template-columns:52px 1fr 60px}
+  .midsw{display:none}
 }
 </style>
 </head>
@@ -268,72 +290,106 @@ input[type=range].ev-range{
 <header class="hdr">
   <div class="hdr__in">
     <div class="hdr__logo">
-      <span style="font-size:20px">⚔</span>
+      <span style="font-size:18px">⚔</span>
       <div><p class="hdr__ttl">ダメ計算</p><p class="hdr__sub">Pokémon Champions — Reg. M-A</p></div>
     </div>
     <span class="hdr__badge">非公式</span>
   </div>
 </header>
 
-<main class="main">
+<div class="app">
+<div class="left">
+
+<!-- フィールド効果 + 補正 まとめた上部エリア -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem">
 
 <!-- フィールド効果 -->
 <section class="pbox">
-  <h2 class="pbox__hd">🌀 フィールド効果 <span class="pbox__note">交代時に削られたHP残量でダメ計</span></h2>
+  <h2 class="pbox__hd">🌀 フィールド <span class="pbox__note">交代時HP削り</span></h2>
   <div class="fgrid">
     <div class="fi">
-      <label class="fck"><input type="checkbox" id="f-sr"><span class="fck__box"></span><span class="fck__lbl">ステルスロック</span></label>
+      <label class="fck"><input type="checkbox" id="f-sr"><span class="fck__box"></span><span class="fck__lbl">ステロ</span></label>
       <div class="fr" id="fr-sr"><span class="fr__v" id="fv-sr">—</span><span class="fr__p" id="fp-sr"></span></div>
     </div>
     <div class="fi">
-      <div class="lr"><span class="fck__lbl">まきびし</span>
+      <div class="lr"><span class="fck__lbl" style="font-size:12px">まきびし</span>
         <div class="lbtns" id="lg-spikes">
           <button class="lbtn on" data-g="spikes" data-v="0">なし</button>
-          <button class="lbtn" data-g="spikes" data-v="1">1層</button>
-          <button class="lbtn" data-g="spikes" data-v="2">2層</button>
-          <button class="lbtn" data-g="spikes" data-v="3">3層</button>
+          <button class="lbtn" data-g="spikes" data-v="1">1</button>
+          <button class="lbtn" data-g="spikes" data-v="2">2</button>
+          <button class="lbtn" data-g="spikes" data-v="3">3</button>
         </div>
       </div>
       <div class="fr" id="fr-spikes"><span class="fr__v" id="fv-spikes">—</span><span class="fr__p" id="fp-spikes"></span></div>
     </div>
     <div class="fi">
-      <div class="lr"><span class="fck__lbl">どくびし</span>
+      <div class="lr"><span class="fck__lbl" style="font-size:12px">どくびし</span>
         <div class="lbtns" id="lg-tspikes">
           <button class="lbtn on" data-g="tspikes" data-v="0">なし</button>
           <button class="lbtn" data-g="tspikes" data-v="1">どく</button>
-          <button class="lbtn" data-g="tspikes" data-v="2">もうどく</button>
+          <button class="lbtn" data-g="tspikes" data-v="2">猛毒</button>
         </div>
       </div>
       <div class="fr" id="fr-tspikes"><span class="fr__v" id="fv-tspikes">—</span><span class="fr__p" id="fp-tspikes"></span></div>
     </div>
     <div class="fi">
-      <label class="fck"><input type="checkbox" id="f-sand"><span class="fck__box"></span><span class="fck__lbl">すなあらし</span><span class="fck__note">（岩/鋼/地 無効）</span></label>
+      <label class="fck"><input type="checkbox" id="f-sand"><span class="fck__box"></span><span class="fck__lbl">すなあらし</span></label>
       <div class="fr" id="fr-sand"><span class="fr__v" id="fv-sand">—</span><span class="fr__p" id="fp-sand"></span></div>
     </div>
   </div>
   <div class="hpbar" id="hpbar" style="display:none">
-    <div class="hpbar__meta"><span>交代後のHP残量</span><span class="hpbar__pct" id="hpbar-pct">100%</span></div>
+    <div class="hpbar__meta"><span>交代後HP</span><span class="hpbar__pct" id="hpbar-pct">100%</span></div>
     <div class="hpbar__track"><div class="hpbar__fill" id="hpbar-fill" style="width:100%"></div></div>
     <p class="hpbar__detail" id="hpbar-detail"></p>
   </div>
 </section>
 
-<!-- 2カラム -->
+<!-- 補正 -->
+<section class="pbox">
+  <h2 class="pbox__hd">✦ 補正 / 天気</h2>
+  <div class="modin">
+    <div class="modg">
+      <label class="cpill"><input type="checkbox" id="mod-crit"><span>急所</span></label>
+      <label class="cpill"><input type="checkbox" id="mod-burn"><span>やけど</span></label>
+      <label class="cpill"><input type="checkbox" id="mod-screen"><span>壁</span></label>
+    </div>
+    <div class="modg">
+      <span class="mglbl">天気</span>
+      <select id="wx" class="msel">
+        <option value="none">なし</option>
+        <option value="sun">☀ 晴れ</option>
+        <option value="rain">🌧 雨</option>
+        <option value="sand">🌪 砂嵐</option>
+        <option value="hail">❄ あられ</option>
+      </select>
+    </div>
+  </div>
+</section>
+
+</div><!-- end top grid -->
+
+<!-- 攻撃+スワップ+防御 -->
 <div class="brow">
 
   <!-- 攻撃側 -->
   <section class="pbox">
-    <h2 class="pbox__hd atk-hd">⚔ 攻撃側</h2>
+    <h2 class="pbox__hd ah">⚔ 攻撃側</h2>
     <div class="poke-area">
-      <input type="text" id="af" class="fin" placeholder="🔍 絞り込み…" autocomplete="off">
-      <select id="as" class="psel"><option value="">— 選択してください —</option></select>
+      <div class="combo-wrap" id="combo-atk">
+        <div class="combo-input" id="combo-atk-display" tabindex="0">— 選択してください —</div>
+        <span class="combo-arrow">▾</span>
+        <div class="combo-drop" id="combo-atk-drop">
+          <div class="combo-search"><input type="text" placeholder="🔍 絞り込み…" id="combo-atk-q" autocomplete="off"></div>
+          <div id="combo-atk-list"></div>
+        </div>
+      </div>
       <div class="pcard" id="acard" style="display:none">
         <img class="spr" id="aspr" src="" alt="">
         <div><p class="pname" id="aname">—</p><p class="pno" id="ano"></p><div class="trow" id="atypes"></div></div>
       </div>
     </div>
     <div class="sarea" id="astats" style="display:none">
-      <div class="irow"><span class="fl">もちもの</span>
+      <div class="row2"><span class="fl">もちもの</span>
         <select id="ai" class="isel">
           <option value="none">なし</option>
           <optgroup label="攻撃強化">
@@ -341,15 +397,41 @@ input[type=range].ev-range{
             <option value="choice-specs">こだわりメガネ（特殊×1.5）</option>
             <option value="life-orb">いのちのたま（×1.3）</option>
             <option value="expert-belt">たつじんのおび（抜群時×1.2）</option>
+            <option value="muscle-band">ちからのハチマキ（物理×1.1）</option>
+            <option value="wise-glasses">ものしりメガネ（特殊×1.1）</option>
+          </optgroup>
+          <optgroup label="タイプ強化（×1.2）">
+            <option value="charcoal">もくたん（ほのお）</option>
+            <option value="mystic-water">しんぴのしずく（みず）</option>
+            <option value="miracle-seed">きせきのタネ（くさ）</option>
+            <option value="magnet">じしゃく（でんき）</option>
+            <option value="nevermeltice">とけないこおり（こおり）</option>
+            <option value="black-belt">くろおび（かくとう）</option>
+            <option value="poison-barb">どくバリ（どく）</option>
+            <option value="soft-sand">やわらかいすな（じめん）</option>
+            <option value="sharp-beak">するどいくちばし（ひこう）</option>
+            <option value="twisted-spoon">まがったスプーン（エスパー）</option>
+            <option value="silverpowder">ぎんのこな（むし）</option>
+            <option value="hard-stone">かたいいし（いわ）</option>
+            <option value="spell-tag">のろいのおふだ（ゴースト）</option>
+            <option value="dragon-fang">りゅうのキバ（ドラゴン）</option>
+            <option value="black-glasses">くろいメガネ（あく）</option>
+            <option value="metal-coat">メタルコート（はがね）</option>
+            <option value="silk-scarf">シルクのスカーフ（ノーマル）</option>
+            <option value="fairy-feather">ようせいのはね（フェアリー）</option>
           </optgroup>
         </select>
       </div>
       <div class="svg" id="asvg"></div>
-      <div class="abl-row" id="abl-row-atk" style="display:none">
-        <span class="abl-label">特性</span>
-        <span class="abl-name" id="abl-name-atk">—</span>
-        <span class="abl-desc" id="abl-desc-atk"></span>
+      <div class="abl-wrap" id="abl-wrap-atk" style="display:none">
+        <div class="abl-sel-row">
+          <span class="fl">特性</span>
+          <span class="abl-badge" id="abl-badge-atk">—</span>
+          <select id="abl-sel-atk" class="abl-sel"></select>
+        </div>
+        <div class="abl-desc" id="abl-desc-atk"></div>
       </div>
+      <div class="meta-row">
         <div class="fg"><span class="fl">攻撃ランク</span>
           <select id="arank" class="msel">
             <option value="2">+6</option><option value="1.8">+5</option><option value="1.6">+4</option>
@@ -360,7 +442,19 @@ input[type=range].ev-range{
             <option value="0.2857">-5</option><option value="0.25">-6</option>
           </select>
         </div>
-        <div class="fg"><span class="fl">レベル</span><input type="number" id="alv" value="50" min="1" max="100" class="mnum"></div>
+        <div class="fg"><span class="fl">レベル</span>
+          <input type="number" id="alv" value="50" min="1" max="100" class="mnum">
+        </div>
+        <div class="fg" id="hits-wrap" style="display:none">
+          <span class="fl">ヒット数</span>
+          <div class="hits-row" id="hits-btns">
+            <button class="hits-btn on" data-h="1">×1</button>
+            <button class="hits-btn" data-h="2">×2</button>
+            <button class="hits-btn" data-h="3">×3</button>
+            <button class="hits-btn" data-h="4">×4</button>
+            <button class="hits-btn" data-h="5">×5</button>
+          </div>
+        </div>
       </div>
       <div class="mpanel">
         <div class="mpanel__hd">
@@ -375,53 +469,82 @@ input[type=range].ev-range{
     </div>
   </section>
 
-  <!-- 中央 -->
-  <div class="midcol">
+  <!-- スワップ -->
+  <div class="midsw">
     <button class="swapbtn" id="swapbtn" title="攻守入れ替え">⇄</button>
-    <button class="calcbtn" id="calcbtn">計<br>算</button>
   </div>
 
   <!-- 防御側 -->
   <section class="pbox">
-    <h2 class="pbox__hd def-hd">🛡 防御側</h2>
+    <h2 class="pbox__hd dh">🛡 防御側</h2>
     <div class="poke-area">
-      <input type="text" id="df" class="fin" placeholder="🔍 絞り込み…" autocomplete="off">
-      <select id="ds" class="psel"><option value="">— 選択してください —</option></select>
+      <div class="combo-wrap" id="combo-def">
+        <div class="combo-input" id="combo-def-display" tabindex="0">— 選択してください —</div>
+        <span class="combo-arrow">▾</span>
+        <div class="combo-drop" id="combo-def-drop">
+          <div class="combo-search"><input type="text" placeholder="🔍 絞り込み…" id="combo-def-q" autocomplete="off"></div>
+          <div id="combo-def-list"></div>
+        </div>
+      </div>
       <div class="pcard" id="dcard" style="display:none">
         <img class="spr" id="dspr" src="" alt="">
         <div><p class="pname" id="dname">—</p><p class="pno" id="dno"></p><div class="trow" id="dtypes"></div></div>
       </div>
     </div>
     <div class="sarea" id="dstats" style="display:none">
-      <div class="irow"><span class="fl">もちもの</span>
+      <div class="row2"><span class="fl">もちもの</span>
         <select id="di" class="isel">
           <option value="none">なし</option>
           <optgroup label="HP回復">
-            <option value="leftovers">たべのこし（毎ターン HP/16 回復）</option>
-            <option value="black-sludge-p">くろいヘドロ（どく系 HP/16 回復）</option>
-            <option value="black-sludge-np">くろいヘドロ（非どく系 HP/8 ダメージ）</option>
-            <option value="shell-bell">かいがらのすず（与ダメ/8 回復）</option>
+            <option value="leftovers">たべのこし（HP/16 毎T）</option>
+            <option value="black-sludge-p">くろいヘドロ（どく系 HP/16）</option>
+            <option value="black-sludge-np">くろいヘドロ（非どく HP/8↓）</option>
+            <option value="shell-bell">かいがらのすず（与ダメ/8）</option>
           </optgroup>
-          <optgroup label="一度だけ回復">
-            <option value="sitrus-berry">オボンのみ（HP50%以下で HP/4 回復）</option>
+          <optgroup label="一度だけ">
+            <option value="sitrus-berry">オボンのみ（HP≤50% +HP/4）</option>
+            <option value="oran-berry">オレンのみ（HP≤50% +10）</option>
+          </optgroup>
+          <optgroup label="半減きのみ">
+            <option value="occa-berry">オッカのみ（ほのお½）</option>
+            <option value="passho-berry">パッシャのみ（みず½）</option>
+            <option value="wacan-berry">ランランのみ（でんき½）</option>
+            <option value="rindo-berry">ソクノのみ（くさ½）</option>
+            <option value="yache-berry">ヤタピのみ（こおり½）</option>
+            <option value="chople-berry">ヨロギのみ（かくとう½）</option>
+            <option value="kebia-berry">ブリーのみ（どく½）</option>
+            <option value="shuca-berry">ナモのみ（じめん½）</option>
+            <option value="coba-berry">ウタンのみ（ひこう½）</option>
+            <option value="payapa-berry">クレセのみ（エスパー½）</option>
+            <option value="tanga-berry">タンガのみ（むし½）</option>
+            <option value="charti-berry">ウイのみ（いわ½）</option>
+            <option value="kasib-berry">ホズのみ（ゴースト½）</option>
+            <option value="haban-berry">リュガのみ（ドラゴン½）</option>
+            <option value="colbur-berry">バコウのみ（あく½）</option>
+            <option value="babiri-berry">ヨプのみ（はがね½）</option>
+            <option value="chilan-berry">チイラのみ（ノーマル½）</option>
+            <option value="roseli-berry">クサンのみ（フェアリー½）</option>
           </optgroup>
           <optgroup label="耐久強化">
             <option value="assault-vest">とつげきチョッキ（特防×1.5）</option>
-            <option value="eviolite">しんかのきせき（防御・特防×1.5）</option>
+            <option value="eviolite">しんかのきせき（防特防×1.5）</option>
           </optgroup>
           <optgroup label="その他">
-            <option value="focus-sash">きあいのタスキ（HP1で耐える）</option>
-            <option value="rocky-helmet">ゴツゴツメット（物理接触 HP/6 反射）</option>
+            <option value="focus-sash">きあいのタスキ（HP1耐え）</option>
+            <option value="rocky-helmet">ゴツゴツメット（接触HP/6反射）</option>
           </optgroup>
         </select>
       </div>
       <div class="svg" id="dsvg"></div>
-      <div class="abl-row" id="abl-row-def" style="display:none">
-        <span class="abl-label">特性</span>
-        <span class="abl-name" id="abl-name-def">—</span>
-        <span class="abl-desc" id="abl-desc-def"></span>
+      <div class="abl-wrap" id="abl-wrap-def" style="display:none">
+        <div class="abl-sel-row">
+          <span class="fl">特性</span>
+          <span class="abl-badge" id="abl-badge-def">—</span>
+          <select id="abl-sel-def" class="abl-sel"></select>
+        </div>
+        <div class="abl-desc" id="abl-desc-def"></div>
       </div>
-      <div class="mrow">
+      <div class="meta-row">
         <div class="fg"><span class="fl">防御ランク</span>
           <select id="drank" class="msel">
             <option value="2">+6</option><option value="1.8">+5</option><option value="1.6">+4</option>
@@ -435,31 +558,17 @@ input[type=range].ev-range{
       </div>
     </div>
   </section>
-</div>
+</div><!-- end brow -->
 
-<!-- 補正 -->
-<section class="pbox">
-  <h2 class="pbox__hd">✦ 補正 / 天気</h2>
-  <div class="modin">
-    <div class="modg">
-      <span class="mglbl">補正</span>
-      <label class="cpill"><input type="checkbox" id="mod-crit"><span>急所</span></label>
-      <label class="cpill"><input type="checkbox" id="mod-burn"><span>やけど（物理-50%）</span></label>
-      <label class="cpill"><input type="checkbox" id="mod-screen"><span>リフレクター/ひかりのかべ</span></label>
-    </div>
-    <div class="modg">
-      <span class="mglbl">天気</span>
-      <select id="wx" class="msel">
-        <option value="none">なし</option><option value="sun">☀ 晴れ</option>
-        <option value="rain">🌧 雨</option><option value="sand">🌪 砂嵐</option><option value="hail">❄ あられ</option>
-      </select>
-    </div>
+</div><!-- end left -->
+
+<!-- 右カラム：結果 -->
+<div class="right">
+  <div class="rph" id="rph">
+    <span>⚔</span>
+    ポケモン・技を選択すると<br>ここに結果が表示されます
   </div>
-</section>
-
-<!-- 結果 -->
-<section class="rsec" id="rsec" style="display:none">
-  <div class="rcard">
+  <div class="rcard" id="rcard" style="display:none">
     <div class="rvs">
       <div class="rvs-side ak"><img class="rvs-spr" id="r-aspr" src="" alt=""><span class="rvs-name" id="r-aname">—</span></div>
       <div class="rvs-mid"><span class="rvs-arr">→</span><span class="rvs-move" id="r-mname">—</span><span class="rvs-arr">→</span></div>
@@ -468,7 +577,7 @@ input[type=range].ev-range{
     <div class="rfield" id="rfield" style="display:none">
       <p class="rfield-ttl">🌀 フィールド効果（交代時）</p>
       <div class="rflines" id="rflines"></div>
-      <p class="rfhp">ダメ計に使用するHP：<strong id="rhpused">—</strong>（最大HP <span id="rhpmax">—</span>）</p>
+      <p class="rfhp">使用HP：<strong id="rhpused">—</strong>（最大 <span id="rhpmax">—</span>）</p>
     </div>
     <div class="ritem" id="ritem" style="display:none"></div>
     <div class="rmain">
@@ -482,19 +591,17 @@ input[type=range].ev-range{
     </div>
     <div class="kowrap" id="rko"></div>
   </div>
-</section>
+</div><!-- end right -->
 
-</main>
-<footer class="footer">PokeAPI使用 ― 非公式ファンツール / レギュレーションM-A（2026年4〜6月）対応<br>
-  要望・バグ報告は <a href="https://x.com/ekiben_mk" target="_blank" rel="noopener" style="color:var(--acc);text-decoration:none">@ekiben_mk</a> まで</footer>
+</div><!-- end app -->
+
+<footer class="footer">
+  PokeAPI使用 ― 非公式ファンツール / レギュレーションM-A（2026年4〜6月）対応<br>
+  要望・バグ報告は <a href="https://x.com/ekiben_mk" target="_blank" rel="noopener">@ekiben_mk</a> まで
+</footer>
 
 <script>
 'use strict';
-// ============================================================
-//  DATA
-// ============================================================
-// レギュレーションM-A 使用可能ポケモン（公式リスト準拠 213種）
-// 出典: https://dengekionline.com/article/202604/71201
 const REGU_MA_IDS = new Set([
   // 第1世代
   3,6,9,15,18,24,25,26,36,38,59,65,68,71,80,94,115,121,127,128,130,132,134,135,136,142,143,149,
@@ -989,187 +1096,536 @@ const FORMS = [
   {slug:'ursaluna-bloodmoon',  jpName:'ガチグマ（アカツキ）',      baseId:901}, // ※アヤシシ baseId 合わせ
   {slug:'ogerpon-wellspring',  jpName:'オーガポン（いど）',        baseId:1017}, // ※レギュMA外なので skip
 ];
+
+// ============================================================
+//  CONSTANTS
+// ============================================================
+const TC = {
+  normal:['#88786044','#d4c4a0','#88786066'],fire:['#d8593044','#fba060','#d8593066'],
+  water:['#378add44','#7dd3fc','#378add66'],grass:['#63992244','#86efac','#63992266'],
+  electric:['#ba751744','#fde68a','#ba751766'],ice:['#5bc8d844','#a5f3fc','#5bc8d866'],
+  fighting:['#99355644','#fda4af','#99355666'],poison:['#7c3aed44','#c4b5fd','#7c3aed66'],
+  ground:['#92400e44','#fcd34d','#92400e66'],flying:['#185fa544','#bae6fd','#185fa566'],
+  psychic:['#993c1d44','#fca5a5','#993c1d66'],bug:['#4d771544','#bef264','#4d771566'],
+  rock:['#78716c44','#d6d3d1','#78716c66'],ghost:['#3c348944','#c4b5fd','#3c348966'],
+  dragon:['#1e40af44','#93c5fd','#1e40af66'],dark:['#1c191444','#a8a29e','#1c191466'],
+  steel:['#64748b44','#cbd5e1','#64748b66'],fairy:['#be185d44','#fbcfe8','#be185d66'],
+};
+const TJP = {normal:'ノーマル',fire:'ほのお',water:'みず',grass:'くさ',electric:'でんき',
+  ice:'こおり',fighting:'かくとう',poison:'どく',ground:'じめん',flying:'ひこう',
+  psychic:'エスパー',bug:'むし',rock:'いわ',ghost:'ゴースト',dragon:'ドラゴン',
+  dark:'あく',steel:'はがね',fairy:'フェアリー'};
+
+const SR_MULT={normal:1,fire:2,water:.5,grass:.5,electric:.5,ice:2,
+  fighting:.5,poison:.5,ground:1,flying:2,psychic:.5,bug:2,
+  rock:1,ghost:1,dragon:1,dark:1,steel:.5,fairy:.5};
+
+const TYPE_CHART={
+  normal:{rock:.5,ghost:0,steel:.5},
+  fire:{fire:.5,water:.5,grass:2,ice:2,bug:2,rock:.5,dragon:.5,steel:2},
+  water:{fire:2,water:.5,grass:.5,ground:2,rock:2,dragon:.5},
+  grass:{fire:.5,water:2,grass:.5,poison:.5,ground:2,flying:.5,bug:.5,rock:2,dragon:.5,steel:.5},
+  electric:{water:2,grass:.5,electric:.5,ground:0,flying:2,dragon:.5},
+  ice:{fire:.5,water:.5,grass:2,ice:.5,ground:2,flying:2,dragon:2,steel:.5},
+  fighting:{normal:2,ice:2,poison:.5,flying:.5,psychic:.5,bug:.5,rock:2,ghost:0,dark:2,steel:2,fairy:.5},
+  poison:{grass:2,poison:.5,ground:.5,rock:.5,ghost:.5,steel:0,fairy:2},
+  ground:{fire:2,electric:2,grass:.5,poison:2,flying:0,bug:.5,rock:2,steel:2},
+  flying:{electric:.5,grass:2,fighting:2,bug:2,rock:.5,steel:.5},
+  psychic:{fighting:2,poison:2,psychic:.5,dark:0,steel:.5},
+  bug:{fire:.5,grass:2,fighting:.5,flying:.5,psychic:2,ghost:.5,dark:2,steel:.5,fairy:.5},
+  rock:{fire:2,ice:2,fighting:.5,ground:.5,flying:2,bug:2,steel:.5},
+  ghost:{normal:0,psychic:2,ghost:2,dark:.5},
+  dragon:{dragon:2,steel:.5,fairy:0},
+  dark:{fighting:.5,psychic:2,ghost:2,dark:.5,fairy:.5},
+  steel:{fire:.5,water:.5,electric:.5,ice:2,rock:2,steel:.5,fairy:2},
+  fairy:{fire:.5,fighting:2,poison:.5,dragon:2,dark:2,steel:.5},
+};
+
+// タイプ強化アイテム (×1.2)
+const TYPE_BOOST_ITEMS={
+  'charcoal':'fire','mystic-water':'water','miracle-seed':'grass','magnet':'electric',
+  'nevermeltice':'ice','black-belt':'fighting','poison-barb':'poison','soft-sand':'ground',
+  'sharp-beak':'flying','twisted-spoon':'psychic','silverpowder':'bug','hard-stone':'rock',
+  'spell-tag':'ghost','dragon-fang':'dragon','black-glasses':'dark','metal-coat':'steel',
+  'silk-scarf':'normal','fairy-feather':'fairy',
+};
+
+// 半減きのみ [item-slug → type]
+const HALF_BERRIES={
+  'occa-berry':'fire','passho-berry':'water','wacan-berry':'electric','rindo-berry':'grass',
+  'yache-berry':'ice','chople-berry':'fighting','kebia-berry':'poison','shuca-berry':'ground',
+  'coba-berry':'flying','payapa-berry':'psychic','tanga-berry':'bug','charti-berry':'rock',
+  'kasib-berry':'ghost','haban-berry':'dragon','colbur-berry':'dark','babiri-berry':'steel',
+  'chilan-berry':'normal','roseli-berry':'fairy',
+};
+
+const ATK_STATS=[
+  {id:'atk',jp:'こうげき',api:'attack',cls:''},
+  {id:'spa',jp:'とくこう',api:'special-attack',cls:''},
+  {id:'spe',jp:'すばやさ',api:'speed',cls:'sv-spe'},
+];
+const DEF_STATS=[
+  {id:'hp',jp:'HP',api:'hp',cls:'sv-hp'},
+  {id:'def',jp:'ぼうぎょ',api:'defense',cls:''},
+  {id:'spd',jp:'とくぼう',api:'special-defense',cls:''},
+  {id:'spe',jp:'すばやさ',api:'speed',cls:'sv-spe'},
+];
+
+// 特性データ
+const ABILITY_EFFECTS={
+  'hustle':{side:'atk',desc:'物理攻撃×1.5（命中0.8倍）',fn:c=>c.cat==='physical'?1.5:1},
+  'huge-power':{side:'atk',desc:'こうげき実質2倍',fn:c=>c.cat==='physical'?2:1},
+  'pure-power':{side:'atk',desc:'こうげき実質2倍',fn:c=>c.cat==='physical'?2:1},
+  'tough-claws':{side:'atk',desc:'接触技×1.3',fn:c=>c.cat==='physical'?1.3:1},
+  'technician':{side:'atk',desc:'威力60以下×1.5',fn:c=>c.power&&c.power<=60?1.5:1},
+  'adaptability':{side:'atk',desc:'タイプ一致×2.0',fn:()=>1},
+  'steelworker':{side:'atk',desc:'はがね技×1.5',fn:c=>c.mtype==='steel'?1.5:1},
+  'transistor':{side:'atk',desc:'でんき技×1.5',fn:c=>c.mtype==='electric'?1.5:1},
+  'dragons-maw':{side:'atk',desc:'ドラゴン技×1.5',fn:c=>c.mtype==='dragon'?1.5:1},
+  'solar-power':{side:'atk',desc:'晴れ時特攻×1.5',fn:c=>c.wx==='sun'?1.5:1},
+  'sand-force':{side:'atk',desc:'砂時いわ/じめん/はがね×1.3',fn:c=>(c.wx==='sand'&&['rock','ground','steel'].includes(c.mtype))?1.3:1},
+  'guts':{side:'atk',desc:'状態異常時物理×1.5（状態異常時手動で）',fn:()=>1},
+  'sheer-force':{side:'atk',desc:'追加効果技×1.3（技依存）',fn:()=>1},
+  'iron-fist':{side:'atk',desc:'パンチ技×1.2',fn:()=>1},
+  'strong-jaw':{side:'atk',desc:'噛みつき技×1.5',fn:()=>1},
+  'mega-launcher':{side:'atk',desc:'波動技×1.5',fn:()=>1},
+  'rivalry':{side:'atk',desc:'同性×1.25/異性×0.75',fn:()=>1},
+  'blaze':{side:'atk',desc:'HP1/3以下でほのお×1.5',fn:()=>1},
+  'torrent':{side:'atk',desc:'HP1/3以下でみず×1.5',fn:()=>1},
+  'overgrow':{side:'atk',desc:'HP1/3以下でくさ×1.5',fn:()=>1},
+  'swarm':{side:'atk',desc:'HP1/3以下でむし×1.5',fn:()=>1},
+  'thick-fat':{side:'def',desc:'ほのお・こおり×0.5',fn:c=>['fire','ice'].includes(c.mtype)?0.5:1},
+  'heatproof':{side:'def',desc:'ほのお技×0.5',fn:c=>c.mtype==='fire'?0.5:1},
+  'fluffy':{side:'def',desc:'物理接触×0.5 / ほのお×2',fn:c=>c.cat==='physical'?0.5:1},
+  'fur-coat':{side:'def',desc:'物理ダメ×0.5',fn:c=>c.cat==='physical'?0.5:1},
+  'ice-scales':{side:'def',desc:'特殊ダメ×0.5',fn:c=>c.cat==='special'?0.5:1},
+  'solid-rock':{side:'def',desc:'弱点技×0.75',fn:c=>(window._autoTypeEff||1)>1?0.75:1},
+  'filter':{side:'def',desc:'弱点技×0.75',fn:c=>(window._autoTypeEff||1)>1?0.75:1},
+  'purifying-salt':{side:'def',desc:'ゴースト技×0.5',fn:c=>c.mtype==='ghost'?0.5:1},
+  'multiscale':{side:'def',desc:'HP満タン時受けダメ×0.5（要手動）',fn:()=>1},
+  'flash-fire':{side:'def',desc:'ほのお無効',fn:c=>c.mtype==='fire'?0:1},
+  'water-absorb':{side:'def',desc:'みず無効・HP回復',fn:c=>c.mtype==='water'?0:1},
+  'volt-absorb':{side:'def',desc:'でんき無効・HP回復',fn:c=>c.mtype==='electric'?0:1},
+  'motor-drive':{side:'def',desc:'でんき無効・素早↑',fn:c=>c.mtype==='electric'?0:1},
+  'lightning-rod':{side:'def',desc:'でんき無効・特攻↑',fn:c=>c.mtype==='electric'?0:1},
+  'storm-drain':{side:'def',desc:'みず無効・特攻↑',fn:c=>c.mtype==='water'?0:1},
+  'sap-sipper':{side:'def',desc:'くさ無効・攻撃↑',fn:c=>c.mtype==='grass'?0:1},
+  'levitate':{side:'def',desc:'じめん無効',fn:c=>c.mtype==='ground'?0:1},
+  'earth-eater':{side:'def',desc:'じめん無効・HP回復',fn:c=>c.mtype==='ground'?0:1},
+  'well-baked-body':{side:'def',desc:'ほのお無効・防御↑',fn:c=>c.mtype==='fire'?0:1},
+  'dry-skin':{side:'def',desc:'みず無効 / ほのお×1.25',fn:c=>c.mtype==='water'?0:c.mtype==='fire'?1.25:1},
+  'stamina':{side:'def',desc:'被ダメ後ぼうぎょ+1（多段でも注意）',fn:()=>1},
+  'wonder-guard':{side:'def',desc:'弱点以外無効',fn:()=>1},
+};
+const ABILITY_JP={
+  'hustle':'はりきり','huge-power':'ちからもち','pure-power':'ヨガパワー',
+  'tough-claws':'かたいツメ','technician':'テクニシャン','adaptability':'てきおうりょく',
+  'iron-fist':'てつのこぶし','strong-jaw':'がんじょうあご','mega-launcher':'メガランチャー',
+  'steelworker':'はがねのせいしん','transistor':'トランジスタ','dragons-maw':'りゅうのあぎと',
+  'solar-power':'サンパワー','sand-force':'すなのちから','guts':'こんじょう',
+  'sheer-force':'ちからずく','rivalry':'きょうそうしん','blaze':'もうか','torrent':'げきりゅう',
+  'overgrow':'しんりょく','swarm':'むしのしらせ',
+  'thick-fat':'あついしぼう','heatproof':'たいねつ','fluffy':'ふわふわ','fur-coat':'ファーコート',
+  'ice-scales':'こおりのりんぷん','solid-rock':'ハードロック','filter':'フィルター',
+  'purifying-salt':'きよめのしお','multiscale':'マルチスケイル',
+  'flash-fire':'もらいび','water-absorb':'ちょすい','volt-absorb':'ちくでん',
+  'motor-drive':'でんきエンジン','lightning-rod':'ひらいしん','storm-drain':'よびみず',
+  'sap-sipper':'そうしょく','levitate':'ふゆう','earth-eater':'じきゅうりょく',
+  'well-baked-body':'やきもち','dry-skin':'かんそうはだ','stamina':'スタミナ',
+  'wonder-guard':'ふしぎなまもり',
+  // よく使われるがダメ計影響なし
+  'intimidate':'いかく','serene-grace':'てんのめぐみ','speed-boost':'かそく',
+  'rain-dish':'あめうけざら','swift-swim':'すいすい','chlorophyll':'ようりょくそ',
+  'sand-rush':'すなかき','sand-stream':'すなおこし','drizzle':'あめふらし',
+  'drought':'ひでり','snow-warning':'ゆきふらし','pressure':'プレッシャー',
+  'sturdy':'がんじょう','magic-guard':'マジックガード','regenerator':'さいせいりょく',
+  'natural-cure':'しぜんかいふく','static':'せいでんき','flame-body':'ほのおのからだ',
+  'rough-skin':'ざらざら','iron-barbs':'てつのとげ','cursed-body':'のろわれボディ',
+  'unaware':'てんねん','clear-body':'クリアボディ','rock-head':'いしあたま',
+  'reckless':'すてみ','no-guard':'ノーガード','moxie':'じしんかじょう',
+  'protosynthesis':'こだいかっせい','quark-drive':'クォークチャージ',
+  'intrepid-sword':'ふとうのけん','dauntless-shield':'まけんき',
+  'defeatist':'よわき','plus':'プラス','minus':'マイナス',
+  'tinted-lens':'いろめがね','analytic':'アナライズ',
+};
+
+// ============================================================
+//  App state
+// ============================================================
+const PAPI='https://pokeapi.co/api/v2';
+const _c={};
+async function apiFetch(p){
+  if(_c[p])return _c[p];
+  const r=await fetch(PAPI+p);if(!r.ok)throw new Error(r.status);
+  return(_c[p]=await r.json());
+}
+
+let AP=null,DP=null,SM=null;
+let _mc=[],_mcat='physical';
+let _hitCount=1;
+const EVS={atk:{atk:0,spa:0,spe:0},def:{hp:0,def:0,spd:0,spe:0}};
+const FLD={sr:false,spikes:0,tspikes:0,sand:false};
+const NAT={atk:{atk:'mid',spa:'mid',spe:'mid'},def:{hp:'mid',def:'mid',spd:'mid',spe:'mid'}};
+
+const F=n=>Math.floor(n);
+const ev=s=>Math.min(252,s*8);
+const calcHP=(b,s,lv=50)=>F((b*2+31+F(ev(s)/4))*lv/100)+lv+10;
+const calcStat=(b,s,nat=1,lv=50)=>F((F((b*2+31+F(ev(s)/4))*lv/100)+5)*nat);
+const natMult=(side,stat)=>{if(stat==='hp')return 1;const s=NAT[side]?.[stat]||'mid';return s==='up'?1.1:s==='dn'?0.9:1;};
+
+function tbadge(t){const c=TC[t]||['#44444444','#aaa','#66666655'];return`<span class="tbadge" style="background:${c[0]};color:${c[1]};border:1px solid ${c[2]}">${TJP[t]||t}</span>`;}
+function mitb(t){const c=TC[t]||['#44444444','#aaa','#66666655'];return`<span class="mitype" style="background:${c[0]};color:${c[1]};border:1px solid ${c[2]}">${TJP[t]||t}</span>`;}
+
+// ============================================================
+//  Combo box (検索+ドロップダウン統合)
 // ============================================================
 let pokeList=[];
+function buildCombo(side){
+  const sfx=side==='atk'?'atk':'def';
+  const wrap=document.getElementById(`combo-${sfx}`);
+  const display=document.getElementById(`combo-${sfx}-display`);
+  const drop=document.getElementById(`combo-${sfx}-drop`);
+  const qEl=document.getElementById(`combo-${sfx}-q`);
+  const listEl=document.getElementById(`combo-${sfx}-list`);
+
+  // Toggle open/close
+  display.addEventListener('click',e=>{e.stopPropagation();toggleCombo(sfx,qEl,listEl);});
+  display.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')toggleCombo(sfx,qEl,listEl);});
+
+  // Search filter
+  qEl.addEventListener('input',()=>renderComboList(sfx,listEl,qEl.value));
+  qEl.addEventListener('click',e=>e.stopPropagation());
+
+  // Close on outside click
+  document.addEventListener('click',()=>drop.classList.remove('open'));
+
+  renderComboList(sfx,listEl,'');
+}
+
+function toggleCombo(sfx,qEl,listEl){
+  const drop=document.getElementById(`combo-${sfx}-drop`);
+  const wasOpen=drop.classList.contains('open');
+  // Close all others
+  document.querySelectorAll('.combo-drop').forEach(d=>d.classList.remove('open'));
+  if(!wasOpen){drop.classList.add('open');qEl.focus();qEl.value='';renderComboList(sfx,listEl,'');}
+}
+
+function renderComboList(sfx,listEl,q){
+  const lc=q.toLowerCase();
+  listEl.innerHTML='';
+  const groups=[
+    {label:'通常フォーム',items:pokeList.filter(p=>!p.isMega&&!p.isForm&&(!lc||p.jpName.includes(q)||p.key.includes(lc)||String(p.baseId).includes(lc)))},
+    {label:'フォルムチェンジ',items:pokeList.filter(p=>p.isForm&&(!lc||p.jpName.includes(q)||p.key.includes(lc)))},
+    {label:'メガシンカ',items:pokeList.filter(p=>p.isMega&&(!lc||p.jpName.includes(q)||p.key.includes(lc)))},
+  ];
+  groups.forEach(({label,items})=>{
+    if(!items.length)return;
+    const gl=document.createElement('div');gl.className='combo-group-label';gl.textContent=label;
+    listEl.appendChild(gl);
+    items.forEach(p=>{
+      const item=document.createElement('div');
+      item.className='combo-item';
+      item.textContent=`No.${String(p.baseId).padStart(4,'0')} ${p.jpName}`;
+      item.dataset.key=p.key;
+      const cur=sfx==='atk'?AP?.comboKey:DP?.comboKey;
+      if(cur===p.key)item.classList.add('selected');
+      item.addEventListener('mousedown',e=>{
+        e.preventDefault();
+        selectPoke(sfx,p.key);
+        document.getElementById(`combo-${sfx}-drop`).classList.remove('open');
+      });
+      listEl.appendChild(item);
+    });
+  });
+}
+
+function setComboDisplay(sfx,text){
+  document.getElementById(`combo-${sfx}-display`).textContent=text;
+}
+
+// ============================================================
+//  Pokemon list load
+// ============================================================
 async function loadList(){
   const ids=[...REGU_MA_IDS].sort((a,b)=>a-b);
   pokeList=ids.map(id=>({
-    key:String(id), apiName:'', jpName:JPN[id]||`No.${id}`,
-    sprite:'', baseId:id, isMega:false, isForm:false,
+    key:String(id),apiName:'',jpName:JPN[id]||`No.${id}`,
+    sprite:'',baseId:id,isMega:false,isForm:false,
   }));
-  // メガ・フォルムをbaseIdがレギュMAに含まれるものだけ追加
   for(const f of FORMS){
-    if(!REGU_MA_IDS.has(f.baseId)) continue;
+    if(!REGU_MA_IDS.has(f.baseId))continue;
     pokeList.push({
-      key:f.slug, apiName:f.slug, jpName:f.jpName,
-      sprite:'', baseId:f.baseId,
+      key:f.slug,apiName:f.slug,jpName:f.jpName,
+      sprite:'',baseId:f.baseId,
       isMega:f.jpName.startsWith('メガ'),
       isForm:!f.jpName.startsWith('メガ'),
     });
   }
-  document.getElementById('as').innerHTML='<option value="">読み込み中…</option>';
-  document.getElementById('ds').innerHTML='<option value="">読み込み中…</option>';
+  buildCombo('atk');buildCombo('def');
+  // バックグラウンドで通常フォームのapiName取得
+  const normal=pokeList.filter(p=>!p.apiName);
   const C=12;
-  const normalEntries=pokeList.filter(p=>!p.apiName);
-  for(let i=0;i<normalEntries.length;i+=C){
-    await Promise.all(normalEntries.slice(i,i+C).map(async p=>{
-      try{const d=await apiFetch(`/pokemon/${p.baseId}`);
-        p.apiName=d.name;p.sprite=d.sprites.front_default||'';
-      }catch{}
+  for(let i=0;i<normal.length;i+=C){
+    await Promise.all(normal.slice(i,i+C).map(async p=>{
+      try{const d=await apiFetch(`/pokemon/${p.baseId}`);p.apiName=d.name;p.sprite=d.sprites.front_default||'';}
+      catch{}
     }));
   }
-  fillSel('as');fillSel('ds');
-}
-function fillSel(selId){
-  const s=document.getElementById(selId);
-  s.innerHTML='<option value="">— 選択してください —</option>';
-  const mkGrp=(label,items)=>{
-    if(!items.length) return;
-    const g=document.createElement('optgroup');g.label=label;
-    items.forEach(p=>{
-      const o=document.createElement('option');o.value=p.key;
-      o.textContent=`No.${String(p.baseId).padStart(4,'0')} ${p.jpName}`;
-      g.appendChild(o);
-    });
-    s.appendChild(g);
-  };
-  mkGrp('通常フォーム', pokeList.filter(p=>!p.isMega&&!p.isForm));
-  mkGrp('フォルムチェンジ', pokeList.filter(p=>p.isForm));
-  mkGrp('メガシンカ', pokeList.filter(p=>p.isMega));
-}
-function setupFilter(fi,si){
-  const f=document.getElementById(fi),s=document.getElementById(si);
-  f.addEventListener('input',()=>{
-    const q=f.value.trim().toLowerCase();
-    s.querySelectorAll('option').forEach(o=>{if(!o.value)return;o.hidden=q?!o.textContent.toLowerCase().includes(q):false;});
-    const v=[...s.querySelectorAll('option')].filter(o=>o.value&&!o.hidden);
-    if(v.length===1){s.value=v[0].value;s.dispatchEvent(new Event('change'));}
-  });
 }
 
 // ============================================================
 //  Pokemon select
 // ============================================================
-async function onSel(side){
-  const key=document.getElementById(side==='atk'?'as':'ds').value;
-  if(!key) return;
+async function selectPoke(sfx,key){
+  if(!key)return;
+  const side=sfx==='atk'?'atk':'def';
+  const entry=pokeList.find(p=>p.key===key);
+  const slug=entry?.apiName||key;
   document.getElementById(side==='atk'?'acard':'dcard').style.display='none';
   document.getElementById(side==='atk'?'astats':'dstats').style.display='none';
-  // pokeListからエントリ取得
-  const entry=pokeList.find(p=>p.key===key);
-  const apiSlug=entry?.apiName||key;
   try{
-    const d=await apiFetch(`/pokemon/${apiSlug}`);
+    const d=await apiFetch(`/pokemon/${slug}`);
     const jp=entry?.jpName||JPN[entry?.baseId]||await getJP(d.name);
     const poke={
-      id:d.id, name:d.name, jpName:jp,
+      id:d.id,name:d.name,jpName:jp,comboKey:key,
       types:d.types.map(t=>t.type.name),
-      stats:{}, moves:d.moves,
+      stats:{},moves:d.moves,
       sprite:d.sprites.front_default||entry?.sprite||'',
       baseId:entry?.baseId||d.id,
       abilities:d.abilities||[],
     };
     d.stats.forEach(s=>{poke.stats[s.stat.name]=s.base_stat;});
-    if(side==='atk') AP=poke; else DP=poke;
+    if(side==='atk')AP=poke;else DP=poke;
     renderCard(side,poke);
+    setComboDisplay(sfx,`No.${String(poke.baseId).padStart(4,'0')} ${jp}`);
     document.getElementById(side==='atk'?'astats':'dstats').style.display='flex';
     Object.keys(EVS[side]).forEach(k=>{EVS[side][k]=0;});
-    recAllRV(side);updNatHL(side);
-    loadAbility(side, poke);
-    if(side==='atk') { loadMoves(poke); onAtkPokeChanged(); }
-    if(side==='def') { updField(); onDefPokeChanged(); }
+    // Reset NAT
+    Object.keys(NAT[side]).forEach(k=>{NAT[side][k]='mid';});
+    recAllRV(side);
+    loadAbility(side,poke);
+    if(side==='atk'){loadMoves(poke);autoCalcTypeInfo();}
+    if(side==='def'){updField();autoCalcTypeInfo();}
+    tryAutoCalc();
   }catch(e){console.error(e);}
 }
+
 async function getJP(name){
   try{const d=await apiFetch(`/pokemon-species/${name}`);const e=d.names.find(n=>n.language.name==='ja-Hrkt'||n.language.name==='ja');return e?e.name:name;}
   catch{return name;}
 }
 function renderCard(side,poke){
-  const sl=side==='atk';
-  document.getElementById(sl?'aspr':'dspr').src=poke.sprite;
-  document.getElementById(sl?'aname':'dname').textContent=poke.jpName;
-  document.getElementById(sl?'ano':'dno').textContent=`No.${String(poke.id).padStart(4,'0')}`;
-  document.getElementById(sl?'atypes':'dtypes').innerHTML=poke.types.map(tbadge).join('');
-  document.getElementById(sl?'acard':'dcard').style.display='flex';
+  const a=side==='atk';
+  document.getElementById(a?'aspr':'dspr').src=poke.sprite;
+  document.getElementById(a?'aname':'dname').textContent=poke.jpName;
+  document.getElementById(a?'ano':'dno').textContent=`No.${String(poke.id).padStart(4,'0')}`;
+  document.getElementById(a?'atypes':'dtypes').innerHTML=poke.types.map(tbadge).join('');
+  document.getElementById(a?'acard':'dcard').style.display='flex';
 }
 
 // ============================================================
-//  Moves
+//  Ability selector (複数特性対応)
 // ============================================================
+async function loadAbility(side,poke){
+  const wrap=document.getElementById(`abl-wrap-${side}`);
+  const badge=document.getElementById(`abl-badge-${side}`);
+  const sel=document.getElementById(`abl-sel-${side}`);
+  const desc=document.getElementById(`abl-desc-${side}`);
+  wrap.style.display='none';
+  const abs=poke.abilities||[];if(!abs.length)return;
+
+  // 各特性の日本語名を取得
+  sel.innerHTML='';
+  const ablData=[];
+  for(const a of abs){
+    const slug=a.ability.name;
+    let jp=ABILITY_JP[slug]||slug;
+    try{
+      const d=await apiFetch(`/ability/${slug}`);
+      const n=d.names?.find(n=>n.language.name==='ja-Hrkt'||n.language.name==='ja');
+      if(n)jp=n.name;
+      const fl=d.flavor_text_entries?.find(f=>f.language.name==='ja-Hrkt'||f.language.name==='ja');
+      const dsc=fl?fl.flavor_text.replace(/[\n\s]+/g,' '):(ABILITY_EFFECTS[slug]?.desc||'');
+      ablData.push({slug,jp,desc:dsc,hidden:a.is_hidden});
+    }catch{
+      ablData.push({slug,jp,desc:ABILITY_EFFECTS[slug]?.desc||'',hidden:a.is_hidden});
+    }
+  }
+  ablData.forEach(a=>{
+    const o=document.createElement('option');
+    o.value=a.slug;
+    o.textContent=a.jp+(a.hidden?'（夢）':'');
+    sel.appendChild(o);
+  });
+
+  const update=()=>{
+    const chosen=ablData.find(a=>a.slug===sel.value)||ablData[0];
+    badge.textContent=chosen?chosen.jp:'—';
+    desc.textContent=chosen?chosen.desc:'';
+    poke.abilitySlug=chosen?.slug||'';
+    poke.abilityJp=chosen?.jp||'';
+    tryAutoCalc();
+  };
+  sel.addEventListener('change',update);
+  update();
+  wrap.style.display='flex';
+}
+
+// ============================================================
+//  Stat rows
+// ============================================================
+function buildStatRows(side,defs){
+  const grp=document.getElementById(side==='atk'?'asvg':'dsvg');
+  grp.innerHTML='';
+  defs.forEach(({id,jp,cls})=>{
+    const row=document.createElement('div');
+    row.className='svr';row.id=`svr-${side}-${id}`;
+    const showNat=id!=='hp';
+    row.innerHTML=`<div class="svr__top">
+      <span class="svname ${cls||''}">${jp}</span>
+      <div class="ev-sw">
+        <button class="ev-e" data-side="${side}" data-stat="${id}" data-v="0">0</button>
+        <input type="range" class="ev-r" id="evr-${side}-${id}" min="0" max="32" step="1" value="0">
+        <button class="ev-e" data-side="${side}" data-stat="${id}" data-v="32">MAX</button>
+        <span class="ev-v" id="ev-${side}-${id}">0</span>
+      </div>
+      ${showNat?`<div class="nat3" id="nat3-${side}-${id}">
+        <button class="nu" data-side="${side}" data-stat="${id}" data-n="up">↑</button>
+        <button class="nm act" data-side="${side}" data-stat="${id}" data-n="mid">±</button>
+        <button class="nd" data-side="${side}" data-stat="${id}" data-n="dn">↓</button>
+      </div>`:'<div></div>'}
+      <input type="number" class="rvi" id="rv-${side}-${id}" min="1" max="999">
+    </div>`;
+    grp.appendChild(row);
+
+    const slider=row.querySelector('.ev-r');
+    slider.addEventListener('input',()=>{EVS[side][id]=parseInt(slider.value);recRV(side,id);});
+    row.querySelectorAll('.ev-e').forEach(b=>{
+      b.addEventListener('click',()=>{EVS[side][id]=parseInt(b.dataset.v);slider.value=b.dataset.v;recRV(side,id);});
+    });
+    if(showNat){
+      row.querySelectorAll('.nat3 button').forEach(b=>{
+        b.addEventListener('click',()=>{
+          NAT[side][id]=b.dataset.n;
+          row.querySelectorAll('.nat3 button').forEach(x=>x.classList.remove('act'));
+          b.classList.add('act');
+          row.classList.remove('nat-up','nat-dn');
+          if(b.dataset.n==='up')row.classList.add('nat-up');
+          if(b.dataset.n==='dn')row.classList.add('nat-dn');
+          recRV(side,id);
+        });
+      });
+    }
+    row.querySelector('.rvi').addEventListener('change',()=>{if(side==='def')updField();tryAutoCalc();});
+  });
+}
+
+function recRV(side,stat){
+  const poke=side==='atk'?AP:DP;if(!poke)return;
+  const step=EVS[side][stat]||0;
+  const lv=parseInt(document.getElementById('alv').value)||50;
+  const defs=side==='atk'?ATK_STATS:DEF_STATS;
+  const m=defs.find(s=>s.id===stat);if(!m)return;
+  const base=poke.stats[m.api]||50;
+  const nat=natMult(side,stat);
+  const real=stat==='hp'?calcHP(base,step,lv):calcStat(base,step,nat,lv);
+  document.getElementById(`ev-${side}-${stat}`).textContent=step;
+  const slider=document.getElementById(`evr-${side}-${stat}`);
+  if(slider)slider.value=step;
+  const el=document.getElementById(`rv-${side}-${stat}`);
+  if(el)el.value=real;
+  if(side==='def')updField();
+  tryAutoCalc();
+}
+function recAllRV(side){(side==='atk'?ATK_STATS:DEF_STATS).forEach(s=>recRV(side,s.id));}
+
+// ============================================================
+//  Moves (重複排除済み)
+// ============================================================
+const MULTI_HIT_MOVES=new Set([
+  'double-hit','double-kick','double-slap','fury-attack','fury-swipes','pin-missile',
+  'bone-rush','bullet-seed','icicle-spear','rock-blast','tail-slap','water-shuriken',
+  'arm-thrust','comet-punch','beat-up','spike-cannon','triple-kick','triple-axel',
+  'surging-strikes','scale-shot','population-bomb',
+]);
+
 async function loadMoves(poke){
   const el=document.getElementById('mlist');
-  el.innerHTML='<p class="mempty">技データ取得中…</p>';
+  el.innerHTML='<p class="mempty">取得中…</p>';
   SM=null;_mc=[];
-  const names=poke.moves.map(m=>m.move.name);
+  const names=[...new Set(poke.moves.map(m=>m.move.name))]; // 重複排除
   const C=15;
   for(let i=0;i<names.length;i+=C){
     const res=await Promise.all(names.slice(i,i+C).map(async mn=>{
-      try{const d=await apiFetch(`/move/${mn}`);
+      try{
+        const d=await apiFetch(`/move/${mn}`);
         const jp=d.names.find(n=>n.language.name==='ja-Hrkt'||n.language.name==='ja');
         const cat=d.damage_class?.name||'status';
-        if(cat==='status'||!d.power) return null;
-        return {name:mn,jpName:jp?jp.name:mn,power:d.power,type:d.type?.name||'normal',cat};
+        if(cat==='status'||!d.power)return null;
+        return{name:mn,jpName:jp?jp.name:mn,power:d.power,type:d.type?.name||'normal',cat,
+          isMulti:MULTI_HIT_MOVES.has(mn)||d.meta?.max_hits>1};
       }catch{return null;}
     }));
     res.forEach(r=>{if(r)_mc.push(r);});
   }
+  // 重複排除（nameで）
+  const seen=new Set();
+  _mc=_mc.filter(m=>{if(seen.has(m.name))return false;seen.add(m.name);return true;});
   _mc.sort((a,b)=>b.power!==a.power?b.power-a.power:a.type.localeCompare(b.type));
   renderMoves();
 }
+
 function renderMoves(){
   const el=document.getElementById('mlist');
   const fil=_mc.filter(m=>m.cat===_mcat);
   if(!fil.length){el.innerHTML='<p class="mempty">該当技なし</p>';return;}
-  el.innerHTML=fil.map(m=>`<div class="mi" data-n="${m.name}" data-p="${m.power}" data-t="${m.type}" data-c="${m.cat}">
-    <span class="miname">${m.jpName}</span><span class="mipow">${m.power}</span>${mitb(m.type)}</div>`).join('');
+  el.innerHTML=fil.map(m=>`<div class="mi${m.isMulti?' multi':''}" data-n="${m.name}" data-p="${m.power}" data-t="${m.type}" data-c="${m.cat}" data-multi="${m.isMulti}">
+    <span class="miname">${m.jpName}${m.isMulti?'<span style="font-size:10px;color:var(--acc);margin-left:4px">多</span>':''}</span>
+    <span class="mipow">${m.power}</span>${mitb(m.type)}</div>`).join('');
   el.querySelectorAll('.mi').forEach(e=>{
     e.addEventListener('click',()=>{
       el.querySelectorAll('.mi').forEach(x=>x.classList.remove('sel'));
       e.classList.add('sel');
-      SM={name:e.dataset.n,power:parseInt(e.dataset.p),type:e.dataset.t,cat:e.dataset.c};
+      SM={name:e.dataset.n,power:parseInt(e.dataset.p),type:e.dataset.t,cat:e.dataset.c,isMulti:e.dataset.multi==='true'};
+      // ヒット数UI
+      const hw=document.getElementById('hits-wrap');
+      if(SM.isMulti){hw.style.display='flex';}else{hw.style.display='none';_hitCount=1;document.querySelectorAll('.hits-btn').forEach(b=>{b.classList.toggle('on',b.dataset.h==='1');});}
       autoCalcTypeInfo();
+      tryAutoCalc();
     });
   });
 }
 document.querySelectorAll('.mtab').forEach(b=>{
   b.addEventListener('click',()=>{document.querySelectorAll('.mtab').forEach(x=>x.classList.remove('on'));b.classList.add('on');_mcat=b.dataset.cat;renderMoves();});
 });
+document.querySelectorAll('.hits-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.hits-btn').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');_hitCount=parseInt(b.dataset.h);tryAutoCalc();
+  });
+});
 
 // ============================================================
-//  タイプ一致・相性の自動計算
+//  Type effectiveness auto-calc
 // ============================================================
-function getTypeEff(atkType, defTypes) {
-  // atkTypeに対する各defTypeの倍率を掛け合わせる
-  let eff = 1;
-  for (const dt of defTypes) {
-    const row = TYPE_CHART[atkType];
-    eff *= (row && row[dt] !== undefined) ? row[dt] : 1;
-  }
-  return eff;
+function getTypeEff(atkType,defTypes){
+  let e=1;
+  for(const dt of defTypes){const row=TYPE_CHART[atkType];e*=row&&row[dt]!==undefined?row[dt]:1;}
+  return e;
 }
-
-function autoCalcTypeInfo() {
-  // 技・攻撃側・防御側が揃っているときだけ動作
-  if (!SM || !AP || !DP) return;
-  // STAB
-  const isStab = AP.types.includes(SM.type);
-  // タイプ相性
-  const typeEff = getTypeEff(SM.type, DP.types);
-  // 内部変数に保存（calc()が参照）
-  window._autoSTAB = isStab;
-  window._autoTypeEff = typeEff;
+function autoCalcTypeInfo(){
+  if(!SM||!AP||!DP)return;
+  window._autoSTAB=AP.types.includes(SM.type);
+  window._autoTypeEff=getTypeEff(SM.type,DP.types);
 }
-
-// 攻撃側ポケモン変更時も再計算
-function onAtkPokeChanged() { if (SM && DP) autoCalcTypeInfo(); }
-// 防御側ポケモン変更時も再計算
-function onDefPokeChanged() { if (SM && AP) autoCalcTypeInfo(); }
+function onAtkChanged(){if(SM&&DP)autoCalcTypeInfo();}
+function onDefChanged(){if(SM&&AP)autoCalcTypeInfo();}
 
 // ============================================================
 //  Field
 // ============================================================
 function calcField(poke,maxHP){
-  if(!poke||!maxHP) return null;
+  if(!poke||!maxHP)return null;
   const t=poke.types;
   const fly=t.includes('flying'),stl=t.includes('steel'),rck=t.includes('rock'),gnd=t.includes('ground'),psn=t.includes('poison');
   let sr=0,spk=0,tspk=0,sand=0;
@@ -1178,14 +1634,13 @@ function calcField(poke,maxHP){
   if(FLD.tspikes>0&&!fly&&!psn&&!stl){tspk=Math.max(1,F(maxHP/(FLD.tspikes===1?8:16)));}
   if(FLD.sand&&!rck&&!stl&&!gnd){sand=Math.max(1,F(maxHP/16));}
   const total=sr+spk+tspk+sand;
-  return {sr,spk,tspk,sand,total,remain:Math.max(1,maxHP-total),maxHP};
+  return{sr,spk,tspk,sand,total,remain:Math.max(1,maxHP-total),maxHP};
 }
-
 function updField(){
   const maxHP=parseInt(document.getElementById('rv-def-hp')?.value)||0;
   if(!maxHP||!DP){document.getElementById('hpbar').style.display='none';
-    ['sr','spikes','tspikes','sand'].forEach(id=>{const e=document.getElementById(`fr-${id}`);if(e)e.classList.remove('show');});return;}
-  const fd=calcField(DP,maxHP);if(!fd) return;
+    ['sr','spikes','tspikes','sand'].forEach(id=>{document.getElementById(`fr-${id}`)?.classList.remove('show');});return;}
+  const fd=calcField(DP,maxHP);if(!fd)return;
   const show=(id,v)=>{const e=document.getElementById(`fr-${id}`);
     if(v>0){e.classList.add('show');document.getElementById(`fv-${id}`).textContent=`−${v}`;document.getElementById(`fp-${id}`).textContent=`(${(v/maxHP*100).toFixed(1)}%)`;}
     else e.classList.remove('show');};
@@ -1197,36 +1652,49 @@ function updField(){
     document.getElementById('hpbar-fill').style.width=pct.toFixed(1)+'%';
     document.getElementById('hpbar-fill').style.background=pct>50?'linear-gradient(90deg,#69e060,#a8e063)':pct>25?'linear-gradient(90deg,#ffe44d,#ffa500)':'linear-gradient(90deg,#ff5252,#ff8a80)';
     document.getElementById('hpbar-pct').textContent=pct.toFixed(1)+'%';
-    document.getElementById('hpbar-detail').textContent=`残HP: ${fd.remain} / ${maxHP}（フィールド消費: ${fd.total}）`;
-  } else hw.style.display='none';
+    document.getElementById('hpbar-detail').textContent=`残HP: ${fd.remain} / ${maxHP}（消費: ${fd.total}）`;
+  }else hw.style.display='none';
 }
 
-document.getElementById('f-sr').addEventListener('change',e=>{FLD.sr=e.target.checked;updField();});
-document.getElementById('f-sand').addEventListener('change',e=>{FLD.sand=e.target.checked;updField();});
+// Field event listeners
+document.getElementById('f-sr').addEventListener('change',e=>{FLD.sr=e.target.checked;updField();tryAutoCalc();});
+document.getElementById('f-sand').addEventListener('change',e=>{FLD.sand=e.target.checked;updField();tryAutoCalc();});
 document.querySelectorAll('.lbtn').forEach(b=>{
   b.addEventListener('click',()=>{
     document.querySelectorAll(`.lbtn[data-g="${b.dataset.g}"]`).forEach(x=>x.classList.remove('on'));
-    b.classList.add('on');FLD[b.dataset.g]=parseInt(b.dataset.v);updField();
+    b.classList.add('on');FLD[b.dataset.g]=parseInt(b.dataset.v);updField();tryAutoCalc();
   });
 });
+
+// Mod / weather event listeners
+['mod-crit','mod-burn','mod-screen'].forEach(id=>{
+  document.getElementById(id).addEventListener('change',()=>tryAutoCalc());
+});
+document.getElementById('wx').addEventListener('change',()=>tryAutoCalc());
+document.getElementById('ai').addEventListener('change',()=>tryAutoCalc());
+document.getElementById('di').addEventListener('change',()=>tryAutoCalc());
+document.getElementById('arank').addEventListener('change',()=>tryAutoCalc());
+document.getElementById('drank').addEventListener('change',()=>tryAutoCalc());
+document.getElementById('alv').addEventListener('change',()=>{if(AP)recAllRV('atk');tryAutoCalc();});
 
 // ============================================================
 //  Item helpers
 // ============================================================
 function getDefItemMult(iv,cat){
-  if(iv==='assault-vest'&&cat==='special') return 1.5;
-  if(iv==='eviolite') return 1.5;
+  if(iv==='assault-vest'&&cat==='special')return 1.5;
+  if(iv==='eviolite')return 1.5;
   return 1.0;
 }
 function getItemInfo(iv,maxHP,effHP,rMin,rMax){
   switch(iv){
-    case 'leftovers':{const r=Math.max(1,F(maxHP/16));return `たべのこし：毎ターン <strong>HP +${r}</strong>（最大HPの1/16）`;}
-    case 'black-sludge-p':{const r=Math.max(1,F(maxHP/16));return `くろいヘドロ（どく系）：毎ターン <strong>HP +${r}</strong>`;}
-    case 'black-sludge-np':{const d=Math.max(1,F(maxHP/8));return `くろいヘドロ（非どく系）：毎ターン <strong>HP −${d}</strong>`;}
-    case 'sitrus-berry':{const r=Math.max(1,F(maxHP/4));return `オボンのみ：HP50%以下で <strong>HP +${r}</strong>（一度だけ）`;}
-    case 'focus-sash':return `きあいのタスキ：HP満タン時、致死ダメージを <strong>HP 1で耐える</strong>`;
-    case 'rocky-helmet':{const r=Math.max(1,F(maxHP/6));return `ゴツゴツメット：物理接触技に攻撃側 <strong>HP −${r}</strong> 反射`;}
-    case 'shell-bell':{const avg=F((rMin+rMax)/2);const r=Math.max(1,F(avg/8));return `かいがらのすず：攻撃側が <strong>HP +${r}</strong> 回復（平均ダメージ÷8）`;}
+    case 'leftovers':{const r=Math.max(1,F(maxHP/16));return`たべのこし：毎ターン <strong>HP +${r}</strong>`;}
+    case 'black-sludge-p':{const r=Math.max(1,F(maxHP/16));return`くろいヘドロ（どく）：毎ターン <strong>HP +${r}</strong>`;}
+    case 'black-sludge-np':{const d=Math.max(1,F(maxHP/8));return`くろいヘドロ（非どく）：毎ターン <strong>HP −${d}</strong>`;}
+    case 'sitrus-berry':{const r=Math.max(1,F(maxHP/4));return`オボンのみ：HP≤50%で <strong>HP +${r}</strong>`;}
+    case 'oran-berry':return`オレンのみ：HP≤50%で <strong>HP +10</strong>`;
+    case 'focus-sash':return`きあいのタスキ：HP満タン時、<strong>HP 1で耐える</strong>`;
+    case 'rocky-helmet':{const r=Math.max(1,F(maxHP/6));return`ゴツゴツメット：物理接触に <strong>HP −${r}</strong> 反射`;}
+    case 'shell-bell':{const avg=F((rMin+rMax)/2);const r=Math.max(1,F(avg/8));return`かいがらのすず：攻撃側 <strong>HP +${r}</strong> 回復`;}
     default:return null;
   }
 }
@@ -1236,25 +1704,31 @@ function getItemInfo(iv,maxHP,effHP,rMin,rMax){
 // ============================================================
 document.getElementById('swapbtn').addEventListener('click',()=>{
   const tmp=AP;AP=DP;DP=tmp;
-  const as=document.getElementById('as'),ds=document.getElementById('ds');
-  const tv=as.value;as.value=ds.value;ds.value=tv;
-  if(AP){renderCard('atk',AP);document.getElementById('astats').style.display='flex';recAllRV('atk');updNatHL('atk');loadMoves(AP);loadAbility('atk',AP);}
-  else{document.getElementById('acard').style.display='none';document.getElementById('astats').style.display='none';document.getElementById('abl-row-atk').style.display='none';}
-  if(DP){renderCard('def',DP);document.getElementById('dstats').style.display='flex';recAllRV('def');updNatHL('def');updField();loadAbility('def',DP);}
-  else{document.getElementById('dcard').style.display='none';document.getElementById('dstats').style.display='none';document.getElementById('abl-row-def').style.display='none';}
-  // SM はスワップしても保持（技はそのまま）→相性再計算
-  if(SM) autoCalcTypeInfo();
+  const ad=document.getElementById('combo-atk-display').textContent;
+  const dd=document.getElementById('combo-def-display').textContent;
+  document.getElementById('combo-atk-display').textContent=dd;
+  document.getElementById('combo-def-display').textContent=ad;
+  if(AP){renderCard('atk',AP);document.getElementById('astats').style.display='flex';recAllRV('atk');loadAbility('atk',AP);loadMoves(AP);}
+  else{document.getElementById('acard').style.display='none';document.getElementById('astats').style.display='none';}
+  if(DP){renderCard('def',DP);document.getElementById('dstats').style.display='flex';recAllRV('def');loadAbility('def',DP);updField();}
+  else{document.getElementById('dcard').style.display='none';document.getElementById('dstats').style.display='none';}
+  if(SM)autoCalcTypeInfo();
+  tryAutoCalc();
 });
+
+// ============================================================
+//  Auto calc trigger
+// ============================================================
+function tryAutoCalc(){
+  if(AP&&DP&&SM)calc();
+}
 
 // ============================================================
 //  DAMAGE CALC
 // ============================================================
 function calc(){
-  if(!AP) return alert('攻撃側のポケモンを選んでください');
-  if(!DP) return alert('防御側のポケモンを選んでください');
-  if(!SM) return alert('技を選んでください');
-
-  const {power:bp,type:mtype,cat}=SM;
+  if(!AP||!DP||!SM)return;
+  const{power:bp,type:mtype,cat}=SM;
   const lv=parseInt(document.getElementById('alv').value)||50;
   const maxHP=parseInt(document.getElementById('rv-def-hp')?.value)||1;
   const fd=calcField(DP,maxHP);
@@ -1262,111 +1736,132 @@ function calc(){
 
   const ai=document.getElementById('ai').value;
   const di=document.getElementById('di').value;
-  const defMult=getDefItemMult(di,cat);
+  let defMult=getDefItemMult(di,cat);
 
   const atkV=parseInt(document.getElementById(cat==='physical'?'rv-atk-atk':'rv-atk-spa')?.value)||1;
   const defV=parseInt(document.getElementById(cat==='physical'?'rv-def-def':'rv-def-spd')?.value)||1;
   const atkR=parseFloat(document.getElementById('arank').value)||1;
   const defR=parseFloat(document.getElementById('drank').value)||1;
 
+  // もちもの（攻撃側）
   let aIMult=1;
-  if(ai==='choice-band'&&cat==='physical') aIMult=1.5;
-  if(ai==='choice-specs'&&cat==='special')  aIMult=1.5;
-  if(ai==='life-orb') aIMult=1.3;
+  if(ai==='choice-band'&&cat==='physical')aIMult=1.5;
+  if(ai==='choice-specs'&&cat==='special')aIMult=1.5;
+  if(ai==='life-orb')aIMult=1.3;
+  if(ai==='muscle-band'&&cat==='physical')aIMult=1.1;
+  if(ai==='wise-glasses'&&cat==='special')aIMult=1.1;
+  const typeBoostMatch=TYPE_BOOST_ITEMS[ai];
+  if(typeBoostMatch&&typeBoostMatch===mtype)aIMult=1.2;
 
-  // タイプ一致・相性は技選択時に自動計算した値を使用
-  const typeEff = (window._autoTypeEff !== undefined) ? window._autoTypeEff : 1;
-  const stab    = (window._autoSTAB !== undefined) ? window._autoSTAB : false;
-  if(typeEff===0){showResult(0,0,effHP,maxHP,[],[],fd,di,ai);return;}
+  // タイプ相性（自動）
+  let typeEff=(window._autoTypeEff!==undefined)?window._autoTypeEff:1;
+  const stab=(window._autoSTAB!==undefined)?window._autoSTAB:false;
 
-  const crit  =document.getElementById('mod-crit').checked;
-  const burn  =document.getElementById('mod-burn').checked;
+  // 半減きのみ
+  let berryHalf=false;
+  const berryType=HALF_BERRIES[di];
+  if(berryType&&berryType===mtype&&typeEff>=2){berryHalf=true;typeEff*=0.5;}
+
+  if(typeEff===0){showResult(0,0,effHP,maxHP,[],[{t:'こうかがない…',c:'rr'}],fd,di,ai);return;}
+
+  const crit=document.getElementById('mod-crit').checked;
+  const burn=document.getElementById('mod-burn').checked;
   const screen=document.getElementById('mod-screen').checked;
-  const wx    =document.getElementById('wx').value;
+  const wx=document.getElementById('wx').value;
   const expertBelt=ai==='expert-belt'&&typeEff>1;
 
-  // 特性補正コンテキスト
-  const ablCtx = {side:'atk', cat, mtype, power:bp, atkPoke:AP, defPoke:DP, wx,
-    _autoTypeEff: window._autoTypeEff||1};
-  const atkAblSlug = AP?.abilitySlug || '';
-  const defAblSlug = DP?.abilitySlug || '';
-  const atkAblEffect = ABILITY_EFFECTS[atkAblSlug];
-  const defAblEffect = ABILITY_EFFECTS[defAblSlug];
+  // 特性
+  const atkAblSlug=AP.abilitySlug||'';
+  const defAblSlug=DP.abilitySlug||'';
+  const ablCtx={cat,mtype,power:bp,wx,_autoTypeEff:window._autoTypeEff||1};
+  const atkAblEff=ABILITY_EFFECTS[atkAblSlug];
+  const defAblEff=ABILITY_EFFECTS[defAblSlug];
+  let atkAblMult=atkAblEff?.side==='atk'?(atkAblEff.fn({...ablCtx})||1):1;
+  let defAblMult=defAblEff?.side==='def'?(defAblEff.fn({...ablCtx})||1):1;
+  if(defAblMult===0){
+    const n=DP.abilityJp||ABILITY_JP[defAblSlug]||defAblSlug;
+    showResult(0,0,effHP,maxHP,[],[{t:`${n}：無効`,c:'rb'}],fd,di,ai);return;
+  }
 
-  // 攻撃側特性倍率（atk側のもの）
-  let atkAblMult = 1;
-  if(atkAblEffect && atkAblEffect.side==='atk') {
-    atkAblMult = atkAblEffect.fn({...ablCtx}) || 1;
-  }
-  // 防御側特性倍率（def側のもの）
-  let defAblMult = 1;
-  if(defAblEffect && defAblEffect.side==='def') {
-    const dm = defAblEffect.fn({...ablCtx, side:'def'});
-    if(dm === 0) { showResult(0,0,effHP,maxHP,[],[{t:`${DP.abilityJp||defAblSlug}：無効`,c:'rb'}],fd,di,ai); return; }
-    defAblMult = dm || 1;
-  }
+  const adaptStab=atkAblSlug==='adaptability'&&stab;
 
   const atk=F(atkV*atkR);
   const def=F(F(defV*defR)*defMult*defAblMult);
   let base=F(F(F(2*lv/5+2)*bp*atk/def)/50)+2;
 
-  // テクニシャン: base計算前に威力補正として適用済み (atkAblMult に含む)
-  // adaptability: STABを×2に
-  const adaptStab = atkAblSlug==='adaptability' && stab;
-
   let mod=1;
-  if(wx==='sun'&&mtype==='fire')   mod*=1.5;
-  if(wx==='sun'&&mtype==='water')  mod*=.5;
-  if(wx==='rain'&&mtype==='water') mod*=1.5;
-  if(wx==='rain'&&mtype==='fire')  mod*=.5;
-  if(stab) mod *= adaptStab ? 2.0 : 1.5;
+  if(wx==='sun'&&mtype==='fire')mod*=1.5;
+  if(wx==='sun'&&mtype==='water')mod*=.5;
+  if(wx==='rain'&&mtype==='water')mod*=1.5;
+  if(wx==='rain'&&mtype==='fire')mod*=.5;
+  if(stab)mod*=adaptStab?2.0:1.5;
   mod*=typeEff;
-  if(burn&&cat==='physical'&&!crit) mod*=.5;
-  if(screen&&!crit) mod*=.5;
+  if(burn&&cat==='physical'&&!crit)mod*=.5;
+  if(screen&&!crit)mod*=.5;
   mod*=aIMult;
   mod*=atkAblMult;
-  if(expertBelt) mod*=1.2;
-  if(crit) mod*=1.5;
+  if(expertBelt)mod*=1.2;
+  if(crit)mod*=1.5;
 
-  const rolls=[];
-  for(let i=85;i<=100;i++) rolls.push(F(base*mod*i/100));
+  // 1ヒット分のロール
+  const rolls1=[];
+  for(let i=85;i<=100;i++)rolls1.push(F(base*mod*i/100));
+
+  // 多段技：ヒット数分積算
+  // じきゅうりょく：ヒットごとに防御+1段階
+  const isStamina=defAblSlug==='stamina';
+  const RANK_MULTS=[1,1.5,2,2.5,3,3.5,4]; // +0〜+6
+  let rolls=rolls1.map(v=>v*_hitCount);
+  if(isStamina&&_hitCount>1){
+    // ヒットごとに防御ランクが上がるため再計算
+    const defBase=parseInt(document.getElementById(cat==='physical'?'rv-def-def':'rv-def-spd')?.value)||1;
+    let total=new Array(16).fill(0);
+    for(let h=0;h<_hitCount;h++){
+      const rankBonus=RANK_MULTS[Math.min(h,6)];
+      const defH=F(F(defBase*defR*rankBonus)*defMult*defAblMult);
+      const baseH=F(F(F(2*lv/5+2)*bp*atk/defH)/50)+2;
+      for(let i=0;i<16;i++)total[i]+=F(baseH*mod*(85+i)/100);
+    }
+    rolls=total;
+  }
 
   const tags=[];
-  if(stab) tags.push({t: adaptStab ? 'タイプ一致（てきおうりょく）×2.0' : 'タイプ一致 ×1.5', c:'ry'});
-  if(crit) tags.push({t:'急所 ×1.5',c:'ry'});
-  if(typeEff===0) tags.push({t:'こうかがない…',c:'rr'});
-  else if(typeEff>=4) tags.push({t:`こうかはばつぐん！ ×${typeEff}（4倍）`,c:'rg'});
-  else if(typeEff>=2) tags.push({t:`こうかはばつぐん！ ×${typeEff}`,c:'rg'});
-  else if(typeEff<=0.25) tags.push({t:`こうかはいまひとつ… ×${typeEff}（4倍耐性）`,c:'rr'});
-  else if(typeEff<1) tags.push({t:`こうかはいまひとつ… ×${typeEff}`,c:'rr'});
-  if(wx==='sun'&&mtype==='fire') tags.push({t:'☀ 晴れ強化',c:'ry'});
-  if(wx==='rain'&&mtype==='water') tags.push({t:'🌧 雨強化',c:'rb'});
-  if(wx==='sun'&&mtype==='water') tags.push({t:'☀ 晴れ弱体',c:'rr'});
-  if(wx==='rain'&&mtype==='fire') tags.push({t:'🌧 雨弱体',c:'rr'});
-  if(burn) tags.push({t:'やけど ×0.5',c:'rr'});
-  if(screen) tags.push({t:'リフレクター/ひかりのかべ ×0.5',c:'rb'});
-  if(ai==='choice-band'&&cat==='physical') tags.push({t:'こだわりハチマキ ×1.5',c:'ry'});
-  if(ai==='choice-specs'&&cat==='special') tags.push({t:'こだわりメガネ ×1.5',c:'ry'});
-  if(ai==='life-orb') tags.push({t:'いのちのたま ×1.3',c:'ry'});
-  if(expertBelt) tags.push({t:'たつじんのおび ×1.2',c:'ry'});
-  if(defMult>1){const nm=document.querySelector('#di option:checked').textContent.split('（')[0];tags.push({t:`${nm} 防御×${defMult}`,c:'rb'});}
-  // 特性タグ
-  if(atkAblMult!==1&&atkAblSlug){
-    const n=AP.abilityJp||ABILITY_JP[atkAblSlug]||atkAblSlug;
-    tags.push({t:`${n} ×${Math.round(atkAblMult*100)/100}`,c:'ry'});
-  }
-  if(defAblMult!==1&&defAblSlug){
-    const n=DP.abilityJp||ABILITY_JP[defAblSlug]||defAblSlug;
-    tags.push({t:`${n} ×${Math.round(defAblMult*100)/100}`,c:'rb'});
+  if(stab)tags.push({t:adaptStab?'タイプ一致×2.0（てきおう）':'タイプ一致 ×1.5',c:'ry'});
+  if(crit)tags.push({t:'急所 ×1.5',c:'ry'});
+  if(typeEff===0)tags.push({t:'こうかがない…',c:'rr'});
+  else if(typeEff>=4)tags.push({t:`ばつぐん ×${typeEff}（4倍）`,c:'rg'});
+  else if(typeEff>=2)tags.push({t:`ばつぐん ×${typeEff}`,c:'rg'});
+  else if(typeEff<=0.25)tags.push({t:`いまひとつ ×${typeEff}（4倍耐性）`,c:'rr'});
+  else if(typeEff<1)tags.push({t:`いまひとつ ×${typeEff}`,c:'rr'});
+  if(berryHalf){const nm=document.querySelector(`#di option[value="${di}"]`)?.textContent?.split('（')[0]||di;tags.push({t:`${nm} ×0.5`,c:'rb'});}
+  if(wx==='sun'&&mtype==='fire')tags.push({t:'☀ 晴れ強化',c:'ry'});
+  if(wx==='rain'&&mtype==='water')tags.push({t:'🌧 雨強化',c:'rb'});
+  if(wx==='sun'&&mtype==='water')tags.push({t:'☀ 晴れ弱体',c:'rr'});
+  if(wx==='rain'&&mtype==='fire')tags.push({t:'🌧 雨弱体',c:'rr'});
+  if(burn)tags.push({t:'やけど ×0.5',c:'rr'});
+  if(screen)tags.push({t:'壁 ×0.5',c:'rb'});
+  if(ai==='choice-band'&&cat==='physical')tags.push({t:'ハチマキ ×1.5',c:'ry'});
+  if(ai==='choice-specs'&&cat==='special')tags.push({t:'メガネ ×1.5',c:'ry'});
+  if(ai==='life-orb')tags.push({t:'いのちのたま ×1.3',c:'ry'});
+  if(ai==='muscle-band'&&cat==='physical')tags.push({t:'ちからのハチマキ ×1.1',c:'ry'});
+  if(ai==='wise-glasses'&&cat==='special')tags.push({t:'ものしりメガネ ×1.1',c:'ry'});
+  if(typeBoostMatch&&typeBoostMatch===mtype)tags.push({t:`タイプ強化 ×1.2`,c:'ry'});
+  if(expertBelt)tags.push({t:'たつじんのおび ×1.2',c:'ry'});
+  if(defMult>1){const nm=document.querySelector(`#di option[value="${di}"]`)?.textContent?.split('（')[0]||di;tags.push({t:`${nm} 防御×${defMult}`,c:'rb'});}
+  if(atkAblMult!==1&&atkAblSlug){const n=AP.abilityJp||ABILITY_JP[atkAblSlug]||atkAblSlug;tags.push({t:`${n} ×${Math.round(atkAblMult*100)/100}`,c:'ry'});}
+  if(defAblMult!==1&&defAblSlug){const n=DP.abilityJp||ABILITY_JP[defAblSlug]||defAblSlug;tags.push({t:`${n} ×${Math.round(defAblMult*100)/100}`,c:'rb'});}
+  if(_hitCount>1){
+    if(isStamina)tags.push({t:`${_hitCount}段 (じきゅうりょく反映)`,c:'rb'});
+    else tags.push({t:`${_hitCount}段ヒット`,c:'rn'});
   }
 
   showResult(rolls[0],rolls[15],effHP,maxHP,rolls,tags,fd,di,ai);
 }
 
 function showResult(minD,maxD,effHP,maxHP,rolls,tags,fd,di,ai){
-  const sec=document.getElementById('rsec');
-  sec.style.display='block';
-  sec.scrollIntoView({behavior:'smooth',block:'nearest'});
+  document.getElementById('rph').style.display='none';
+  const rc=document.getElementById('rcard');rc.style.display='block';
+  rc.style.animation='none';rc.offsetHeight;rc.style.animation='';
 
   document.getElementById('r-aspr').src=AP?.sprite||'';
   document.getElementById('r-aname').textContent=AP?.jpName||'—';
@@ -1378,14 +1873,13 @@ function showResult(minD,maxD,effHP,maxHP,rolls,tags,fd,di,ai){
   if(fd&&fd.total>0){
     fb.style.display='block';
     const lines=[];
-    if(fd.sr) lines.push({l:'ステルスロック',v:`−${fd.sr} (${(fd.sr/maxHP*100).toFixed(1)}%)`});
-    if(fd.spk) lines.push({l:'まきびし',v:`−${fd.spk} (${(fd.spk/maxHP*100).toFixed(1)}%)`});
-    if(fd.tspk) lines.push({l:'どくびし',v:`−${fd.tspk} (${(fd.tspk/maxHP*100).toFixed(1)}%)`});
-    if(fd.sand) lines.push({l:'すなあらし',v:`−${fd.sand} (${(fd.sand/maxHP*100).toFixed(1)}%)`});
+    if(fd.sr)lines.push({l:'ステロ',v:`−${fd.sr} (${(fd.sr/maxHP*100).toFixed(1)}%)`});
+    if(fd.spk)lines.push({l:'まきびし',v:`−${fd.spk} (${(fd.spk/maxHP*100).toFixed(1)}%)`});
+    if(fd.tspk)lines.push({l:'どくびし',v:`−${fd.tspk} (${(fd.tspk/maxHP*100).toFixed(1)}%)`});
+    if(fd.sand)lines.push({l:'すなあらし',v:`−${fd.sand} (${(fd.sand/maxHP*100).toFixed(1)}%)`});
     document.getElementById('rflines').innerHTML=lines.map(l=>`<div class="rfl"><span class="rfl-l">${l.l}</span><span class="rfl-v">${l.v}</span></div>`).join('');
-    document.getElementById('rhpused').textContent=effHP;
-    document.getElementById('rhpmax').textContent=maxHP;
-  } else fb.style.display='none';
+    document.getElementById('rhpused').textContent=effHP;document.getElementById('rhpmax').textContent=maxHP;
+  }else fb.style.display='none';
 
   const ri=document.getElementById('ritem');
   const info=getItemInfo(di,maxHP,effHP,minD,maxD);
@@ -1409,25 +1903,17 @@ function showResult(minD,maxD,effHP,maxHP,rolls,tags,fd,di,ai){
       const cnt=rolls.filter(r=>r*n>=effHP).length;
       const pct=Math.round(cnt/16*100);
       html+=`<div class="korow"><span class="kon">${n}発</span><div class="kobar"><div class="kofill" style="width:${pct}%"></div></div><span class="kopct">${pct}%（${cnt}/16）でKO</span></div>`;
-      if(rolls[0]*n>=effHP) break;
+      if(rolls[0]*n>=effHP)break;
     }
   }
-  ko.innerHTML=html||'<p style="font-size:12px;color:var(--tx3)">4発以内のKOなし</p>';
+  ko.innerHTML=html||'<p style="font-size:11px;color:var(--tx3)">4発以内のKOなし</p>';
 }
 
 // ============================================================
-//  Events & Init
+//  Init
 // ============================================================
-document.getElementById('as').addEventListener('change',()=>onSel('atk'));
-document.getElementById('ds').addEventListener('change',()=>onSel('def'));
-document.getElementById('calcbtn').addEventListener('click',calc);
-document.getElementById('alv').addEventListener('change',()=>{if(AP)recAllRV('atk');});
-
 buildStatRows('atk',ATK_STATS);
 buildStatRows('def',DEF_STATS);
-setupFilter('af','as');
-setupFilter('df','ds');
-
 (async()=>{await loadList();})();
 </script>
 </body>
