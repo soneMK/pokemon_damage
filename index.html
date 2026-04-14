@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ダメ計算 | Pokémon Champions Reg.M-A</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#181c2e;--bg2:#1e2338;--bg3:#252b44;
+  --sf:#2a3054;--sf2:#313868;
+  --bd:rgba(255,255,255,.09);--bd2:rgba(255,255,255,.16);
+  --tx:#e8edf8;--tx2:#9aa3c0;--tx3:#555e82;
+  --atk:#ff6b35;--def:#38d4f0;
+  --acc:#ffe44d;--acc-d:rgba(255,228,77,.13);
+  --grn:#69e060;--red:#ff5252;--pur:#c084fc;
+  --r:14px;--rs:9px;--rx:6px;
+  --fn:'Noto Sans JP',sans-serif;
+  --px:'Press Start 2P',monospace;
+}
+html{font-size:14px}
+body{font-family:var(--fn);background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
+input[type=number]{-moz-appearance:textfield}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:3px}
+
+.dot-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:radial-gradient(rgba(255,228,77,.055) 1px,transparent 1px);background-size:28px 28px}
+
+/* Header */
+.hdr{position:sticky;top:0;z-index:200;background:rgba(18,20,36,.93);
+  backdrop-filter:blur(14px);border-bottom:2px solid var(--acc);
+  padding:.6rem 1.25rem;box-shadow:0 2px 20px rgba(255,228,77,.1)}
+.hdr-in{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.hdr-logo{display:flex;align-items:center;gap:10px}
+.hdr-ttl{font-family:var(--px);font-size:9px;color:var(--acc);letter-spacing:.04em;line-height:1.7}
+.hdr-sub{font-size:10px;color:var(--tx3);margin-top:2px;letter-spacing:.05em}
+.hdr-bdg{font-size:10px;padding:2px 8px;border-radius:20px;
+  background:rgba(255,82,82,.18);color:#ff9090;border:1px solid rgba(255,82,82,.35)}
+
+/* Main */
+.main{position:relative;z-index:1;max-width:1100px;margin:0 auto;
+  padding:1.25rem 1rem 5rem;display:flex;flex-direction:column;gap:1rem}
+
+/* Panel */
+.pbox{background:var(--bg2);border:1px solid var(--bd2);border-radius:var(--r);
+  overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.phd{display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  padding:.6rem 1rem;font-size:13px;font-weight:700;letter-spacing:.04em;
+  background:var(--bg3);border-bottom:1px solid var(--bd)}
+.phd-ico{font-size:15px}
+.phd-note{font-size:11px;color:var(--tx3);font-weight:400;margin-left:4px}
+.atk-hd{color:var(--atk);box-shadow:inset 0 -2px 0 var(--atk)}
+.def-hd{color:var(--def);box-shadow:inset 0 -2px 0 var(--def)}
+
+/* Field */
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--bd)}
+.fitem{background:var(--bg2);padding:.7rem 1rem;display:flex;flex-direction:column;gap:6px}
+.fchk{display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+.fchk-cb{display:none}
+.fchk-bx{width:18px;height:18px;flex-shrink:0;border:2px solid var(--bd2);border-radius:4px;
+  background:var(--bg3);position:relative;transition:all .15s}
+.fchk-cb:checked+.fchk-bx{background:var(--acc);border-color:var(--acc)}
+.fchk-cb:checked+.fchk-bx::after{content:'✓';position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;font-size:11px;color:#222}
+.flbl{font-size:13px;font-weight:500}
+.fnote{font-size:10px;color:var(--tx3)}
+.frow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lgrp{display:flex;gap:3px;flex-wrap:wrap}
+.lbtn{padding:3px 9px;font-size:11px;font-family:var(--fn);border:1px solid var(--bd2);
+  border-radius:20px;background:var(--bg3);color:var(--tx2);cursor:pointer;transition:all .15s}
+.lbtn:hover{border-color:var(--acc);color:var(--acc)}
+.lbtn.on{background:var(--acc);color:#222;border-color:var(--acc);font-weight:700}
+.fres{display:flex;align-items:baseline;gap:8px;padding:4px 8px;
+  background:rgba(255,82,82,.1);border-radius:var(--rx);border-left:2px solid var(--red)}
+.fres-v{font-size:15px;font-weight:700;color:var(--red)}
+.fres-p{font-size:12px;color:var(--tx2)}
+
+.hp-bw{padding:.7rem 1rem;border-top:1px solid var(--bd)}
+.hp-bm{display:flex;justify-content:space-between;font-size:12px;color:var(--tx2);margin-bottom:5px}
+.hp-bp{font-weight:700;color:var(--grn)}
+.hp-bt{height:10px;background:var(--bg3);border-radius:5px;overflow:hidden;border:1px solid var(--bd)}
+.hp-bf{height:100%;border-radius:5px;transition:width .4s,background .4s}
+.hp-bd{font-size:11px;color:var(--tx3);margin-top:5px}
+
+/* Battle row */
+.br{display:grid;grid-template-columns:1fr 52px 1fr;align-items:start}
+
+/* Pokemon area */
+.pa{padding:.7rem 1rem;border-bottom:1px solid var(--bd);display:flex;flex-direction:column;gap:7px}
+.fi{width:100%;padding:7px 12px;background:var(--bg3);border:1px solid var(--bd2);
+  color:var(--tx);border-radius:var(--rx);font-size:13px;font-family:var(--fn)}
+.fi:focus{outline:none;border-color:var(--acc)}
+.fi::placeholder{color:var(--tx3)}
+.ps{width:100%;padding:7px 10px;background:var(--bg3);border:2px solid var(--bd2);
+  color:var(--tx);border-radius:var(--rx);font-size:13px;font-family:var(--fn);cursor:pointer}
+.ps:focus{outline:none;border-color:var(--acc)}
+.ps option{background:var(--bg2)}
+.pc{display:flex;align-items:center;gap:10px;padding:8px;
+  background:var(--bg3);border-radius:var(--rs);border:1px solid var(--bd)}
+.p-spr{width:72px;height:72px;image-rendering:pixelated}
+.p-nm{font-size:15px;font-weight:700}
+.p-no{font-size:11px;color:var(--tx3);margin:2px 0 4px}
+.trow{display:flex;gap:4px;flex-wrap:wrap}
+.tbdg{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:700}
+
+/* Stats */
+.sa{padding:.7rem 1rem;display:flex;flex-direction:column;gap:9px}
+.nr{display:flex;align-items:center;gap:7px}
+.fl{font-size:12px;color:var(--tx3);white-space:nowrap}
+.ns{flex:1;padding:5px 8px;background:var(--bg3);border:1px solid var(--bd2);
+  color:var(--tx);border-radius:var(--rx);font-size:12px;font-family:var(--fn)}
+.ns:focus{outline:none;border-color:var(--acc)}
+.svg{display:flex;flex-direction:column;gap:5px}
+.svr{display:grid;grid-template-columns:62px 1fr 68px;align-items:center;gap:7px;
+  padding:6px 9px;background:var(--bg3);border-radius:var(--rs);border:1px solid var(--bd)}
+.svn{font-size:11px;color:var(--tx3)}
+.svn-hp{color:var(--grn);font-weight:700}
+.svn-spe{color:#a78bfa;font-weight:700}
+.evc{display:flex;align-items:center;gap:4px}
+.eb{width:24px;height:24px;border-radius:5px;background:var(--sf);border:1px solid var(--bd2);
+  color:var(--tx);font-size:14px;cursor:pointer;line-height:1;transition:background .12s,transform .1s}
+.eb:hover{background:var(--sf2)}
+.eb:active{transform:scale(.88)}
+.ev{font-size:14px;font-weight:700;color:var(--acc);min-width:22px;text-align:center}
+.eu{font-size:10px;color:var(--tx3)}
+.rvi{width:100%;text-align:center;padding:5px 3px;background:var(--sf);
+  border:1px solid var(--bd2);color:var(--tx);border-radius:var(--rx);font-size:15px;font-weight:700}
+.rvi:focus{outline:none;border-color:var(--acc)}
+
+.mr{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end}
+.fg{display:flex;flex-direction:column;gap:3px}
+.msel{padding:5px 8px;background:var(--bg3);border:1px solid var(--bd2);
+  color:var(--tx);border-radius:var(--rx);font-size:12px;font-family:var(--fn);cursor:pointer}
+.msel:focus{outline:none;border-color:var(--acc)}
+.mnum{width:54px;text-align:center;padding:5px;background:var(--bg3);
+  border:1px solid var(--bd2);color:var(--tx);border-radius:var(--rx);font-size:13px}
+.mnum:focus{outline:none;border-color:var(--acc)}
+
+/* Item */
+.ir{display:flex;align-items:center;gap:7px}
+.isel{flex:1;padding:5px 8px;background:var(--bg3);border:1px solid var(--bd2);
+  color:var(--tx);border-radius:var(--rx);font-size:12px;font-family:var(--fn);cursor:pointer}
+.isel:focus{outline:none;border-color:var(--acc)}
+.ieff{font-size:11px;color:var(--pur);margin-top:2px;min-height:15px}
+
+/* Speed */
+.spd-sec{padding:.65rem 1rem;border-top:1px solid var(--bd)}
+.spd-ttl{font-size:11px;color:var(--tx3);letter-spacing:.05em;margin-bottom:6px}
+.spd-cmp{display:flex;align-items:center;gap:10px;font-size:13px;flex-wrap:wrap}
+.spd-a{color:var(--atk);font-weight:700}
+.spd-d{color:var(--def);font-weight:700}
+.spd-fast{font-weight:700}
+
+/* Move */
+.mvp{border:1px solid var(--bd);border-radius:var(--rs);overflow:hidden}
+.mvph{display:flex;align-items:center;justify-content:space-between;
+  padding:.4rem .75rem;background:var(--bg3);border-bottom:1px solid var(--bd)}
+.mvpt{font-size:11px;color:var(--tx3);letter-spacing:.05em;text-transform:uppercase}
+.mvtbs{display:flex;gap:3px}
+.mtab{padding:3px 12px;font-size:11px;font-family:var(--fn);border:1px solid var(--bd2);
+  border-radius:20px;background:transparent;color:var(--tx2);cursor:pointer;transition:all .15s}
+.mtab:hover{border-color:var(--acc);color:var(--acc)}
+.mtab.on{background:var(--acc);color:#222;border-color:var(--acc);font-weight:700}
+.mvl{max-height:240px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--bd2) transparent}
+.mve{padding:1rem;font-size:12px;color:var(--tx3);text-align:center}
+.mi{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:7px;
+  padding:.4rem .75rem;border-bottom:1px solid var(--bd);cursor:pointer;transition:background .12s}
+.mi:last-child{border-bottom:none}
+.mi:hover{background:var(--sf)}
+.mi.sel{background:var(--acc-d);border-left:3px solid var(--acc)}
+.mi-nm{font-size:13px}
+.mi-pw{font-size:13px;font-weight:700;color:var(--atk);min-width:28px;text-align:right}
+.mi-tp{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:700;min-width:54px;text-align:center}
+
+/* Mid */
+.mc{display:flex;flex-direction:column;align-items:center;padding-top:50px;gap:10px}
+.swb{width:38px;height:38px;border-radius:50%;background:var(--bg3);border:2px solid var(--bd2);
+  color:var(--tx2);font-size:18px;cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;justify-content:center}
+.swb:hover{border-color:var(--acc);color:var(--acc);transform:rotate(180deg)}
+.cb{width:38px;padding:14px 0;background:var(--acc);border:none;border-radius:20px;
+  color:#1a1f2e;font-family:var(--px);font-size:8px;line-height:1.9;letter-spacing:.04em;
+  text-align:center;cursor:pointer;transition:opacity .15s,transform .1s;
+  box-shadow:0 0 18px rgba(255,228,77,.4)}
+.cb:hover{opacity:.9}
+.cb:active{transform:scale(.95)}
+
+/* Mod bar */
+.mi2{padding:.7rem 1rem;display:flex;flex-wrap:wrap;gap:.8rem;align-items:center}
+.mg{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.mgl{font-size:11px;color:var(--tx3);letter-spacing:.05em;white-space:nowrap}
+.cpill{display:flex;align-items:center;gap:5px;cursor:pointer;padding:4px 11px;
+  border-radius:20px;border:1px solid var(--bd2);background:var(--bg3);
+  font-size:12px;color:var(--tx2);transition:all .15s;user-select:none}
+.cpill input{display:none}
+.cpill:has(input:checked){background:var(--acc-d);border-color:var(--acc);color:var(--acc);font-weight:700}
+.cpill:hover{border-color:var(--acc)}
+
+/* Result */
+.rs{animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.rc{background:var(--bg2);border:2px solid var(--acc);border-radius:var(--r);
+  box-shadow:0 0 30px rgba(255,228,77,.15);overflow:hidden}
+.rvs{display:flex;align-items:center;justify-content:space-between;
+  padding:.7rem 1.2rem;background:var(--bg3);border-bottom:1px solid var(--bd);flex-wrap:wrap;gap:8px}
+.rvss{display:flex;align-items:center;gap:8px}
+.rvssp{width:40px;height:40px;image-rendering:pixelated}
+.rvsnm{font-size:13px;font-weight:700}
+.atk-s .rvsnm{color:var(--atk)}
+.def-s .rvsnm{color:var(--def)}
+.rvsm{display:flex;align-items:center;flex-direction:column;gap:4px}
+.rvsar{font-size:15px;color:var(--tx3)}
+.rvsmv{font-size:14px;font-weight:700;color:var(--acc)}
+
+.rfb{margin:.7rem 1.2rem;padding:.7rem;background:rgba(255,82,82,.07);
+  border:1px solid rgba(255,82,82,.28);border-radius:var(--rs)}
+.rftt{font-size:11px;font-weight:700;color:var(--tx3);margin-bottom:5px}
+.rfls{display:flex;flex-direction:column;gap:3px;margin-bottom:7px}
+.rfl{display:flex;justify-content:space-between;font-size:13px}
+.rfl-l{color:var(--tx2)}
+.rfl-v{font-weight:700;color:var(--red)}
+.rhpu{font-size:12px;color:var(--tx2);padding-top:5px;border-top:1px solid rgba(255,255,255,.07)}
+.rhpu strong{color:var(--acc);font-size:14px}
+
+.rib{margin:0 1.2rem .7rem;padding:.6rem;background:rgba(192,132,252,.07);
+  border:1px solid rgba(192,132,252,.25);border-radius:var(--rs)}
+.ritt{font-size:11px;color:var(--tx3);margin-bottom:4px}
+.rils{display:flex;flex-direction:column;gap:3px}
+.ril{display:flex;justify-content:space-between;font-size:13px}
+.ril-l{color:var(--tx2)}
+.ril-v{font-weight:700;color:var(--pur)}
+
+.rmn{display:flex;align-items:center;gap:1.5rem;padding:1rem 1.2rem}
+.rdn{display:flex;align-items:baseline;gap:7px}
+.rdnn{font-family:var(--px);font-size:22px;color:var(--tx)}
+.rdnu{font-size:13px;color:var(--tx3)}
+.rpn{display:flex;align-items:baseline;gap:5px}
+.rpnn{font-family:var(--px);font-size:16px;color:var(--acc)}
+.rpnu{font-size:12px;color:var(--tx3)}
+
+.rtags{display:flex;flex-wrap:wrap;gap:5px;padding:0 1.2rem .7rem}
+.rtag{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:700}
+.rt-g{background:rgba(105,224,96,.15);color:#a0f0a0;border:1px solid rgba(105,224,96,.3)}
+.rt-r{background:rgba(255,82,82,.15);color:#ff9090;border:1px solid rgba(255,82,82,.3)}
+.rt-y{background:rgba(255,228,77,.15);color:var(--acc);border:1px solid rgba(255,228,77,.3)}
+.rt-b{background:rgba(56,212,240,.15);color:var(--def);border:1px solid rgba(56,212,240,.3)}
+.rt-p{background:rgba(192,132,252,.15);color:var(--pur);border:1px solid rgba(192,132,252,.3)}
+.rt-n{background:rgba(148,163,184,.1);color:var(--tx2);border:1px solid var(--bd2)}
+
+.rlw{padding:0 1.2rem .7rem}
+.rll{font-size:11px;color:var(--tx3);margin-bottom:5px;letter-spacing:.04em}
+.rlr{display:flex;flex-wrap:wrap;gap:4px}
+.rce{font-size:12px;padding:3px 7px;border-radius:var(--rx);background:var(--bg3);color:var(--tx2);border:1px solid var(--bd)}
+.rce.lo{background:rgba(56,212,240,.12);color:var(--def);border-color:rgba(56,212,240,.3)}
+.rce.hi{background:rgba(255,107,53,.12);color:var(--atk);border-color:rgba(255,107,53,.3)}
+
+.kow{padding:0 1.2rem 1rem;display:flex;flex-direction:column;gap:6px}
+.kor{display:grid;grid-template-columns:36px 1fr 130px;align-items:center;gap:9px}
+.kon{font-size:12px;font-weight:700;color:var(--acc)}
+.kot{height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;border:1px solid var(--bd)}
+.kof{height:100%;background:linear-gradient(90deg,var(--acc),var(--atk));border-radius:3px;transition:width .5s}
+.kop{font-size:12px;color:var(--tx2);text-align:right}
+
+.sft{position:relative;z-index:1;text-align:center;padding:1.5rem 1rem;
+  font-size:10px;color:var(--tx3);border-top:1px solid var(--bd)}
+
+@media(max-width:700px){
+  .br{grid-template-columns:1fr}
+  .mc{flex-direction:row;padding-top:0;padding:.5rem 0;justify-content:center}
+  .swb:hover{transform:rotate(90deg)}
+  .cb{width:auto;padding:10px 24px;writing-mode:horizontal-tb}
+  .rvs{flex-direction:column;align-items:flex-start}
+  .rvsm{flex-direction:row}
+  .svr{grid-template-columns:50px 1fr 60px}
+}
+</style>
+</head>
+<body>
+<div class="dot-bg" aria-hidden="true"></div>
+<header class="hdr">
+  <div class="hdr-in">
+    <div class="hdr-logo">
+      <span style="font-size:18px">⚔</span>
+      <div>
+        <p class="hdr-ttl">ダメ計算</p>
+        <p class="hdr-sub">Pokémon Champions — Reg. M-A</p>
+      </div>
+    </div>
+    <span class="hdr-bdg">非公式</span>
+  </div>
+</header>
+
+<main class="main">
+
+<!-- フィールド効果 -->
+<section class="pbox">
+  <h2 class="phd"><span class="phd-ico">🌀</span>フィールド効果<span class="phd-note">交代時に削られたHP残量でダメ計</span></h2>
+  <div class="fgrid">
+    <div class="fitem">
+      <label class="fchk"><input type="checkbox" id="f-sr" class="fchk-cb"><span class="fchk-bx"></span><span class="flbl">ステルスロック</span></label>
+      <div class="fres" id="fi-sr" style="display:none"><span class="fres-v" id="sr-v">—</span><span class="fres-p" id="sr-p"></span></div>
+    </div>
+    <div class="fitem">
+      <div class="frow"><span class="flbl">まきびし</span>
+        <div class="lgrp">
+          <button class="lbtn on" data-g="spikes" data-v="0">なし</button>
+          <button class="lbtn" data-g="spikes" data-v="1">1層</button>
+          <button class="lbtn" data-g="spikes" data-v="2">2層</button>
+          <button class="lbtn" data-g="spikes" data-v="3">3層</button>
+        </div>
+      </div>
+      <div class="fres" id="fi-spikes" style="display:none"><span class="fres-v" id="sp-v">—</span><span class="fres-p" id="sp-p"></span></div>
+    </div>
+    <div class="fitem">
+      <div class="frow"><span class="flbl">どくびし</span>
+        <div class="lgrp">
+          <button class="lbtn on" data-g="tspikes" data-v="0">なし</button>
+          <button class="lbtn" data-g="tspikes" data-v="1">どく</button>
+          <button class="lbtn" data-g="tspikes" data-v="2">もうどく</button>
+        </div>
+      </div>
+      <div class="fres" id="fi-ts" style="display:none"><span class="fres-v" id="ts-v">—</span><span class="fres-p" id="ts-p"></span></div>
+    </div>
+    <div class="fitem">
+      <label class="fchk"><input type="checkbox" id="f-sand" class="fchk-cb"><span class="fchk-bx"></span><span class="flbl">すなあらし</span><span class="fnote">（岩/鋼/地 無効）</span></label>
+      <div class="fres" id="fi-sand" style="display:none"><span class="fres-v" id="sand-v">—</span><span class="fres-p" id="sand-p"></span></div>
+    </div>
+  </div>
+  <div class="hp-bw" id="hp-bw" style="display:none">
+    <div class="hp-bm"><span>交代後のHP残量</span><span class="hp-bp" id="hp-bp">100%</span></div>
+    <div class="hp-bt"><div class="hp-bf" id="hp-bf" style="width:100%"></div></div>
+    <p class="hp-bd" id="hp-bd"></p>
+  </div>
+</section>
+
+<!-- 2カラム -->
+<div class="br">
+  <!-- 攻撃側 -->
+  <section class="pbox">
+    <h2 class="phd atk-hd"><span class="phd-ico">⚔</span>攻撃側</h2>
+    <div class="pa">
+      <input type="text" id="af" class="fi" placeholder="🔍 絞り込み…" autocomplete="off">
+      <select id="as" class="ps"><option value="">— 選択してください —</option></select>
+      <div class="pc" id="ac" style="display:none">
+        <img class="p-spr" id="a-spr" src="" alt="">
+        <div><p class="p-nm" id="a-nm">—</p><p class="p-no" id="a-no"></p><div class="trow" id="a-types"></div></div>
+      </div>
+    </div>
+    <div class="sa" id="a-sa" style="display:none">
+      <div class="nr"><label class="fl">性格</label><select id="a-nat" class="ns"></select></div>
+      <div class="svg">
+        <div class="svr"><span class="svn">こうげき</span>
+          <div class="evc"><button class="eb" data-s="a" data-t="atk" data-d="-1">−</button><span class="ev" id="ev-a-atk">0</span><span class="eu">段</span><button class="eb" data-s="a" data-t="atk" data-d="1">＋</button></div>
+          <input type="number" class="rvi" id="rv-a-atk" min="1" max="999">
+        </div>
+        <div class="svr"><span class="svn">とくこう</span>
+          <div class="evc"><button class="eb" data-s="a" data-t="spa" data-d="-1">−</button><span class="ev" id="ev-a-spa">0</span><span class="eu">段</span><button class="eb" data-s="a" data-t="spa" data-d="1">＋</button></div>
+          <input type="number" class="rvi" id="rv-a-spa" min="1" max="999">
+        </div>
+        <div class="svr"><span class="svn svn-spe">すばやさ</span>
+          <div class="evc"><button class="eb" data-s="a" data-t="spe" data-d="-1">−</button><span class="ev" id="ev-a-spe">0</span><span class="eu">段</span><button class="eb" data-s="a" data-t="spe" data-d="1">＋</button></div>
+          <input type="number" class="rvi" id="rv-a-spe" min="1" max="999">
+        </div>
+      </div>
+      <div class="mr">
+        <div class="fg"><label class="fl">攻撃ランク</label>
+          <select id="ar" class="msel"><option value="2">+6</option><option value="1.8">+5</option><option value="1.6">+4</option><option value="1.4">+3</option><option value="1.2">+2</option><option value="1.0">+1</option><option value="1.0" selected>±0</option><option value="0.6667">-1</option><option value="0.5">-2</option><option value="0.4">-3</option><option value="0.3333">-4</option><option value="0.2857">-5</option><option value="0.25">-6</option></select>
+        </div>
+        <div class="fg"><label class="fl">素早さランク</label>
+          <select id="asr" class="msel"><option value="2">+6</option><option value="1.8">+5</option><option value="1.6">+4</option><option value="1.4">+3</option><option value="1.2">+2</option><option value="1.0">+1</option><option value="1.0" selected>±0</option><option value="0.6667">-1</option><option value="0.5">-2</option><option value="0.4">-3</option><option value="0.3333">-4</option><option value="0.2857">-5</option><option value="0.25">-6</option></select>
+        </div>
+        <div class="fg"><label class="fl">レベル</label><input type="number" id="a-lv" value="50" min="1" max="100" class="mnum"></div>
+      </div>
+      <div class="mvp">
+        <div class="mvph"><span class="mvpt">技を選択</span>
+          <div class="mvtbs"><button class="mtab on" data-c="physical">物理</button><button class="mtab" data-c="special">特殊</button></div>
+        </div>
+        <div class="mvl" id="a-mvl"><p class="mve">ポケモンを選んでください</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 中央 -->
+  <div class="mc">
+    <button class="swb" id="swb" title="攻守入れ替え">⇄</button>
+    <button class="cb" id="clcb">計<br>算</button>
+  </div>
+
+  <!-- 防御側 -->
+  <section class="pbox">
+    <h2 class="phd def-hd"><span class="phd-ico">🛡</span>防御側</h2>
+    <div class="pa">
+      <input type="text" id="df" class="fi" placeholder="🔍 絞り込み…" autocomplete="off">
+      <select id="ds" class="ps"><option value="">— 選択してください —</option></select>
+      <div class="pc" id="dc" style="display:none">
+        <img class="p-spr" id="d-spr" src="" alt="">
+        <div><p class="p-nm" id="d-nm">—</p><p class="p-no" id="d-no"></p><div class="trow" id="d-types"></div></div>
+      </div>
+    </div>
+    <div class="sa" id="d-sa" style="display:none">
+      <div class="nr"><label class="fl">性格</label><select id="d-nat" class="ns"></select></div>
+      <!-- 持ち物 -->
+      <div class="ir"><span style="font-size:16px">🎒</span>
+        <select id="d-item" class="isel">
+          <option value="">なし</option>
+          <optgroup label="回復系">
+            <option value="leftovers">たべのこし（毎ターンHP+1/16）</option>
+            <option value="black-sludge">くろいヘドロ（毒+1/16 / 他-1/8）</option>
+            <option value="sitrus-berry">オボンのみ（HP半↓で+1/4）</option>
+            <option value="oran-berry">オレンのみ（HP半↓で+10）</option>
+          </optgroup>
+          <optgroup label="防御強化">
+            <option value="assault-vest">とつげきチョッキ（特防×1.5）</option>
+            <option value="eviolite">しんかのきせき（防御・特防×1.5）</option>
+          </optgroup>
+          <optgroup label="耐久">
+            <option value="focus-sash">きあいのタスキ（HP満タン→1耐え）</option>
+            <option value="rocky-helmet">ゴツゴツメット（接触→相手HP-1/6）</option>
+          </optgroup>
+          <optgroup label="こだわり系">
+            <option value="choice-scarf">こだわりスカーフ（素早さ×1.5）</option>
+            <option value="choice-band">こだわりハチマキ（物理×1.5）</option>
+            <option value="choice-specs">こだわりメガネ（特殊×1.5）</option>
+          </optgroup>
+        </select>
+      </div>
+      <p class="ieff" id="d-ieff"></p>
+      <div class="svg">
+        <div class="svr"><span class="svn svn-hp">HP</span>
+          <div class="evc"><button class="eb" data-s="d" data-t="hp" data-d="-1">−</button><span class="ev" id="ev-d-hp">0</span><span class="eu">段</span><button class="eb" data-s="d" data-t="hp" data-d="1">＋</button></div>
+          <input type="number" class="rvi" id="rv-d-hp" min="1" max="999">
+        </div>
+        <div class="svr"><span class="svn">ぼうぎょ</span>
+          <div class="evc"><button class="eb" data-s="d" data-t="def" data-d="-1">−</button><span class="ev" id="ev-d-def">0</span><span class="eu">段</span><button class="eb" data-s="d" data-t="def" data-d="1">＋</button></div>
+          <input type="number" class="rvi" id="rv-d-def" min="1" max="999">
+        </div>
+        <div class="svr"><span class="svn">とくぼう</span>
+          <div class="evc"><button class="eb" data-s="d" data-t="spd" data-d="-1">−</button><span class="ev" id="ev-d-spd">0</span><span class="eu">段</span><button class="eb" data-s="d" data-t="spd" data-d="1">＋</button></div>
+          <input type="number" class="rvi" id="rv-d-spd" min="1" max="999">
+        </div>
+        <div class="svr"><span class="svn svn-spe">すばやさ</span>
+          <div class="evc"><button class="eb" data-s="d" data-t="spe" data-d="-1">−</button><span class="ev" id="ev-d-spe">0</span><span class="eu">段</span><button class="eb" data-s="d" data-t="spe" data-d="1">＋</button></div>
+          <input type="number" class="rvi" id="rv-d-spe" min="1" max="999">
+        </div>
+      </div>
+      <div class="mr">
+        <div class="fg"><label class="fl">防御ランク</label>
+          <select id="dr" class="msel"><option value="2">+6</option><option value="1.8">+5</option><option value="1.6">+4</option><option value="1.4">+3</option><option value="1.2">+2</option><option value="1.0">+1</option><option value="1.0" selected>±0</option><option value="0.6667">-1</option><option value="0.5">-2</option><option value="0.4">-3</option><option value="0.3333">-4</option><option value="0.2857">-5</option><option value="0.25">-6</option></select>
+        </div>
+        <div class="fg"><label class="fl">素早さランク</label>
+          <select id="dsr" class="msel"><option value="2">+6</option><option value="1.8">+5</option><option value="1.6">+4</option><option value="1.4">+3</option><option value="1.2">+2</option><option value="1.0">+1</option><option value="1.0" selected>±0</option><option value="0.6667">-1</option><option value="0.5">-2</option><option value="0.4">-3</option><option value="0.3333">-4</option><option value="0.2857">-5</option><option value="0.25">-6</option></select>
+        </div>
+      </div>
+      <!-- 素早さ比較 -->
+      <div class="spd-sec" id="spd-sec" style="display:none">
+        <p class="spd-ttl">⚡ 素早さ比較</p>
+        <div class="spd-cmp">
+          <span class="spd-a" id="spd-a">—</span>
+          <span style="font-size:16px;color:var(--tx3)">vs</span>
+          <span class="spd-d" id="spd-d">—</span>
+          <span id="spd-r" style="font-size:12px;color:var(--tx2)"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- 補正 -->
+<section class="pbox">
+  <h2 class="phd"><span class="phd-ico">✦</span>補正 / 天気 / タイプ相性</h2>
+  <div class="mi2">
+    <div class="mg"><span class="mgl">補正</span>
+      <label class="cpill"><input type="checkbox" id="m-stab"><span>STAB</span></label>
+      <label class="cpill"><input type="checkbox" id="m-crit"><span>急所</span></label>
+      <label class="cpill"><input type="checkbox" id="m-atkitem"><span>攻撃側強化×1.2</span></label>
+      <label class="cpill"><input type="checkbox" id="m-burn"><span>やけど</span></label>
+      <label class="cpill"><input type="checkbox" id="m-screen"><span>スクリーン</span></label>
+    </div>
+    <div class="mg"><span class="mgl">天気</span>
+      <select id="wx" class="msel"><option value="none">なし</option><option value="sun">☀ 晴れ</option><option value="rain">🌧 雨</option><option value="sand">🌪 砂嵐</option><option value="hail">❄ あられ</option></select>
+    </div>
+    <div class="mg"><span class="mgl">相性</span>
+      <select id="te1" class="msel"><option value="1">×1（等倍）</option><option value="2">×2（弱点）</option><option value="4">×4（4倍弱点）</option><option value="0.5">×½（半減）</option><option value="0.25">×¼（4倍耐性）</option><option value="0">×0（無効）</option></select>
+      <select id="te2" class="msel"><option value="1">×1</option><option value="2">×2（弱点）</option><option value="0.5">×½（半減）</option><option value="0">×0（無効）</option></select>
+    </div>
+  </div>
+</section>
+
+<!-- 結果 -->
+<section class="rs" id="r-sec" style="display:none">
+  <div class="rc">
+    <div class="rvs">
+      <div class="rvss atk-s"><img class="rvssp" id="r-a-spr" src="" alt=""><span class="rvsnm" id="r-a-nm">—</span></div>
+      <div class="rvsm"><span class="rvsar">→</span><span class="rvsmv" id="r-mv-nm">—</span><span class="rvsar">→</span></div>
+      <div class="rvss def-s"><img class="rvssp" id="r-d-spr" src="" alt=""><span class="rvsnm" id="r-d-nm">—</span></div>
+    </div>
+    <div class="rfb" id="r-fb" style="display:none">
+      <p class="rftt">🌀 フィールド効果（交代時）</p>
+      <div id="r-fl" class="rfls"></div>
+      <p class="rhpu">ダメ計に使用するHP：<strong id="r-hpu">—</strong> <span style="color:var(--tx3)">（最大HP <span id="r-hpm">—</span>）</span></p>
+    </div>
+    <div class="rib" id="r-ib" style="display:none">
+      <p class="ritt">🎒 持ち物効果</p>
+      <div id="r-il" class="rils"></div>
+    </div>
+    <div class="rmn">
+      <div class="rdn"><span class="rdnn" id="r-dmg">—</span><span class="rdnu">ダメージ</span></div>
+      <div class="rpn"><span class="rpnn" id="r-pct">—</span><span class="rpnu">HP比</span></div>
+    </div>
+    <div class="rtags" id="r-tags"></div>
+    <div class="rlw"><p class="rll">乱数 16段階</p><div class="rlr" id="r-rolls"></div></div>
+    <div class="kow" id="r-ko"></div>
+  </div>
+</section>
+
+</main>
+<footer class="sft"><p>PokeAPI使用 ― 非公式ファンツール / レギュレーションM-A（2026年4〜6月）対応</p></footer>
+
+<script>
+// ===== DATA =====
+const REGU_MA_IDS=new Set([3,6,9,12,15,18,20,22,24,26,28,31,34,36,38,40,42,45,47,49,51,53,55,57,59,62,65,68,71,73,76,78,80,82,83,85,87,89,91,94,95,97,99,101,103,105,106,107,110,112,113,115,117,119,121,122,123,124,125,127,128,130,131,134,135,136,137,139,141,142,143,149,154,157,160,162,164,166,168,169,171,176,178,182,184,186,189,192,196,197,199,201,203,205,207,208,210,212,214,217,219,221,222,224,226,229,230,232,234,235,237,242,248,254,257,260,262,264,269,272,275,277,279,282,286,289,295,297,301,303,306,308,310,313,314,319,321,323,326,330,334,338,340,342,344,346,348,350,354,356,357,358,359,362,365,368,371,373,376,392,395,398,400,402,405,407,411,413,416,419,421,423,426,429,432,433,437,442,445,448,450,452,454,457,460,461,462,463,464,465,466,467,468,469,470,471,472,473,474,475,477,478,479,503,521,523,526,528,530,531,534,537,542,545,547,549,553,558,561,563,565,567,569,571,573,576,579,584,587,589,591,593,596,598,601,604,609,612,614,617,620,623,625,628,630,632,635,637,652,655,658,671,675,676,678,681,683,687,689,691,695,697,699,701,702,706,709,711,713,715,836,839,842,845,847,849,851,853,855,858,861,863,865,866,867,869,871,873,875,876,877,878,879,880,884,887,890,901,902,903,904,905,925,928,931,934,936,938,940,942,944,947,949,952,954,956,958,961,963,964,966,968,970,972,974,976,978,980,982,984,986,988,990,992,994,996,1001,1003]);
+const JPN={3:'フシギバナ',6:'リザードン',9:'カメックス',12:'バタフリー',15:'スピアー',18:'ピジョット',20:'ラッタ',22:'オニドリル',24:'アーボック',26:'ライチュウ',28:'サンドパン',31:'ニドクイン',34:'ニドキング',36:'プクリン',38:'キュウコン',40:'プリン',42:'ゴルバット',45:'ラフレシア',47:'パラセクト',49:'モルフォン',51:'ダグトリオ',53:'ペルシアン',55:'ゴルダック',57:'オコリザル',59:'ウインディ',62:'ニョロボン',65:'フーディン',68:'カイリキー',71:'ウツボット',73:'ドククラゲ',76:'ゴローニャ',78:'ギャロップ',80:'ヤドラン',82:'レアコイル',83:'カモネギ',85:'ドードリオ',87:'ジュゴン',89:'ベトベトン',91:'パルシェン',94:'ゲンガー',95:'イワーク',97:'スリーパー',99:'キングラー',101:'マルマイン',103:'ナッシー',105:'ガラガラ',106:'サワムラー',107:'エビワラー',110:'マタドガス',112:'サイドン',113:'ラッキー',115:'ガルーラ',117:'シードラ',119:'アズマオウ',121:'スターミー',122:'バリヤード',123:'ストライク',124:'ルージュラ',125:'エレブー',127:'カイロス',128:'ケンタロス',130:'ギャラドス',131:'ラプラス',134:'シャワーズ',135:'サンダース',136:'ブースター',137:'ポリゴン',139:'オムスター',141:'カブトプス',142:'プテラ',143:'カビゴン',149:'カイリュー',154:'メガニウム',157:'バクフーン',160:'オーダイル',162:'オオタチ',164:'ヨルノズク',166:'レディアン',168:'アリアドス',169:'クロバット',171:'ランターン',176:'トゲチック',178:'ネイティオ',182:'キレイハナ',184:'マリルリ',186:'ニョロトノ',189:'ワタッコ',192:'キマワリ',196:'エーフィ',197:'ブラッキー',199:'ヤドキング',201:'アンノーン',203:'キリンリキ',205:'フォレトス',207:'グライガー',208:'ハガネール',210:'グランブル',212:'ハッサム',214:'ヘラクロス',217:'リングマ',219:'マグカルゴ',221:'イノムー',222:'サニーゴ',224:'オクタン',226:'マンタイン',229:'ヘルガー',230:'キングドラ',232:'ドンファン',234:'オドシシ',235:'ドーブル',237:'カポエラー',242:'ハピナス',248:'バンギラス',254:'ジュカイン',257:'バシャーモ',260:'ラグラージ',262:'グラエナ',264:'マッスグマ',269:'ドクケイル',272:'ルンパッパ',275:'シフトリー',277:'オオスバメ',279:'ペリッパー',282:'サーナイト',286:'キノガッサ',289:'ケッキング',295:'バクオング',297:'ハリテヤマ',301:'エネコロロ',303:'クチート',306:'ボスゴドラ',308:'チャーレム',310:'ライボルト',313:'バルビート',314:'イルミーゼ',319:'サメハダー',321:'ホエルオー',323:'バクーダ',326:'ブーピッグ',330:'フライゴン',334:'チルタリス',338:'ソルロック',340:'ナマズン',342:'ハサミボー',344:'ネンドール',346:'リリーラ',348:'アーマルド',350:'ミロカロス',354:'ジュペッタ',356:'ヨマワル',357:'トロピウス',358:'チリーン',359:'アブソル',362:'オニゴーリ',365:'トドゼルガ',368:'ハンテール',371:'タツベイ',373:'ボーマンダ',376:'メタグロス',392:'ゴウカザル',395:'エンペルト',398:'ムクホーク',400:'ビーダル',402:'コロトック',405:'レントラー',407:'ロズレイド',411:'トリデプス',413:'ミノマダム',416:'ビークイン',419:'フローゼル',421:'チェリム',423:'トリトドン',426:'フワライド',429:'ムウマージ',432:'ニャルマー',433:'リーシャン',437:'ドータクン',442:'ミカルゲ',445:'ガブリアス',448:'ルカリオ',450:'カバルドン',452:'ドラピオン',454:'ドクロッグ',457:'ネオラント',460:'ユキノオー',461:'マニューラ',462:'ジバコイル',463:'ベロベルト',464:'ドサイドン',465:'モジャンボ',466:'エレキブル',467:'ブーバーン',468:'トゲキッス',469:'メガヤンマ',470:'リーフィア',471:'グレイシア',472:'グライオン',473:'マンムー',474:'ポリゴンZ',475:'エルレイド',477:'ヨノワール',478:'ユキメノコ',479:'ロトム',503:'ダイケンキ',521:'ケンホロウ',523:'ゼブライカ',526:'ギガイアス',528:'ランクルス',530:'ダイアンカ',531:'タブンネ',534:'ローブシン',537:'ガマゲロゲ',542:'ハハコモリ',545:'ペンドラー',547:'エルフーン',549:'ドレディア',553:'サザンドラ',558:'イワパレス',561:'シンボラー',563:'デスカーン',565:'ガメノデス',567:'アーケオス',569:'ダストダス',571:'ゾロアーク',573:'チラチーノ',576:'ゴチルゼル',579:'オーベム',584:'バイバニラ',587:'エモンガ',589:'シュバルゴ',591:'モロバレル',593:'ブルンゲル',596:'デンチュラ',598:'ナットレイ',601:'クリムガン',604:'ダダリン',609:'シャンデラ',612:'オノノクス',614:'クマシュン',617:'アギルダー',620:'コジョンド',623:'ゴルーグ',625:'キリキザン',628:'ウォーグル',630:'バルジーナ',632:'アイアント',635:'サザンドラ',637:'ウルガモス',652:'ジャローダ',655:'マフォクシー',658:'ゲッコウガ',671:'フラエッテ',675:'ゴリランダー',676:'トリミアン',678:'ニャオニクス',681:'ギルガルド',683:'アロマティス',687:'オドリドリ',689:'バーナーン',691:'ドラミドロ',695:'クエスパトラ',697:'アマルルガ',699:'ツンベアー',701:'ルチャブル',702:'デデンネ',706:'ヌメルゴン',709:'オーロット',711:'パンプジン',713:'クレベース',715:'ノイバーン',836:'ストリンダー',839:'セキタンザン',842:'アップリュー',845:'ウオノラゴン',847:'インテレオン',849:'ストリンダー',851:'ウルガモス',853:'タタッコ',855:'デカヌチャン',858:'ブリムオン',861:'オーロンゲ',863:'ペロリーム',865:'ネギガナイト',866:'コオリッポ',867:'ゴースト',869:'マホイップ',871:'バチンウニ',873:'モスノウ',875:'コオリッポ',876:'イエッサン',877:'モルペコ',878:'ダイオウドウ',879:'ジュラルドン',880:'パッチラゴン',884:'ジュラルドン',887:'ドラパルト',890:'ザシアン',901:'アルセウス',902:'ガラルニャース',903:'ニャイキング',904:'ペロリーム',905:'ビリーノ',925:'グレンアルマ',928:'ソウブレイズ',931:'タイカイデン',934:'タイカイデン',936:'グレンアルマ',938:'ハラバリー',940:'ガブリアス',942:'ノノクラゲ',944:'アルマロウ',947:'スコヴィラン',949:'キラフロル',952:'カラミンゴ',954:'セグレイブ',956:'グレンアルマ',958:'イルカマン',961:'ドドゲザン',963:'コノヨザル',964:'イルカマン',966:'ウガツホムラ',968:'テツノカイナ',970:'テツノドクガ',972:'テツノコウベ',974:'テツノツツミ',976:'テツノワダチ',978:'ハバタクカミ',980:'チオンジェン',982:'パオジアン',984:'ディンルー',986:'イーユイ',988:'テツノブジン',990:'テツノサンダ',992:'テツノカシラ',994:'テツノイバラ',996:'テツノコウベ',1001:'テツノドクガ',1003:'テツノカイナ'};
+const TC={normal:['#88786044','#d4c4a0','#88786066'],fire:['#d8593044','#fba060','#d8593066'],water:['#378add44','#7dd3fc','#378add66'],grass:['#63992244','#86efac','#63992266'],electric:['#ba751744','#fde68a','#ba751766'],ice:['#5bc8d844','#a5f3fc','#5bc8d866'],fighting:['#99355644','#fda4af','#99355666'],poison:['#7c3aed44','#c4b5fd','#7c3aed66'],ground:['#92400e44','#fcd34d','#92400e66'],flying:['#185fa544','#bae6fd','#185fa566'],psychic:['#993c1d44','#fca5a5','#993c1d66'],bug:['#4d771544','#bef264','#4d771566'],rock:['#78716c44','#d6d3d1','#78716c66'],ghost:['#3c348944','#c4b5fd','#3c348966'],dragon:['#1e40af44','#93c5fd','#1e40af66'],dark:['#1c191444','#a8a29e','#1c191466'],steel:['#64748b44','#cbd5e1','#64748b66'],fairy:['#be185d44','#fbcfe8','#be185d66']};
+const TJP={normal:'ノーマル',fire:'ほのお',water:'みず',grass:'くさ',electric:'でんき',ice:'こおり',fighting:'かくとう',poison:'どく',ground:'じめん',flying:'ひこう',psychic:'エスパー',bug:'むし',rock:'いわ',ghost:'ゴースト',dragon:'ドラゴン',dark:'あく',steel:'はがね',fairy:'フェアリー'};
+const SRM={normal:1,fire:2,water:0.5,grass:0.5,electric:1,ice:2,fighting:0.5,poison:0.5,ground:1,flying:2,psychic:1,bug:2,rock:1,ghost:1,dragon:1,dark:1,steel:0.5,fairy:0.5};
+const NATS=[{n:'まじめ',u:'',d:''},{n:'さみしがり',u:'atk',d:'def'},{n:'いじっぱり',u:'atk',d:'spa'},{n:'やんちゃ',u:'atk',d:'spd'},{n:'ゆうかん',u:'atk',d:'spe'},{n:'ずぶとい',u:'def',d:'atk'},{n:'わんぱく',u:'def',d:'spa'},{n:'のうてんき',u:'def',d:'spd'},{n:'のんき',u:'def',d:'spe'},{n:'ひかえめ',u:'spa',d:'atk'},{n:'おっとり',u:'spa',d:'def'},{n:'うっかりや',u:'spa',d:'spd'},{n:'れいせい',u:'spa',d:'spe'},{n:'おだやか',u:'spd',d:'atk'},{n:'おとなしい',u:'spd',d:'def'},{n:'しんちょう',u:'spd',d:'spa'},{n:'なまいき',u:'spd',d:'spe'},{n:'おくびょう',u:'spe',d:'atk'},{n:'せっかち',u:'spe',d:'def'},{n:'ようき',u:'spe',d:'spa'},{n:'むじゃき',u:'spe',d:'spd'}];
+const SJP={atk:'攻撃',def:'防御',spa:'特攻',spd:'特防',spe:'素早さ',hp:'HP'};
+const ITEMS={leftovers:{l:'たべのこし',e:'毎ターンHP+1/16回復'},'black-sludge':{l:'くろいヘドロ',e:'毒タイプ→+1/16 / 他→-1/8'},'sitrus-berry':{l:'オボンのみ',e:'HP半↓で+1/4（一度）'},'oran-berry':{l:'オレンのみ',e:'HP半↓で+10（一度）'},'assault-vest':{l:'とつげきチョッキ',e:'特防×1.5 [ダメ計反映]'},'eviolite':{l:'しんかのきせき',e:'防御・特防×1.5 [ダメ計反映]'},'focus-sash':{l:'きあいのタスキ',e:'HP満タン→1で耐える'},'rocky-helmet':{l:'ゴツゴツメット',e:'接触技→攻撃側HP-1/6'},'choice-scarf':{l:'こだわりスカーフ',e:'素早さ×1.5 [速度比較反映]'},'choice-band':{l:'こだわりハチマキ',e:'物理攻撃×1.5'},'choice-specs':{l:'こだわりメガネ',e:'特殊攻撃×1.5'}};
+
+// ===== APP =====
+'use strict';
+const API='https://pokeapi.co/api/v2';const AC={};
+async function af(p){if(AC[p])return AC[p];const r=await fetch(API+p);if(!r.ok)throw new Error('API '+r.status);const d=await r.json();AC[p]=d;return d;}
+
+let aP=null,dP=null,sMv=null,mC=[];
+const EV={a:{atk:0,spa:0,spe:0},d:{hp:0,def:0,spd:0,spe:0}};
+const FS={sr:false,spikes:0,tspikes:0,sand:false};
+
+function evV(s){return Math.min(252,s*8);}
+function cHP(b,s,lv=50){return Math.floor((b*2+31+Math.floor(evV(s)/4))*lv/100)+lv+10;}
+function cST(b,s,n=1,lv=50){return Math.floor((Math.floor((b*2+31+Math.floor(evV(s)/4))*lv/100)+5)*n);}
+const fl=Math.floor;
+
+function bNat(id){const s=document.getElementById(id);s.innerHTML=NATS.map(n=>{let l=n.n;if(n.u)l+=`（${SJP[n.u]}↑${SJP[n.d]}↓）`;return`<option value="${n.n}" data-u="${n.u}" data-d="${n.d}">${l}</option>`;}).join('');}
+function gNat(id,stat){const o=document.querySelector(`#${id} option:checked`);if(!o)return 1;if(o.dataset.u===stat)return 1.1;if(o.dataset.d===stat)return 0.9;return 1;}
+bNat('a-nat');bNat('d-nat');
+
+function tb(t){const c=TC[t]||['#44444444','#aaa','#66666655'];return`<span class="tbdg" style="background:${c[0]};color:${c[1]};border:1px solid ${c[2]}">${TJP[t]||t}</span>`;}
+function mtb(t){const c=TC[t]||['#44444444','#aaa','#66666655'];return`<span class="mi-tp" style="background:${c[0]};color:${c[1]};border:1px solid ${c[2]}">${TJP[t]||t}</span>`;}
+
+// Pokemon list
+let PL=[];
+async function loadPL(){
+  const ids=[...REGU_MA_IDS].sort((a,b)=>a-b);
+  PL=ids.map(id=>({id,name:'',jpName:JPN[id]||`No.${id}`}));
+  document.getElementById('as').innerHTML='<option value="">読み込み中…</option>';
+  document.getElementById('ds').innerHTML='<option value="">読み込み中…</option>';
+  const C=12;
+  for(let i=0;i<ids.length;i+=C){
+    const chunk=ids.slice(i,i+C);
+    await Promise.all(chunk.map(async id=>{
+      try{const d=await af(`/pokemon/${id}`);const x=PL.findIndex(p=>p.id===id);if(x>=0){PL[x].name=d.name;PL[x].spr=d.sprites.front_default;}}catch{}
+    }));
+  }
+  fSel('as');fSel('ds');
+}
+function fSel(si){const s=document.getElementById(si);s.innerHTML='<option value="">— 選択してください —</option>';PL.forEach(p=>{const o=document.createElement('option');o.value=p.id;o.textContent=`No.${String(p.id).padStart(4,'0')} ${p.jpName}`;s.appendChild(o);});}
+function sF(fi,si){const f=document.getElementById(fi),se=document.getElementById(si);f.addEventListener('input',()=>{const q=f.value.trim().toLowerCase();se.querySelectorAll('option').forEach(o=>{if(!o.value)return;o.hidden=q?!o.textContent.toLowerCase().includes(q):false;});const v=[...se.querySelectorAll('option')].filter(o=>o.value&&!o.hidden);if(v.length===1){se.value=v[0].value;se.dispatchEvent(new Event('change'));}});}
+
+// Pokemon select
+async function onSel(s){
+  const id=parseInt(document.getElementById(s==='a'?'as':'ds').value);
+  if(!id)return;
+  document.getElementById(s+'-c').style.display='none';
+  document.getElementById(s+'-sa').style.display='none';
+  try{
+    const d=await af(`/pokemon/${id}`);
+    const jn=JPN[id]||await gJPN(d.name);
+    const p={id,name:d.name,jpName:jn,types:d.types.map(t=>t.type.name),stats:{},moves:d.moves,spr:d.sprites.front_default||''};
+    d.stats.forEach(st=>{p.stats[st.stat.name]=st.base_stat;});
+    if(s==='a')aP=p;else dP=p;
+    document.getElementById(s+'-spr').src=p.spr;
+    document.getElementById(s+'-nm').textContent=jn;
+    document.getElementById(s+'-no').textContent=`No.${String(id).padStart(4,'0')}`;
+    document.getElementById(s+'-types').innerHTML=p.types.map(tb).join('');
+    document.getElementById(s+'-c').style.display='flex';
+    document.getElementById(s+'-sa').style.display='flex';
+    iEV(s,p);
+    if(s==='a')loadMv(p);
+    if(s==='d'){updFD();updIE();updSpd();}
+  }catch(e){console.error(e);}
+}
+async function gJPN(nm){try{const d=await af(`/pokemon-species/${nm}`);const e=d.names.find(n=>n.language.name==='ja-Hrkt'||n.language.name==='ja');return e?e.name:nm;}catch{return nm;}}
+
+// EV
+function gBase(p,st){const m={atk:'attack',spa:'special-attack',def:'defense',spd:'special-defense',hp:'hp',spe:'speed'};return p.stats[m[st]]||50;}
+function iEV(s,p){const sts=s==='a'?['atk','spa','spe']:['hp','def','spd','spe'];sts.forEach(st=>{EV[s][st]=0;uEV(s,st,p);});}
+function uEV(s,st,p){
+  if(!p)return;
+  const step=EV[s][st]||0;
+  const base=gBase(p,st);
+  const lv=s==='a'?(parseInt(document.getElementById('a-lv').value)||50):50;
+  const natId=s==='a'?'a-nat':'d-nat';
+  const real=st==='hp'?cHP(base,step,lv):cST(base,step,gNat(natId,st),lv);
+  document.getElementById(`ev-${s}-${st}`).textContent=step;
+  document.getElementById(`rv-${s}-${st}`).value=real;
+  if(s==='d'){updFD();updSpd();}
+  if(s==='a')updSpd();
+}
+document.querySelectorAll('.eb').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const s=b.dataset.s,st=b.dataset.t,d=parseInt(b.dataset.d);
+    const p=s==='a'?aP:dP;if(!p)return;
+    EV[s][st]=Math.max(0,Math.min(32,(EV[s][st]||0)+d));
+    uEV(s,st,p);
+  });
+});
+document.getElementById('rv-d-hp').addEventListener('input',updFD);
+['a','d'].forEach(s=>{document.getElementById(`${s}-nat`).addEventListener('change',()=>{const p=s==='a'?aP:dP;if(!p)return;const sts=s==='a'?['atk','spa','spe']:['hp','def','spd','spe'];sts.forEach(st=>uEV(s,st,p));});});
+document.getElementById('a-lv').addEventListener('change',()=>{if(aP)['atk','spa','spe'].forEach(st=>uEV('a',st,aP));});
+
+// Item
+function updIE(){const v=document.getElementById('d-item').value;const el=document.getElementById('d-ieff');el.textContent=v&&ITEMS[v]?`💡 ${ITEMS[v].e}`:'';updFD();updSpd();}
+document.getElementById('d-item').addEventListener('change',updIE);
+
+// Speed compare
+function updSpd(){
+  const sec=document.getElementById('spd-sec');
+  if(!aP||!dP){sec.style.display='none';return;}
+  const aSpB=parseInt(document.getElementById('rv-a-spe').value)||1;
+  const dSpB=parseInt(document.getElementById('rv-d-spe').value)||1;
+  const aRk=parseFloat(document.getElementById('asr').value)||1;
+  const dRk=parseFloat(document.getElementById('dsr').value)||1;
+  const dItem=document.getElementById('d-item').value;
+  const aSp=fl(aSpB*aRk);
+  let dSp=fl(dSpB*dRk);
+  if(dItem==='choice-scarf')dSp=fl(dSp*1.5);
+  sec.style.display='block';
+  document.getElementById('spd-a').textContent=aSp;
+  document.getElementById('spd-d').textContent=dSp+(dItem==='choice-scarf'?' (×1.5)':'');
+  const r=document.getElementById('spd-r');
+  if(aSp>dSp)r.innerHTML=`<span style="color:var(--grn);font-weight:700">攻撃側が先攻 (+${aSp-dSp})</span>`;
+  else if(aSp<dSp)r.innerHTML=`<span style="color:var(--def);font-weight:700">防御側が先攻 (+${dSp-aSp})</span>`;
+  else r.innerHTML=`<span style="color:var(--acc);font-weight:700">同速</span>`;
+}
+['asr','dsr'].forEach(id=>document.getElementById(id).addEventListener('change',updSpd));
+
+// Field
+function cFD(p,mhp){
+  if(!p||!mhp)return null;
+  const ty=p.types,isF=ty.includes('flying'),isSt=ty.includes('steel'),isR=ty.includes('rock'),isG=ty.includes('ground'),isP=ty.includes('poison');
+  let sr=0,sp=0,ts=0,sand=0;
+  if(FS.sr){let m=SRM[ty[0]]||1;if(ty[1])m*=(SRM[ty[1]]||1);sr=Math.max(1,fl(mhp*m/8));}
+  if(FS.spikes>0&&!isF){const dn=[8,6,4][FS.spikes-1];sp=Math.max(1,fl(mhp/dn));}
+  if(FS.tspikes>0&&!isF&&!isP&&!isSt){ts=FS.tspikes===1?Math.max(1,fl(mhp/8)):Math.max(1,fl(mhp/16));}
+  if(FS.sand&&!isR&&!isSt&&!isG)sand=Math.max(1,fl(mhp/16));
+  const tot=sr+sp+ts+sand;
+  return{sr,sp,ts,sand,tot,rem:Math.max(1,mhp-tot),mhp};
+}
+function updFD(){
+  const mhp=parseInt(document.getElementById('rv-d-hp').value)||0;
+  if(!mhp||!dP){document.getElementById('hp-bw').style.display='none';clrFR();return;}
+  const fd=cFD(dP,mhp);
+  function showFR(id,v,p){const el=document.getElementById(id);if(v>0){el.style.display='flex';el.querySelector('.fres-v').textContent='−'+v;el.querySelector('.fres-p').textContent=`(${(v/mhp*100).toFixed(1)}%)`;}else el.style.display='none';}
+  showFR('fi-sr',fd.sr);showFR('fi-spikes',fd.sp);showFR('fi-ts',fd.ts);showFR('fi-sand',fd.sand);
+  const hw=document.getElementById('hp-bw');
+  hw.style.display=fd.tot>0?'block':'none';
+  if(fd.tot>0){
+    const pct=fd.rem/mhp*100;
+    document.getElementById('hp-bf').style.width=pct.toFixed(1)+'%';
+    document.getElementById('hp-bf').style.background=pct>50?'linear-gradient(90deg,#69e060,#a8e063)':pct>25?'linear-gradient(90deg,#ffe44d,#ffa500)':'linear-gradient(90deg,#ff5252,#ff8a80)';
+    document.getElementById('hp-bp').textContent=pct.toFixed(1)+'%';
+    document.getElementById('hp-bd').textContent=`残HP: ${fd.rem} / ${mhp}（消費: ${fd.tot}）`;
+  }
+}
+function clrFR(){['fi-sr','fi-spikes','fi-ts','fi-sand'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});}
+document.getElementById('f-sr').addEventListener('change',e=>{FS.sr=e.target.checked;updFD();});
+document.getElementById('f-sand').addEventListener('change',e=>{FS.sand=e.target.checked;updFD();});
+document.querySelectorAll('.lbtn').forEach(b=>{b.addEventListener('click',()=>{const g=b.dataset.g,v=parseInt(b.dataset.v);document.querySelectorAll(`.lbtn[data-g="${g}"]`).forEach(x=>x.classList.remove('on'));b.classList.add('on');FS[g]=v;updFD();});});
+
+// Moves
+let _mc='physical';
+async function loadMv(p){
+  const listEl=document.getElementById('a-mvl');
+  listEl.innerHTML='<p class="mve">技データ取得中…</p>';
+  sMv=null;mC=[];
+  const names=p.moves.map(m=>m.move.name);const C=15;
+  for(let i=0;i<names.length;i+=C){
+    const chunk=names.slice(i,i+C);
+    const res=await Promise.all(chunk.map(async mn=>{
+      try{const d=await af(`/move/${mn}`);const jp=d.names.find(n=>n.language.name==='ja-Hrkt'||n.language.name==='ja');const cat=d.damage_class?.name||'status';if(cat==='status'||!d.power)return null;return{name:mn,jpName:jp?jp.name:mn,power:d.power,type:d.type?.name||'normal',cat};}catch{return null;}
+    }));
+    res.forEach(r=>{if(r)mC.push(r);});
+  }
+  mC.sort((a,b)=>b.power!==a.power?b.power-a.power:a.type.localeCompare(b.type));
+  rMv();
+}
+function rMv(){
+  const listEl=document.getElementById('a-mvl');
+  const f=mC.filter(m=>m.cat===_mc);
+  if(!f.length){listEl.innerHTML='<p class="mve">該当技なし</p>';return;}
+  listEl.innerHTML=f.map(m=>`<div class="mi" data-n="${m.name}" data-p="${m.power}" data-t="${m.type}" data-c="${m.cat}"><span class="mi-nm">${m.jpName}</span><span class="mi-pw">${m.power}</span>${mtb(m.type)}</div>`).join('');
+  listEl.querySelectorAll('.mi').forEach(el=>{el.addEventListener('click',()=>{listEl.querySelectorAll('.mi').forEach(e=>e.classList.remove('sel'));el.classList.add('sel');sMv={name:el.dataset.n,power:parseInt(el.dataset.p),type:el.dataset.t,cat:el.dataset.c};if(aP)document.getElementById('m-stab').checked=aP.types.includes(sMv.type);});});
+}
+document.querySelectorAll('.mtab').forEach(b=>{b.addEventListener('click',()=>{document.querySelectorAll('.mtab').forEach(x=>x.classList.remove('on'));b.classList.add('on');_mc=b.dataset.c;rMv();});});
+
+// Swap
+document.getElementById('swb').addEventListener('click',()=>{
+  const t=aP;aP=dP;dP=t;
+  const as2=document.getElementById('as'),ds2=document.getElementById('ds');const tv=as2.value;as2.value=ds2.value;ds2.value=tv;
+  rCard('a',aP);rCard('d',dP);
+  if(aP){iEV('a',aP);loadMv(aP);}
+  if(dP){iEV('d',dP);updFD();updIE();updSpd();}
+});
+function rCard(s,p){const c=document.getElementById(s+'-c'),sa=document.getElementById(s+'-sa');if(!p){c.style.display='none';sa.style.display='none';return;}document.getElementById(s+'-spr').src=p.spr||'';document.getElementById(s+'-nm').textContent=p.jpName;document.getElementById(s+'-no').textContent=`No.${String(p.id).padStart(4,'0')}`;document.getElementById(s+'-types').innerHTML=p.types.map(tb).join('');c.style.display='flex';sa.style.display='flex';}
+
+// Calc
+function calc(){
+  if(!aP)return alert('攻撃側のポケモンを選んでください');
+  if(!dP)return alert('防御側のポケモンを選んでください');
+  if(!sMv)return alert('技を選んでください');
+  const{power,type:mt,cat}=sMv;
+  const lv=parseInt(document.getElementById('a-lv').value)||50;
+  const aV=parseInt(document.getElementById(cat==='physical'?'rv-a-atk':'rv-a-spa').value)||1;
+  const dV=parseInt(document.getElementById(cat==='physical'?'rv-d-def':'rv-d-spd').value)||1;
+  const mhp=parseInt(document.getElementById('rv-d-hp').value)||1;
+  const aRk=parseFloat(document.getElementById('ar').value)||1;
+  let dRk=parseFloat(document.getElementById('dr').value)||1;
+  const dItem=document.getElementById('d-item').value;
+  let dIM=1.0,aIM=1.0;
+  if(dItem==='assault-vest'&&cat==='special')dIM=1.5;
+  if(dItem==='eviolite')dIM=1.5;
+  if(dItem==='choice-band'&&cat==='physical')aIM=1.5;
+  if(dItem==='choice-specs'&&cat==='special')aIM=1.5;
+  const te=parseFloat(document.getElementById('te1').value)*parseFloat(document.getElementById('te2').value);
+  if(te===0){showR(0,0,mhp,mhp,[],[],null);return;}
+  const stab=document.getElementById('m-stab').checked;
+  const crit=document.getElementById('m-crit').checked;
+  const aiB=document.getElementById('m-atkitem').checked;
+  const burn=document.getElementById('m-burn').checked;
+  const scr=document.getElementById('m-screen').checked;
+  const wx=document.getElementById('wx').value;
+  const fd=cFD(dP,mhp);
+  const eHP=fd?fd.rem:mhp;
+  const atk=fl(aV*aRk);
+  const def=fl(dV*dRk*dIM);
+  let base=fl(fl(fl(2*lv/5+2)*power*atk/def)/50)+2;
+  let mod=1;
+  if(wx==='sun'&&mt==='fire')mod*=1.5;
+  if(wx==='sun'&&mt==='water')mod*=0.5;
+  if(wx==='rain'&&mt==='water')mod*=1.5;
+  if(wx==='rain'&&mt==='fire')mod*=0.5;
+  if(stab)mod*=1.5;
+  mod*=te;
+  if(burn&&cat==='physical'&&!crit)mod*=0.5;
+  if(scr&&!crit)mod*=0.5;
+  if(aiB)mod*=1.2;
+  if(aIM>1)mod*=aIM;
+  if(crit)mod*=1.5;
+  const rolls=[];for(let i=85;i<=100;i++)rolls.push(fl(base*mod*i/100));
+  const tags=[];
+  if(stab)tags.push({t:'STAB ×1.5',c:'rt-y'});
+  if(crit)tags.push({t:'急所 ×1.5',c:'rt-y'});
+  if(te>1)tags.push({t:`ばつぐん ×${te}`,c:'rt-g'});
+  if(te<1)tags.push({t:`いまひとつ ×${te}`,c:'rt-r'});
+  if(wx==='sun'&&mt==='fire')tags.push({t:'☀ 晴れ強化',c:'rt-y'});
+  if(wx==='rain'&&mt==='water')tags.push({t:'🌧 雨強化',c:'rt-b'});
+  if(wx==='sun'&&mt==='water')tags.push({t:'☀ 晴れ弱体',c:'rt-r'});
+  if(wx==='rain'&&mt==='fire')tags.push({t:'🌧 雨弱体',c:'rt-r'});
+  if(burn)tags.push({t:'やけど ×0.5',c:'rt-r'});
+  if(scr)tags.push({t:'スクリーン ×0.5',c:'rt-b'});
+  if(aiB)tags.push({t:'強化×1.2',c:'rt-y'});
+  if(dIM>1)tags.push({t:`${ITEMS[dItem]?.l} 防御×${dIM}`,c:'rt-p'});
+  if(aIM>1)tags.push({t:`${ITEMS[dItem]?.l} 攻撃×${aIM}`,c:'rt-p'});
+  showR(rolls[0],rolls[15],eHP,mhp,rolls,tags,fd);
+}
+
+function showR(mn,mx,eHP,mhp,rolls,tags,fd){
+  const sec=document.getElementById('r-sec');sec.style.display='block';sec.scrollIntoView({behavior:'smooth',block:'nearest'});
+  document.getElementById('r-a-spr').src=aP?.spr||'';
+  document.getElementById('r-a-nm').textContent=aP?.jpName||'—';
+  document.getElementById('r-d-spr').src=dP?.spr||'';
+  document.getElementById('r-d-nm').textContent=dP?.jpName||'—';
+  document.getElementById('r-mv-nm').textContent=sMv?(mC.find(m=>m.name===sMv.name)?.jpName||sMv.name):'—';
+  // field
+  const fb=document.getElementById('r-fb');
+  if(fd&&fd.tot>0){
+    fb.style.display='block';
+    const ls=[];
+    if(fd.sr)ls.push({l:'ステルスロック',v:`−${fd.sr} (${(fd.sr/mhp*100).toFixed(1)}%)`});
+    if(fd.sp)ls.push({l:'まきびし',v:`−${fd.sp} (${(fd.sp/mhp*100).toFixed(1)}%)`});
+    if(fd.ts)ls.push({l:'どくびし',v:`−${fd.ts} (${(fd.ts/mhp*100).toFixed(1)}%)`});
+    if(fd.sand)ls.push({l:'すなあらし',v:`−${fd.sand} (${(fd.sand/mhp*100).toFixed(1)}%)`});
+    document.getElementById('r-fl').innerHTML=ls.map(l=>`<div class="rfl"><span class="rfl-l">${l.l}</span><span class="rfl-v">${l.v}</span></div>`).join('');
+    document.getElementById('r-hpu').textContent=eHP;
+    document.getElementById('r-hpm').textContent=mhp;
+  }else fb.style.display='none';
+  // item
+  const dItem=document.getElementById('d-item').value;
+  const ib=document.getElementById('r-ib');
+  if(dItem&&ITEMS[dItem]){
+    const ls=[];
+    if(dItem==='leftovers')ls.push({l:'毎ターン回復',v:`+${Math.max(1,fl(mhp/16))}`});
+    if(dItem==='black-sludge'){const isP=dP?.types.includes('poison');ls.push({l:'毎ターン',v:isP?`+${Math.max(1,fl(mhp/16))} 回復`:`−${Math.max(1,fl(mhp/8))} ダメ`});}
+    if(dItem==='sitrus-berry')ls.push({l:'HP半↓で回復',v:`+${Math.max(1,fl(mhp/4))}`});
+    if(dItem==='oran-berry')ls.push({l:'HP半↓で回復',v:'+10'});
+    if(dItem==='focus-sash')ls.push({l:'HP満タン時',v:'1で耐える（一度）'});
+    if(dItem==='rocky-helmet')ls.push({l:'接触技受け→攻撃側ダメ',v:`${Math.max(1,fl(mhp/6))}`});
+    if(ls.length){ib.style.display='block';document.getElementById('r-il').innerHTML=ls.map(l=>`<div class="ril"><span class="ril-l">${l.l}</span><span class="ril-v">${l.v}</span></div>`).join('');}
+    else ib.style.display='none';
+  }else ib.style.display='none';
+  // dmg
+  if(mn===0&&mx===0){document.getElementById('r-dmg').textContent='0（無効）';document.getElementById('r-pct').textContent='—';}
+  else{document.getElementById('r-dmg').textContent=mn===mx?`${mn}`:`${mn} 〜 ${mx}`;const p1=(mn/eHP*100).toFixed(1),p2=(mx/eHP*100).toFixed(1);document.getElementById('r-pct').textContent=p1===p2?`${p1}%`:`${p1}〜${p2}%`;}
+  document.getElementById('r-tags').innerHTML=tags.map(t=>`<span class="rtag ${t.c||'rt-n'}">${t.t}</span>`).join('');
+  document.getElementById('r-rolls').innerHTML=rolls.map((v,i)=>`<span class="rce ${i===0?'lo':i===15?'hi':''}">${v}</span>`).join('');
+  const ko=document.getElementById('r-ko');if(!rolls.length||mx===0){ko.innerHTML='';return;}
+  let h='';for(let n=1;n<=4;n++){if(mx*n>=eHP){const cnt=rolls.filter(r=>r*n>=eHP).length;const pct=Math.round(cnt/16*100);h+=`<div class="kor"><span class="kon">${n}発</span><div class="kot"><div class="kof" style="width:${pct}%"></div></div><span class="kop">${pct}%（${cnt}/16）でKO</span></div>`;if(rolls[0]*n>=eHP)break;}}
+  ko.innerHTML=h||'<p style="font-size:12px;color:var(--tx3)">4発以内のKOなし</p>';
+}
+
+document.getElementById('as').addEventListener('change',()=>onSel('a'));
+document.getElementById('ds').addEventListener('change',()=>onSel('d'));
+document.getElementById('clcb').addEventListener('click',calc);
+sF('af','as');sF('df','ds');
+(async()=>{await loadPL();})();
+</script>
+</body>
+</html>
