@@ -16,7 +16,7 @@
   --atk:#ff6b35;--def:#38d4f0;--acc:#ffe44d;--grn:#69e060;--red:#ff5252;
   --r:12px;--rs:8px;--rx:5px;
   --F:"Noto Sans JP",sans-serif;--FP:"Press Start 2P",monospace;
-  --lw:560px;
+  --lw:640px;
 }
 html{font-size:14px}
 body{font-family:var(--F);background:var(--bg);color:var(--tx);min-height:100vh}
@@ -29,16 +29,16 @@ input[type=number]{-moz-appearance:textfield}
 /* ===== Header ===== */
 .hdr{position:sticky;top:0;z-index:200;background:rgba(20,24,44,.95);backdrop-filter:blur(12px);
   border-bottom:2px solid var(--acc);padding:.55rem 1rem;box-shadow:0 2px 16px rgba(255,228,77,.1)}
-.hdr__in{max-width:1380px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.hdr__in{max-width:100%;padding:0 .25rem;display:flex;align-items:center;justify-content:space-between}
 .hdr__logo{display:flex;align-items:center;gap:9px}
 .hdr__ttl{font-family:var(--FP);font-size:9px;color:var(--acc);letter-spacing:.04em;line-height:1.8}
 .hdr__sub{font-size:10px;color:var(--tx3);letter-spacing:.05em;margin-top:1px}
 .hdr__badge{font-size:10px;padding:2px 7px;border-radius:20px;background:rgba(255,82,82,.2);color:#ff9090;border:1px solid rgba(255,82,82,.35)}
 
 /* ===== App Layout ===== */
-.app{position:relative;z-index:1;max-width:1380px;margin:0 auto;
-  display:grid;grid-template-columns:var(--lw) 1fr;
-  gap:0 .85rem;padding:.85rem .85rem 2rem;align-items:start}
+.app{position:relative;z-index:1;width:100%;
+  display:grid;grid-template-columns:var(--lw) minmax(300px,1fr);
+  gap:0 1rem;padding:.85rem 1.25rem 2rem;align-items:start}
 .left{grid-column:1;grid-row:1/99;display:flex;flex-direction:column;gap:.65rem}
 .right{grid-column:2;grid-row:1/99;position:sticky;top:58px;display:flex;flex-direction:column;gap:.65rem}
 
@@ -87,29 +87,20 @@ input[type=number]{-moz-appearance:textfield}
 .hpbar__fill{height:100%;border-radius:4px;transition:width .4s,background .4s}
 .hpbar__detail{font-size:10px;color:var(--tx3);margin-top:3px}
 
-/* ===== Poke select (combo) ===== */
-.poke-area{padding:.5rem .8rem;border-bottom:1px solid var(--bd);display:flex;flex-direction:column;gap:6px}
-.combo-wrap{position:relative}
-.combo-input{width:100%;padding:6px 28px 6px 9px;background:var(--bg3);border:2px solid var(--bd2);
-  color:var(--tx);border-radius:var(--rx);font-size:12px;font-family:var(--F);cursor:pointer}
-.combo-input:focus{outline:none;border-color:var(--acc)}
-.combo-arrow{position:absolute;right:8px;top:50%;transform:translateY(-50%);
-  font-size:10px;color:var(--tx3);pointer-events:none}
-.combo-drop{position:absolute;top:calc(100% + 3px);left:0;right:0;z-index:100;
-  background:var(--bg2);border:1px solid var(--bd2);border-radius:var(--rs);
-  max-height:240px;overflow-y:auto;display:none;box-shadow:0 8px 24px rgba(0,0,0,.5)}
-.combo-drop.open{display:block}
-.combo-search{padding:6px 9px;border-bottom:1px solid var(--bd);position:sticky;top:0;background:var(--bg2)}
-.combo-search input{width:100%;padding:4px 8px;background:var(--bg3);border:1px solid var(--bd2);
+/* ===== Poke select ===== */
+.poke-area{padding:.5rem .8rem;border-bottom:1px solid var(--bd);display:flex;flex-direction:column;gap:5px}
+.psel-wrap{display:flex;flex-direction:column;gap:4px}
+.psel-filter{width:100%;padding:6px 10px;background:var(--bg3);border:1px solid var(--bd2);
   color:var(--tx);border-radius:var(--rx);font-size:12px;font-family:var(--F)}
-.combo-search input:focus{outline:none;border-color:var(--acc)}
-.combo-group-label{padding:4px 9px;font-size:10px;color:var(--tx3);
-  background:var(--bg3);border-bottom:1px solid var(--bd);letter-spacing:.05em;font-weight:700}
-.combo-item{padding:5px 12px;font-size:12px;cursor:pointer;transition:background .1s;
-  border-bottom:1px solid rgba(255,255,255,.04)}
-.combo-item:last-child{border-bottom:none}
-.combo-item:hover,.combo-item.focused{background:var(--sur)}
-.combo-item.selected{background:rgba(255,228,77,.08);color:var(--acc)}
+.psel-filter:focus{outline:none;border-color:var(--acc)}
+.psel-filter::placeholder{color:var(--tx3)}
+.psel{width:100%;background:var(--bg3);border:2px solid var(--bd2);color:var(--tx);
+  border-radius:var(--rs);font-size:12px;font-family:var(--F);
+  overflow-y:auto;scrollbar-width:thin}
+.psel:focus{outline:none;border-color:var(--acc)}
+.psel option{padding:5px 10px;background:var(--bg3);cursor:pointer;font-size:12px}
+.psel option:checked{background:rgba(255,228,77,.2);color:var(--acc)}
+.psel optgroup{font-size:10px;color:var(--tx3);padding:3px 6px;background:var(--bg2)}
 .pcard{display:flex;align-items:center;gap:8px;padding:6px;background:var(--bg3);
   border-radius:var(--rs);border:1px solid var(--bd)}
 .spr{width:52px;height:52px;image-rendering:pixelated}
@@ -273,7 +264,7 @@ input[type=range].ev-r{flex:1;min-width:0;height:3px;accent-color:var(--acc);cur
 .footer a{color:var(--acc);text-decoration:none}
 .footer a:hover{text-decoration:underline}
 
-@media(max-width:1000px){
+@media(max-width:980px){
   .app{grid-template-columns:1fr;padding:.7rem}
   .left,.right{grid-column:1;grid-row:auto;position:static}
   :root{--lw:100%}
@@ -301,7 +292,7 @@ input[type=range].ev-r{flex:1;min-width:0;height:3px;accent-color:var(--acc);cur
 <div class="left">
 
 <!-- フィールド効果 + 補正 まとめた上部エリア -->
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem">
+<div style="display:grid;grid-template-columns:3fr 2fr;gap:.65rem">
 
 <!-- フィールド効果 -->
 <section class="pbox">
@@ -375,13 +366,9 @@ input[type=range].ev-r{flex:1;min-width:0;height:3px;accent-color:var(--acc);cur
   <section class="pbox">
     <h2 class="pbox__hd ah">⚔ 攻撃側</h2>
     <div class="poke-area">
-      <div class="combo-wrap" id="combo-atk">
-        <div class="combo-input" id="combo-atk-display" tabindex="0">— 選択してください —</div>
-        <span class="combo-arrow">▾</span>
-        <div class="combo-drop" id="combo-atk-drop">
-          <div class="combo-search"><input type="text" placeholder="🔍 絞り込み…" id="combo-atk-q" autocomplete="off"></div>
-          <div id="combo-atk-list"></div>
-        </div>
+      <div class="psel-wrap">
+        <input type="text" class="psel-filter" id="af" placeholder="🔍 絞り込み…" autocomplete="off">
+        <select id="as" class="psel" size="6"></select>
       </div>
       <div class="pcard" id="acard" style="display:none">
         <img class="spr" id="aspr" src="" alt="">
@@ -478,13 +465,9 @@ input[type=range].ev-r{flex:1;min-width:0;height:3px;accent-color:var(--acc);cur
   <section class="pbox">
     <h2 class="pbox__hd dh">🛡 防御側</h2>
     <div class="poke-area">
-      <div class="combo-wrap" id="combo-def">
-        <div class="combo-input" id="combo-def-display" tabindex="0">— 選択してください —</div>
-        <span class="combo-arrow">▾</span>
-        <div class="combo-drop" id="combo-def-drop">
-          <div class="combo-search"><input type="text" placeholder="🔍 絞り込み…" id="combo-def-q" autocomplete="off"></div>
-          <div id="combo-def-list"></div>
-        </div>
+      <div class="psel-wrap">
+        <input type="text" class="psel-filter" id="df" placeholder="🔍 絞り込み…" autocomplete="off">
+        <select id="ds" class="psel" size="6"></select>
       </div>
       <div class="pcard" id="dcard" style="display:none">
         <img class="spr" id="dspr" src="" alt="">
@@ -753,6 +736,41 @@ const FORMS = [
   {slug:'ogerpon-wellspring',  jpName:'オーガポン（いど）',        baseId:1017}, // ※レギュMA外なので skip
 ];
 
+// ============================================================
+//  新メガシンカ静的データ（PokeAPI未対応 - Champions/ZA独自）
+// ============================================================
+const STATIC_MEGA = {
+  'clefable-mega':      {types:['fairy'],          stats:{hp:95,attack:80,defense:93,'special-attack':135,'special-defense':110,speed:70}, ability:'magic-bounce'},
+  'victreebel-mega':    {types:['grass','poison'],  stats:{hp:80,attack:125,defense:85,'special-attack':135,'special-defense':95,speed:70}, ability:'innards-out'},
+  'starmie-mega':       {types:['water','psychic'], stats:{hp:60,attack:100,defense:105,'special-attack':130,'special-defense':105,speed:120}, ability:'huge-power'},
+  'dragonite-mega':     {types:['dragon','flying'], stats:{hp:91,attack:124,defense:115,'special-attack':145,'special-defense':125,speed:100}, ability:'multiscale'},
+  'meganium-mega':      {types:['grass','fairy'],   stats:{hp:80,attack:92,defense:115,'special-attack':143,'special-defense':115,speed:80}, ability:'drought'},
+  'feraligatr-mega':    {types:['water','dragon'],  stats:{hp:85,attack:160,defense:125,'special-attack':89,'special-defense':93,speed:78}, ability:'aerilate'},
+  'emboar-mega':        {types:['fire','fighting'], stats:{hp:110,attack:148,defense:75,'special-attack':110,'special-defense':110,speed:75}, ability:'mold-breaker'},
+  'excadrill-mega':     {types:['ground','steel'],  stats:{hp:110,attack:165,defense:100,'special-attack':65,'special-defense':65,speed:103}, ability:'no-guard'},
+  'chandelure-mega':    {types:['ghost','fire'],    stats:{hp:60,attack:75,defense:110,'special-attack':175,'special-defense':110,speed:90}, ability:'infiltrator'},
+  'golurk-mega':        {types:['ground','ghost'],  stats:{hp:89,attack:159,defense:105,'special-attack':70,'special-defense':105,speed:55}, ability:'no-guard'},
+  'chesnaught-mega':    {types:['grass','fighting'],stats:{hp:89,attack:137,defense:172,'special-attack':74,'special-defense':115,speed:44}, ability:'bulletproof'},
+  'delphox-mega':       {types:['fire','psychic'],  stats:{hp:75,attack:69,defense:72,'special-attack':159,'special-defense':125,speed:134}, ability:'levitate'},
+  'greninja-mega':      {types:['water','dark'],    stats:{hp:72,attack:125,defense:77,'special-attack':133,'special-defense':81,speed:142}, ability:'protean'},
+  'florges-mega':       {types:['fairy'],           stats:{hp:78,attack:65,defense:78,'special-attack':152,'special-defense':175,speed:75}, ability:'flower-veil'},
+  'meowstic-mega':      {types:['psychic'],         stats:{hp:74,attack:70,defense:95,'special-attack':135,'special-defense':115,speed:110}, ability:'prankster'},
+  'hawlucha-mega':      {types:['fighting','flying'],stats:{hp:78,attack:122,defense:85,'special-attack':91,'special-defense':85,speed:128}, ability:'unburden'},
+  'crabominable-mega':  {types:['fighting','ice'],  stats:{hp:97,attack:152,defense:105,'special-attack':65,'special-defense':95,speed:55}, ability:'tough-claws'},
+  'goodra-mega':        {types:['dragon','steel'],  stats:{hp:90,attack:110,defense:145,'special-attack':130,'special-defense':145,speed:80}, ability:'gooey'},
+  'scovilian-mega':     {types:['grass','fire'],    stats:{hp:65,attack:120,defense:95,'special-attack':120,'special-defense':105,speed:80}, ability:'flame-body'},
+  'glimmora-mega':      {types:['rock','poison'],   stats:{hp:83,attack:65,defense:105,'special-attack':160,'special-defense':105,speed:90}, ability:'toxic-debris'},
+};
+// 新メガのスプライトは通常形態のものを使用
+const STATIC_MEGA_SPRITE = {
+  'clefable-mega':36,'victreebel-mega':71,'starmie-mega':121,'dragonite-mega':149,
+  'meganium-mega':154,'feraligatr-mega':160,'skarmory-mega':227,'chimecho-mega':358,
+'emboar-mega':500,'excadrill-mega':530,'chandelure-mega':609,
+  'golurk-mega':623,'chesnaught-mega':652,'delphox-mega':655,'greninja-mega':658,
+  'florges-mega':671,'meowstic-mega':678,'hawlucha-mega':701,'crabominable-mega':740,
+  'goodra-mega':706,'scovilian-mega':952,'glimmora-mega':970,
+};
+
 const TC = {
   normal:['#88786044','#d4c4a0','#88786066'],fire:['#d8593044','#fba060','#d8593066'],
   water:['#378add44','#7dd3fc','#378add66'],grass:['#63992244','#86efac','#63992266'],
@@ -930,71 +948,68 @@ function tbadge(t){const c=TC[t]||['#44444444','#aaa','#66666655'];return`<span 
 function mitb(t){const c=TC[t]||['#44444444','#aaa','#66666655'];return`<span class="mitype" style="background:${c[0]};color:${c[1]};border:1px solid ${c[2]}">${TJP[t]||t}</span>`;}
 
 // ============================================================
-//  Combo box (検索+ドロップダウン統合)
+//  Pokemon select (filter + native select)
 // ============================================================
 let pokeList=[];
-function buildCombo(side){
+
+function buildSelect(side){
   const sfx=side==='atk'?'atk':'def';
-  const wrap=document.getElementById(`combo-${sfx}`);
-  const display=document.getElementById(`combo-${sfx}-display`);
-  const drop=document.getElementById(`combo-${sfx}-drop`);
-  const qEl=document.getElementById(`combo-${sfx}-q`);
-  const listEl=document.getElementById(`combo-${sfx}-list`);
+  const filterEl=document.getElementById(sfx==='atk'?'af':'df');
+  const selEl=document.getElementById(sfx==='atk'?'as':'ds');
 
-  // Toggle open/close
-  display.addEventListener('click',e=>{e.stopPropagation();toggleCombo(sfx,qEl,listEl);});
-  display.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')toggleCombo(sfx,qEl,listEl);});
+  filterEl.addEventListener('input',()=>{
+    const q=filterEl.value.toLowerCase();
+    renderOptions(selEl, q);
+  });
 
-  // Search filter
-  qEl.addEventListener('input',()=>renderComboList(sfx,listEl,qEl.value));
-  qEl.addEventListener('click',e=>e.stopPropagation());
+  selEl.addEventListener('change',()=>{
+    if(selEl.value) selectPoke(sfx, selEl.value);
+  });
 
-  // Close on outside click
-  document.addEventListener('click',()=>drop.classList.remove('open'));
+  // キーボードで絞り込みフィールドからselectに移動
+  filterEl.addEventListener('keydown',e=>{
+    if(e.key==='ArrowDown'){e.preventDefault();selEl.focus();}
+  });
 
-  renderComboList(sfx,listEl,'');
+  renderOptions(selEl, '');
 }
 
-function toggleCombo(sfx,qEl,listEl){
-  const drop=document.getElementById(`combo-${sfx}-drop`);
-  const wasOpen=drop.classList.contains('open');
-  // Close all others
-  document.querySelectorAll('.combo-drop').forEach(d=>d.classList.remove('open'));
-  if(!wasOpen){drop.classList.add('open');qEl.focus();qEl.value='';renderComboList(sfx,listEl,'');}
-}
-
-function renderComboList(sfx,listEl,q){
+function renderOptions(selEl, q){
   const lc=q.toLowerCase();
-  listEl.innerHTML='';
+  selEl.innerHTML='';
+
   const groups=[
-    {label:'通常フォーム',items:pokeList.filter(p=>!p.isMega&&!p.isForm&&(!lc||p.jpName.includes(q)||p.key.includes(lc)||String(p.baseId).includes(lc)))},
-    {label:'フォルムチェンジ',items:pokeList.filter(p=>p.isForm&&(!lc||p.jpName.includes(q)||p.key.includes(lc)))},
-    {label:'メガシンカ',items:pokeList.filter(p=>p.isMega&&(!lc||p.jpName.includes(q)||p.key.includes(lc)))},
+    {label:'── 通常フォーム ──', items:pokeList.filter(p=>!p.isMega&&!p.isForm&&matches(p,lc))},
+    {label:'── フォルムチェンジ ──', items:pokeList.filter(p=>p.isForm&&matches(p,lc))},
+    {label:'── メガシンカ ──', items:pokeList.filter(p=>p.isMega&&matches(p,lc))},
   ];
+
+  let totalCount=0;
   groups.forEach(({label,items})=>{
     if(!items.length)return;
-    const gl=document.createElement('div');gl.className='combo-group-label';gl.textContent=label;
-    listEl.appendChild(gl);
+    const og=document.createElement('optgroup');
+    og.label=label;
     items.forEach(p=>{
-      const item=document.createElement('div');
-      item.className='combo-item';
-      item.textContent=`No.${String(p.baseId).padStart(4,'0')} ${p.jpName}`;
-      item.dataset.key=p.key;
-      const cur=sfx==='atk'?AP?.comboKey:DP?.comboKey;
-      if(cur===p.key)item.classList.add('selected');
-      item.addEventListener('mousedown',e=>{
-        e.preventDefault();
-        selectPoke(sfx,p.key);
-        document.getElementById(`combo-${sfx}-drop`).classList.remove('open');
-      });
-      listEl.appendChild(item);
+      const o=document.createElement('option');
+      o.value=p.key;
+      o.textContent=`No.${String(p.baseId).padStart(4,'0')} ${p.jpName}`;
+      og.appendChild(o);
+      totalCount++;
     });
+    selEl.appendChild(og);
   });
+
+  // 絞り込み結果が少ない場合はsize調整
+  selEl.size=Math.min(Math.max(totalCount,1),8);
 }
 
-function setComboDisplay(sfx,text){
-  document.getElementById(`combo-${sfx}-display`).textContent=text;
+function matches(p,lc){
+  if(!lc)return true;
+  return p.jpName.includes(lc)||p.key.includes(lc)||String(p.baseId).includes(lc);
 }
+
+// setComboDisplay互換（スワップ時に呼ばれる）
+function setComboDisplay(sfx, text){ /* no-op: select shows selected option */ }
 
 // ============================================================
 //  Pokemon list load
@@ -1014,7 +1029,23 @@ async function loadList(){
       isForm:!f.jpName.startsWith('メガ'),
     });
   }
-  buildCombo('atk');buildCombo('def');
+  buildSelect('atk');buildSelect('def');
+
+  // 最初のポケモン（No.3 フシギバナ）を自動選択
+  const firstKey = pokeList[0]?.key;
+  if(firstKey){
+    // 両サイドのselectで先頭optionを選択状態に
+    const asSel = document.getElementById('as');
+    const dsSel = document.getElementById('ds');
+    if(asSel?.options.length) asSel.options[0].selected=true;
+    if(dsSel?.options.length) dsSel.options[0].selected=true;
+    // 実際にポケモンデータをロード（並列）
+    await Promise.all([
+      selectPoke('atk', firstKey),
+      selectPoke('def', firstKey),
+    ]);
+  }
+
   // バックグラウンドで通常フォームのapiName取得
   const normal=pokeList.filter(p=>!p.apiName);
   const C=12;
@@ -1036,6 +1067,54 @@ async function selectPoke(sfx,key){
   const slug=entry?.apiName||key;
   document.getElementById(side==='atk'?'acard':'dcard').style.display='none';
   document.getElementById(side==='atk'?'astats':'dstats').style.display='none';
+
+  // 静的データ（PokeAPI未対応の新メガシンカ）を先にチェック
+  const staticData = STATIC_MEGA[slug];
+  if(staticData){
+    const jp = entry?.jpName||slug;
+    const spriteId = STATIC_MEGA_SPRITE[slug]||entry?.baseId||0;
+    const sprite = spriteId
+      ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${spriteId}.png`
+      : '';
+    // 通常形態からmovesを取得するためベースポケモンもフェッチ
+    let moves=[], abilities=[];
+    try{
+      const base=await apiFetch(`/pokemon/${entry?.baseId||spriteId}`);
+      moves=base.moves;
+      abilities=base.abilities;
+    }catch{}
+    const poke={
+      id:spriteId,name:slug,jpName:jp,comboKey:key,
+      types:staticData.types,
+      stats:staticData.stats,
+      moves,sprite,baseId:entry?.baseId||spriteId,
+      abilities,abilitySlug:staticData.ability,
+      abilityJp:ABILITY_JP[staticData.ability]||staticData.ability,
+    };
+    if(side==='atk')AP=poke;else DP=poke;
+    renderCard(side,poke);
+    // select sync
+    const _sSel=document.getElementById(sfx==='atk'?'as':'ds');
+    if(_sSel) _sSel.value=key;
+    document.getElementById(side==='atk'?'astats':'dstats').style.display='flex';
+    Object.keys(EVS[side]).forEach(k=>{EVS[side][k]=0;});
+    Object.keys(NAT[side]).forEach(k=>{NAT[side][k]='mid';});
+    recAllRV(side);
+    // 特性は静的データから直接設定
+    const wrap=document.getElementById(`abl-wrap-${side}`);
+    const badge=document.getElementById(`abl-badge-${side}`);
+    const sel=document.getElementById(`abl-sel-${side}`);
+    const desc=document.getElementById(`abl-desc-${side}`);
+    sel.innerHTML=`<option value="${staticData.ability}">${poke.abilityJp}</option>`;
+    badge.textContent=poke.abilityJp;
+    desc.textContent=ABILITY_EFFECTS[staticData.ability]?.desc||'';
+    wrap.style.display='flex';
+    if(side==='atk'){loadMoves(poke);autoCalcTypeInfo();}
+    if(side==='def'){updField();autoCalcTypeInfo();}
+    tryAutoCalc();
+    return;
+  }
+
   try{
     const d=await apiFetch(`/pokemon/${slug}`);
     const jp=entry?.jpName||JPN[entry?.baseId]||await getJP(d.name);
@@ -1050,7 +1129,9 @@ async function selectPoke(sfx,key){
     d.stats.forEach(s=>{poke.stats[s.stat.name]=s.base_stat;});
     if(side==='atk')AP=poke;else DP=poke;
     renderCard(side,poke);
-    setComboDisplay(sfx,`No.${String(poke.baseId).padStart(4,'0')} ${jp}`);
+    // select sync
+    const _sel=document.getElementById(sfx==='atk'?'as':'ds');
+    if(_sel) _sel.value=key;
     document.getElementById(side==='atk'?'astats':'dstats').style.display='flex';
     Object.keys(EVS[side]).forEach(k=>{EVS[side][k]=0;});
     // Reset NAT
@@ -1190,7 +1271,21 @@ function recRV(side,stat){
   if(side==='def')updField();
   tryAutoCalc();
 }
-function recAllRV(side){(side==='atk'?ATK_STATS:DEF_STATS).forEach(s=>recRV(side,s.id));}
+function recAllRV(side){(side==='atk'?ATK_STATS:DEF_STATS).forEach(s=>recRV(side,s.id));updNatHL(side);}
+
+function updNatHL(side){
+  const stats=side==='atk'?ATK_STATS:DEF_STATS;
+  stats.forEach(({id})=>{
+    const row=document.getElementById(`svr-${side}-${id}`);if(!row)return;
+    const state=NAT[side]?.[id]||'mid';
+    row.classList.remove('nat-up','nat-dn');
+    if(state==='up')row.classList.add('nat-up');
+    if(state==='dn')row.classList.add('nat-dn');
+    row.querySelectorAll('.nat3 button').forEach(b=>{
+      b.classList.toggle('act',b.dataset.n===state);
+    });
+  });
+}
 
 // ============================================================
 //  Moves (重複排除済み)
@@ -1357,10 +1452,13 @@ function getItemInfo(iv,maxHP,effHP,rMin,rMax){
 // ============================================================
 document.getElementById('swapbtn').addEventListener('click',()=>{
   const tmp=AP;AP=DP;DP=tmp;
-  const ad=document.getElementById('combo-atk-display').textContent;
-  const dd=document.getElementById('combo-def-display').textContent;
-  document.getElementById('combo-atk-display').textContent=dd;
-  document.getElementById('combo-def-display').textContent=ad;
+  // swap select values
+  const asSel=document.getElementById('as');
+  const dsSel=document.getElementById('ds');
+  const tmpVal=asSel.value;
+  // rebuild both selects to reflect swapped state
+  if(AP) {const o=dsSel.querySelector(`option[value="${AP.comboKey}"]`);if(o)dsSel.value=AP.comboKey;}
+  if(DP) {const o=asSel.querySelector(`option[value="${DP.comboKey}"]`);if(o)asSel.value=DP.comboKey;}
   if(AP){renderCard('atk',AP);document.getElementById('astats').style.display='flex';recAllRV('atk');loadAbility('atk',AP);loadMoves(AP);}
   else{document.getElementById('acard').style.display='none';document.getElementById('astats').style.display='none';}
   if(DP){renderCard('def',DP);document.getElementById('dstats').style.display='flex';recAllRV('def');loadAbility('def',DP);updField();}
