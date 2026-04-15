@@ -1988,76 +1988,38 @@ function updateBulkPanel(minD,maxD,effHP,maxHP){
 
   rows.push(`<div class="bulk-item"><span class="bulk-label">現在のダメージ</span><span><span class="bulk-ev">${minD}〜${maxD}</span><span class="bulk-note"> (${pct1}〜${pct2}% / HP${effHP})</span></span></div>`);
 
-  // N発耐えの最小EVを求める汎用関数
-  // useMax=true: 最大乱数(mx)でN発耐える / false: 最小乱数(mn)でN発耐える
-  function findMinEvNHit(hits, useMax){
+  // 確定N耐え: 最大乱数×N < HP
+  function findMinEvNHit(hits){
     let best=null;
     for(let hs=0;hs<=32;hs++){
       for(let ds=0;ds<=32;ds++){
-        const {mn,mx,hp,dv}=calcDmgAt(hs,ds);
-        const dmg=useMax?mx:mn;
-        // N発耐え: dmg*hits < hp (N発受けてひんしにならない)
-        if(dmg*hits < hp){
+        const {mx,hp,dv}=calcDmgAt(hs,ds);
+        if(mx*hits < hp){
           const total=hs*8+ds*8;
-          if(!best||total<best.total||(total===best.total&&hs<best.hs)){
-            best={hs,ds,total,hpEv:hs*8,defEv:ds*8,hp,dv,dmg};
-          }
+          if(!best||total<best.total||(total===best.total&&hs<best.hs))
+            best={total,hpEv:hs*8,defEv:ds*8,hp,dv};
         }
       }
     }
     return best;
   }
 
-  // 現在の確定耐え段階を判定（何発まで確定耐えできるか）
-  function currentConfirmHits(){
-    for(let n=1;n<=5;n++){
-      if(minD*n >= effHP) return n-1;
-    }
-    return 5; // 5発以上
-  }
-  function currentFullHits(){
-    for(let n=1;n<=5;n++){
-      if(maxD*n >= effHP) return n-1;
-    }
-    return 5;
-  }
+  // 現状の確定耐え段階（最大ダメ×N < effHP）
+  let confirmNow=0;
+  for(let n=1;n<=5;n++){ if(maxD*n < effHP) confirmNow=n; else break; }
 
-  const confirmNow = currentConfirmHits(); // 現状何発まで確定耐えか
-  const fullNow    = currentFullHits();    // 現状何発まで乱数全耐えか
+  // 達成済みをすべて表示
+  for(let n=1; n<=Math.min(confirmNow,4); n++)
+    rows.push(`<div class="bulk-item"><span class="bulk-label">✅ 確定${n}耐え</span><span class="spd-faster">達成中</span></div>`);
 
-  // 確定耐え系: 現状+1発分まで3段階表示
-  const confirmLabel = ['','1発確定耐え','2発確定耐え','3発確定耐え','4発確定耐え','5発確定耐え'];
-  const fullLabel    = ['','1発乱数全耐え','2発乱数全耐え','3発乱数全耐え','4発乱数全耐え','5発乱数全耐え'];
-
-  // 確定耐えについて「現在の達成状況 → 次の目標」を表示
-  for(let n=1; n<=Math.min(confirmNow+2, 5); n++){
-    const achieved = (n <= confirmNow);
-    if(achieved){
-      rows.push(`<div class="bulk-item"><span class="bulk-label">✅ ${confirmLabel[n]}</span><span class="spd-faster">達成中</span></div>`);
-    } else {
-      // 未達成: 最小EVを探す
-      const b = findMinEvNHit(n, false);
-      if(b)
-        rows.push(`<div class="bulk-item"><span class="bulk-label">${confirmLabel[n]} 最小EV</span><span><span class="bulk-ev">H${b.hpEv} ${defChar}${b.defEv}</span><span class="bulk-note"> 合計${b.total}（HP${b.hp} ${defLabel}${b.dv}）</span></span></div>`);
-      else
-        rows.push(`<div class="bulk-item"><span class="bulk-label">${confirmLabel[n]}</span><span class="bulk-note">H252+${defChar}252でも不可</span></div>`);
-      break; // 未達成の最初の段階だけ表示して止める
-    }
-  }
-
-  // 乱数全耐えについて同様に表示
-  for(let n=1; n<=Math.min(fullNow+2, 5); n++){
-    const achieved = (n <= fullNow);
-    if(achieved){
-      rows.push(`<div class="bulk-item"><span class="bulk-label">🎲 ${fullLabel[n]}</span><span class="spd-faster">達成中</span></div>`);
-    } else {
-      const b = findMinEvNHit(n, true);
-      if(b)
-        rows.push(`<div class="bulk-item"><span class="bulk-label">🎲 ${fullLabel[n]} 最小EV</span><span><span class="bulk-ev">H${b.hpEv} ${defChar}${b.defEv}</span><span class="bulk-note"> 合計${b.total}（HP${b.hp} ${defLabel}${b.dv}）</span></span></div>`);
-      else
-        rows.push(`<div class="bulk-item"><span class="bulk-label">🎲 ${fullLabel[n]}</span><span class="bulk-note">H252+${defChar}252でも不可</span></div>`);
-      break;
-    }
+  // 次の目標を提示（最大4耐えまで）
+  const nextN = confirmNow + 1;
+  if(nextN <= 4){
+    const b = findMinEvNHit(nextN);
+    if(b)
+      rows.push(`<div class="bulk-item"><span class="bulk-label">確定${nextN}耐え 最小EV</span><span><span class="bulk-ev">H${b.hpEv} ${defChar}${b.defEv}</span><span class="bulk-note"> 合計${b.total}（HP${b.hp} ${defLabel}${b.dv}）</span></span></div>`);
+    else
+      rows.push(`<div class="bulk-item"><span class="bulk-label">確定${nextN}耐え</span><span class="bulk-note">H252+${defChar}252でも不可</span></div>`);
   }
 
   el.innerHTML=rows.join('');
