@@ -1901,6 +1901,7 @@ function updateBulkPanel(minD,maxD,effHP,maxHP){
   if(!AP||!DP||!SM||!panel){return;}
   if(minD===undefined||maxD===undefined){panel.style.display='none';return;}
   panel.style.display='block';
+  console.log('[BULK] called minD=',minD,'maxD=',maxD,'effHP=',effHP,'maxHP=',maxHP);
 
   const lv=parseInt(document.getElementById('alv').value)||50;
   const cat=SM.cat;
@@ -1994,6 +1995,10 @@ function updateBulkPanel(minD,maxD,effHP,maxHP){
   const pct1=(minD/effHP*100).toFixed(1);
   const pct2=(maxD/effHP*100).toFixed(1);
   const rows=[];
+  console.log('[BULK] mod=',mod,'atk=',atk,'bp=',bp,'hpBase=',hpBase,'defBase=',defBase);
+  // test calcDmgAt(0,0)
+  const _t=calcDmgAt(0,0);
+  console.log('[BULK] calcDmgAt(0,0)=',_t);
 
   rows.push(`<div class="bulk-item"><span class="bulk-label">現在のダメージ</span><span><span class="bulk-ev">${minD}〜${maxD}</span><span class="bulk-note"> (${pct1}〜${pct2}% / HP${effHP})</span></span></div>`);
 
@@ -2020,6 +2025,7 @@ function updateBulkPanel(minD,maxD,effHP,maxHP){
     rows.push(`<div class="bulk-item"><span class="bulk-label">🎲 乱数全耐え達成</span><span class="spd-faster">✅</span></div>`);
   }
 
+  console.log('[BULK] rows.length=',rows.length,'rows=',rows);
   el.innerHTML=rows.join('');
 }
 
