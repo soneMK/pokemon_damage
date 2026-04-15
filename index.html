@@ -16,7 +16,7 @@
   --atk:#ff6b35;--def:#38d4f0;--acc:#ffe44d;--grn:#69e060;--red:#ff5252;
   --r:12px;--rs:8px;--rx:5px;
   --F:"Noto Sans JP",sans-serif;--FP:"Press Start 2P",monospace;
-  --lw:640px;
+  --lw:860px;
 }
 html{font-size:14px}
 body{font-family:var(--F);background:var(--bg);color:var(--tx);min-height:100vh}
@@ -38,9 +38,9 @@ input[type=number]{-moz-appearance:textfield}
 /* ===== App Layout ===== */
 .app{position:relative;z-index:1;width:100%;
   display:grid;grid-template-columns:var(--lw) minmax(300px,1fr);
-  gap:0 1rem;padding:.85rem 1.25rem 2rem;align-items:start}
+  gap:0 1rem;padding:.85rem 1.25rem 1rem;align-items:start}
 .left{grid-column:1;grid-row:1/99;display:flex;flex-direction:column;gap:.65rem}
-.right{grid-column:2;grid-row:1/99;position:sticky;top:58px;display:flex;flex-direction:column;gap:.65rem}
+.right{grid-column:2;grid-row:1/99;position:sticky;top:58px;display:flex;flex-direction:column;gap:.5rem}
 
 /* ===== Panel ===== */
 .pbox{background:var(--bg2);border:1px solid var(--bd2);border-radius:var(--r);overflow:hidden}
@@ -132,16 +132,20 @@ input[type=number]{-moz-appearance:textfield}
   border-left:3px solid transparent;padding:5px 7px}
 .svr.nat-up{border-left-color:var(--atk)}
 .svr.nat-dn{border-left-color:var(--def)}
-.svr__top{display:grid;grid-template-columns:50px minmax(0,1fr) auto 52px;align-items:center;gap:5px}
+.svr__top{display:grid;grid-template-columns:52px minmax(0,1fr) auto 60px;align-items:center;gap:4px}
 .svname{font-size:11px;color:var(--tx3);white-space:nowrap}
-.sv-hp{color:var(--grn);font-weight:700}
-.sv-spe{color:#a78bfa;font-weight:700}
-.ev-sw{display:flex;align-items:center;gap:3px;min-width:0}
-.ev-e{flex-shrink:0;padding:1px 4px;font-size:10px;border:1px solid var(--bd2);
-  border-radius:3px;background:var(--bg2);color:var(--tx3);cursor:pointer;line-height:1.6}
+.sv-hp{font-weight:700}
+.sv-spe{font-weight:700}
+.ev-sw{display:flex;align-items:center;gap:2px;flex-wrap:nowrap;min-width:0}
+.ev-e{flex-shrink:0;padding:3px 6px;font-size:12px;border:1px solid var(--bd2);
+  border-radius:4px;background:var(--bg2);color:var(--tx2);cursor:pointer;line-height:1.4;
+  min-width:26px;text-align:center;transition:all .1s;user-select:none;white-space:nowrap}
 .ev-e:hover{border-color:var(--acc);color:var(--acc)}
-input[type=range].ev-r{flex:1;min-width:0;height:3px;accent-color:var(--acc);cursor:pointer;background:var(--sur2);border-radius:2px}
-.ev-v{flex-shrink:0;font-size:11px;font-weight:700;color:var(--acc);min-width:16px;text-align:center}
+.ev-e:active{background:var(--sur2);transform:scale(.92)}
+.ev-dec,.ev-inc{font-weight:700;min-width:26px}
+.ev-zero,.ev-max{font-size:10px;color:var(--tx3)}
+.ev-v{font-size:13px;font-weight:700;color:var(--acc);min-width:22px;text-align:center}
+.ev-unit{font-size:10px;color:var(--tx3)}
 .nat3{display:flex;gap:2px;flex-shrink:0}
 .nat3 button{padding:2px 4px;font-size:10px;font-family:var(--F);border-radius:3px;
   border:1px solid var(--bd2);background:var(--bg2);color:var(--tx3);cursor:pointer;line-height:1.5;transition:all .1s}
@@ -211,7 +215,7 @@ input[type=range].ev-r{flex:1;min-width:0;height:3px;accent-color:var(--acc);cur
 .rcard{background:var(--bg2);border:2px solid var(--acc);border-radius:var(--r);
   overflow:hidden;animation:fi .2s ease;box-shadow:0 0 22px rgba(255,228,77,.14)}
 @keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
-.rvs{display:flex;align-items:center;justify-content:space-between;padding:.5rem .85rem;
+.rvs{display:flex;align-items:center;justify-content:space-between;padding:.4rem .75rem;
   background:var(--bg3);border-bottom:1px solid var(--bd);flex-wrap:wrap;gap:5px}
 .rvs-side{display:flex;align-items:center;gap:6px}
 .rvs-spr{width:32px;height:32px;image-rendering:pixelated}
@@ -221,7 +225,7 @@ input[type=range].ev-r{flex:1;min-width:0;height:3px;accent-color:var(--acc);cur
 .rvs-mid{display:flex;align-items:center;flex-direction:column;gap:2px}
 .rvs-arr{font-size:12px;color:var(--tx3)}
 .rvs-move{font-size:12px;font-weight:700;color:var(--acc)}
-.rfield{margin:.5rem .85rem;padding:.5rem;background:rgba(255,82,82,.07);
+.rfield{margin:.4rem .75rem;padding:.45rem;background:rgba(255,82,82,.07);
   border:1px solid rgba(255,82,82,.3);border-radius:var(--rs)}
 .rfield-ttl{font-size:10px;font-weight:700;color:var(--tx3);margin-bottom:4px}
 .rflines{display:flex;flex-direction:column;gap:2px;margin-bottom:5px}
@@ -229,30 +233,30 @@ input[type=range].ev-r{flex:1;min-width:0;height:3px;accent-color:var(--acc);cur
 .rfl-l{color:var(--tx2)}.rfl-v{font-weight:700;color:var(--red)}
 .rfhp{font-size:11px;color:var(--tx2);padding-top:4px;border-top:1px solid rgba(255,255,255,.07)}
 .rfhp strong{color:var(--acc)}
-.ritem{margin:.25rem .85rem;padding:.35rem .65rem;background:rgba(255,228,77,.05);
+.ritem{margin:.2rem .75rem;padding:.3rem .6rem;background:rgba(255,228,77,.05);
   border:1px solid rgba(255,228,77,.18);border-radius:var(--rs);font-size:11px;color:var(--tx2)}
 .ritem strong{color:var(--acc)}
-.rmain{display:flex;align-items:center;gap:1rem;padding:.8rem .85rem}
+.rmain{display:flex;align-items:center;gap:.8rem;padding:.6rem .75rem}
 .rdmg-block{display:flex;align-items:baseline;gap:6px}
-.rdmg{font-family:var(--FP);font-size:18px;color:var(--tx)}
+.rdmg{font-family:var(--FP);font-size:15px;color:var(--tx)}
 .rdmg-u{font-size:11px;color:var(--tx3)}
 .rpct-block{display:flex;align-items:baseline;gap:4px}
-.rpct{font-family:var(--FP);font-size:13px;color:var(--acc)}
+.rpct{font-family:var(--FP);font-size:11px;color:var(--acc)}
 .rpct-u{font-size:11px;color:var(--tx3)}
-.rtags{display:flex;flex-wrap:wrap;gap:3px;padding:0 .85rem .5rem}
+.rtags{display:flex;flex-wrap:wrap;gap:3px;padding:0 .75rem .4rem}
 .rtag{font-size:11px;padding:2px 7px;border-radius:20px;font-weight:700}
 .rg{background:rgba(105,224,96,.15);color:#a0f0a0;border:1px solid rgba(105,224,96,.25)}
 .rr{background:rgba(255,82,82,.15);color:#ff9090;border:1px solid rgba(255,82,82,.25)}
 .ry{background:rgba(255,228,77,.15);color:var(--acc);border:1px solid rgba(255,228,77,.25)}
 .rb{background:rgba(56,212,240,.15);color:var(--def);border:1px solid rgba(56,212,240,.25)}
 .rn{background:rgba(148,163,184,.1);color:var(--tx2);border:1px solid var(--bd2)}
-.rollswrap{padding:0 .85rem .5rem}
+.rollswrap{padding:0 .75rem .4rem}
 .rollslbl{font-size:10px;color:var(--tx3);margin-bottom:4px;letter-spacing:.04em}
 .rollsrow{display:flex;flex-wrap:wrap;gap:3px}
 .rc{font-size:11px;padding:2px 5px;border-radius:var(--rx);background:var(--bg3);color:var(--tx2);border:1px solid var(--bd)}
 .rc.lo{background:rgba(56,212,240,.12);color:var(--def);border-color:rgba(56,212,240,.25)}
 .rc.hi{background:rgba(255,107,53,.12);color:var(--atk);border-color:rgba(255,107,53,.25)}
-.kowrap{padding:0 .85rem .8rem;display:flex;flex-direction:column;gap:4px}
+.kowrap{padding:0 .75rem .6rem;display:flex;flex-direction:column;gap:3px}
 .korow{display:grid;grid-template-columns:28px 1fr 96px;align-items:center;gap:7px}
 .kon{font-size:11px;font-weight:700;color:var(--acc)}
 .kobar{height:4px;background:var(--bg3);border-radius:2px;overflow:hidden}
@@ -273,6 +277,57 @@ input[type=range].ev-r{flex:1;min-width:0;height:3px;accent-color:var(--acc);cur
   .brow{grid-template-columns:1fr}
   .midsw{display:none}
 }
+
+/* ===== Speed comparison ===== */
+.spd-box{background:var(--bg3);border-radius:var(--rs);border:1px solid var(--bd);padding:8px 12px;text-align:center}
+.atk-spd{border-left:3px solid var(--atk)}
+.def-spd{border-left:3px solid var(--def)}
+.spd-name{font-size:11px;color:var(--tx3);margin-bottom:3px}
+.spd-val{font-family:var(--FP);font-size:15px;color:var(--tx)}
+.spd-sub{font-size:10px;color:var(--tx3);margin-top:3px}
+.spd-mods{display:flex;flex-wrap:wrap;gap:5px}
+.spd-result{padding:8px 10px;background:var(--bg3);border-radius:var(--rs);font-size:12px;font-weight:700;text-align:center;border:1px solid var(--bd)}
+.spd-faster{color:var(--grn)}
+.spd-slower{color:var(--red)}
+.spd-tie{color:var(--acc)}
+
+/* ===== Bulk calc ===== */
+.bulk-wrap{border-top:1px solid var(--bd);padding:.6rem .85rem .7rem}
+.bulk-hd{font-size:11px;font-weight:700;color:var(--grn);margin-bottom:6px}
+.bulk-row{display:flex;flex-direction:column;gap:5px}
+.bulk-item{display:flex;justify-content:space-between;align-items:center;
+  padding:5px 9px;background:var(--bg3);border-radius:var(--rs);font-size:11px;border:1px solid var(--bd)}
+.bulk-label{color:var(--tx2)}
+.bulk-ev{font-weight:700;color:var(--acc)}
+.bulk-note{font-size:10px;color:var(--tx3)}
+
+/* ===== Type weakness badges in result ===== */
+.rtype-row{display:flex;flex-wrap:wrap;gap:3px;padding:.35rem .75rem .25rem}
+.rtype-label{font-size:10px;color:var(--tx3);margin-right:3px;padding-top:1px}
+.rtype-weak{font-size:10px;padding:2px 6px;border-radius:20px;font-weight:700}
+.rtype-4x{background:rgba(255,82,82,.3);color:#ff7070;border:1px solid rgba(255,82,82,.5)}
+.rtype-2x{background:rgba(255,107,53,.2);color:var(--atk);border:1px solid rgba(255,107,53,.35)}
+.rtype-half{background:rgba(56,212,240,.12);color:var(--def);border:1px solid rgba(56,212,240,.25)}
+.rtype-0{background:rgba(148,163,184,.1);color:var(--tx3);border:1px solid var(--bd2)}
+
+/* ===== PT Save ===== */
+.pt-slots{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.pt-slot{background:var(--bg3);border:1px solid var(--bd2);border-radius:var(--rs);
+  padding:6px 8px;font-size:11px;cursor:pointer;transition:all .15s;min-height:52px;
+  display:flex;flex-direction:column;gap:2px;position:relative}
+.pt-slot:hover{border-color:var(--acc)}
+.pt-slot.filled{border-color:var(--bd2)}
+.pt-slot.filled:hover{border-color:var(--acc)}
+.pt-slot-empty{color:var(--tx3);font-size:10px;text-align:center;margin:auto}
+.pt-slot-name{font-size:11px;font-weight:700;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pt-slot-item{font-size:10px;color:var(--tx3)}
+.pt-slot-del{position:absolute;top:3px;right:4px;font-size:10px;color:var(--tx3);
+  cursor:pointer;padding:1px 3px;border-radius:3px;line-height:1}
+.pt-slot-del:hover{background:rgba(255,82,82,.2);color:var(--red)}
+.pt-save-btn{flex:1;padding:5px 8px;font-size:11px;font-family:var(--F);
+  background:var(--bg3);border:1px solid var(--bd2);color:var(--tx2);
+  border-radius:var(--rx);cursor:pointer;transition:all .15s}
+.pt-save-btn:hover{border-color:var(--acc);color:var(--acc)}
 </style>
 </head>
 <body>
@@ -354,6 +409,16 @@ input[type=range].ev-r{flex:1;min-width:0;height:3px;accent-color:var(--acc);cur
         <option value="hail">❄ あられ</option>
       </select>
     </div>
+    <div class="modg">
+      <span class="mglbl">フィールド</span>
+      <select id="field" class="msel">
+        <option value="none">なし</option>
+        <option value="electric">⚡ エレキフィールド</option>
+        <option value="grassy">🌿 グラスフィールド</option>
+        <option value="misty">🌫 ミストフィールド</option>
+        <option value="psychic">🔮 サイコフィールド</option>
+      </select>
+    </div>
   </div>
 </section>
 
@@ -421,9 +486,9 @@ input[type=range].ev-r{flex:1;min-width:0;height:3px;accent-color:var(--acc);cur
       <div class="meta-row">
         <div class="fg"><span class="fl">攻撃ランク</span>
           <select id="arank" class="msel">
-            <option value="2">+6</option><option value="1.8">+5</option><option value="1.6">+4</option>
-            <option value="1.4">+3</option><option value="1.2">+2</option><option value="1.0">+1</option>
-            <option value="1.0" selected>±0</option>
+            <option value="4">+6</option><option value="3.5">+5</option><option value="3">+4</option>
+            <option value="2.5">+3</option><option value="2">+2</option><option value="1.5">+1</option>
+            <option value="1" selected>±0</option>
             <option value="0.6667">-1</option><option value="0.5">-2</option>
             <option value="0.4">-3</option><option value="0.3333">-4</option>
             <option value="0.2857">-5</option><option value="0.25">-6</option>
@@ -530,9 +595,9 @@ input[type=range].ev-r{flex:1;min-width:0;height:3px;accent-color:var(--acc);cur
       <div class="meta-row">
         <div class="fg"><span class="fl">防御ランク</span>
           <select id="drank" class="msel">
-            <option value="2">+6</option><option value="1.8">+5</option><option value="1.6">+4</option>
-            <option value="1.4">+3</option><option value="1.2">+2</option><option value="1.0">+1</option>
-            <option value="1.0" selected>±0</option>
+            <option value="4">+6</option><option value="3.5">+5</option><option value="3">+4</option>
+            <option value="2.5">+3</option><option value="2">+2</option><option value="1.5">+1</option>
+            <option value="1" selected>±0</option>
             <option value="0.6667">-1</option><option value="0.5">-2</option>
             <option value="0.4">-3</option><option value="0.3333">-4</option>
             <option value="0.2857">-5</option><option value="0.25">-6</option>
@@ -542,6 +607,19 @@ input[type=range].ev-r{flex:1;min-width:0;height:3px;accent-color:var(--acc);cur
     </div>
   </section>
 </div><!-- end brow -->
+
+
+<!-- 耐久調整ヘルパー -->
+<section class="pbox" id="bulk-panel" style="display:none">
+  <h2 class="pbox__hd" style="color:var(--grn);box-shadow:inset 0 -2px 0 var(--grn)">🛡 耐久調整</h2>
+  <div class="modin" style="flex-direction:column;align-items:stretch;gap:8px">
+    <div style="font-size:11px;color:var(--tx3)">現在の計算結果を基準に、防御側の努力値を逆算します</div>
+    <div id="bulk-result" style="display:none">
+      <div class="bulk-row" id="bulk-rows"></div>
+    </div>
+    <div id="bulk-empty" style="font-size:11px;color:var(--tx3)">ダメ計を実行すると表示されます</div>
+  </div>
+</section>
 
 </div><!-- end left -->
 
@@ -557,6 +635,7 @@ input[type=range].ev-r{flex:1;min-width:0;height:3px;accent-color:var(--acc);cur
       <div class="rvs-mid"><span class="rvs-arr">→</span><span class="rvs-move" id="r-mname">—</span><span class="rvs-arr">→</span></div>
       <div class="rvs-side dk"><img class="rvs-spr" id="r-dspr" src="" alt=""><span class="rvs-name" id="r-dname">—</span></div>
     </div>
+    <div class="rtype-row" id="rtype-row"></div>
     <div class="rfield" id="rfield" style="display:none">
       <p class="rfield-ttl">🌀 フィールド効果（交代時）</p>
       <div class="rflines" id="rflines"></div>
@@ -573,15 +652,59 @@ input[type=range].ev-r{flex:1;min-width:0;height:3px;accent-color:var(--acc);cur
       <div class="rollsrow" id="rrolls"></div>
     </div>
     <div class="kowrap" id="rko"></div>
+    <div class="bulk-wrap" id="bulk-wrap" style="display:none">
+      <div class="bulk-hd">🛡 耐久調整ヒント</div>
+      <div class="bulk-row" id="bulk-rows"></div>
+    </div>
   </div>
+
+<!-- すばやさ比較 -->
+<section class="pbox" id="speed-panel" style="display:none">
+  <h2 class="pbox__hd" style="color:#a78bfa;box-shadow:inset 0 -2px 0 #a78bfa">⚡ すばやさ比較</h2>
+  <div style="padding:.4rem .75rem;display:flex;flex-direction:column;gap:7px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
+      <div class="spd-box atk-spd">
+        <div class="spd-name" id="spd-atk-name">攻撃側</div>
+        <div class="spd-val" id="spd-atk-val">—</div>
+        <div class="spd-sub" id="spd-atk-sub"></div>
+      </div>
+      <div class="spd-box def-spd">
+        <div class="spd-name" id="spd-def-name">防御側</div>
+        <div class="spd-val" id="spd-def-val">—</div>
+        <div class="spd-sub" id="spd-def-sub"></div>
+      </div>
+    </div>
+    <div class="spd-mods">
+      <label class="cpill"><input type="checkbox" id="spd-scarf-atk"><span>攻撃スカーフ</span></label>
+      <label class="cpill"><input type="checkbox" id="spd-scarf-def"><span>防御スカーフ</span></label>
+      <label class="cpill"><input type="checkbox" id="spd-tailwind"><span>おいかぜ</span></label>
+      <label class="cpill"><input type="checkbox" id="spd-trick"><span>トリックルーム</span></label>
+    </div>
+    <div class="spd-result" id="spd-result"></div>
+  </div>
+</section>
+
+<!-- PT保存 -->
+<section class="pbox">
+  <h2 class="pbox__hd" style="color:var(--acc);box-shadow:inset 0 -2px 0 var(--acc)">📋 PT保存</h2>
+  <div style="padding:.4rem .7rem;display:flex;flex-direction:column;gap:5px">
+    <div style="font-size:11px;color:var(--tx3)">攻撃側・防御側の構成を最大6スロットに保存</div>
+    <div class="pt-slots" id="pt-slots"></div>
+    <div style="display:flex;gap:6px">
+      <button class="pt-save-btn" id="pt-save-atk" title="攻撃側を保存">⚔ 攻撃側を保存</button>
+      <button class="pt-save-btn" id="pt-save-def" title="防御側を保存">🛡 防御側を保存</button>
+    </div>
+  </div>
+</section>
+
+<p class="inline-credit">
+  PokeAPI使用 / 非公式 / レギュMA（2026年4〜6月）対応<br>
+  要望・バグ → <a href="https://x.com/ekiben_mk" target="_blank" rel="noopener">@ekiben_mk</a>
+</p>
 </div><!-- end right -->
 
 </div><!-- end app -->
 
-<footer class="footer">
-  PokeAPI使用 ― 非公式ファンツール / レギュレーションM-A（2026年4〜6月）対応<br>
-  要望・バグ報告は <a href="https://x.com/ekiben_mk" target="_blank" rel="noopener">@ekiben_mk</a> まで
-</footer>
 
 <script>
 'use strict';
@@ -962,16 +1085,40 @@ function buildSelect(side){
     renderOptions(selEl, q);
   });
 
+  let _filtering=false;
+
+  // filterEl入力中はchangeを無視、Enterのみ確定
+  filterEl.addEventListener('input',()=>{ _filtering=true; });
+  filterEl.addEventListener('blur',()=>{ setTimeout(()=>{_filtering=false;},150); });
+
   selEl.addEventListener('change',()=>{
-    if(selEl.value) selectPoke(sfx, selEl.value);
+    if(!_filtering&&selEl.value){ selectPoke(sfx,selEl.value); collapseSelect(selEl); }
+  });
+  // クリック確定（filterで絞り込み後も）
+  selEl.addEventListener('click',()=>{
+    if(selEl.value){ selectPoke(sfx,selEl.value); _filtering=false; collapseSelect(selEl); }
+  });
+  selEl.addEventListener('keydown',e=>{
+    if(e.key==='Enter'&&selEl.value){
+      e.preventDefault(); _filtering=false; selectPoke(sfx,selEl.value); collapseSelect(selEl);
+    }
+    if(e.key==='Escape'){ filterEl.focus(); }
   });
 
   // キーボードで絞り込みフィールドからselectに移動
   filterEl.addEventListener('keydown',e=>{
     if(e.key==='ArrowDown'){e.preventDefault();selEl.focus();}
   });
+  // フォーカスを外したら絞り込みをリセット
+  selEl.addEventListener('blur',()=>{
+    if(filterEl.value){ filterEl.value=''; renderOptions(selEl,''); }
+  });
 
   renderOptions(selEl, '');
+}
+
+function collapseSelect(selEl){
+  selEl.size=3; // 選択後は小さく
 }
 
 function renderOptions(selEl, q){
@@ -999,8 +1146,9 @@ function renderOptions(selEl, q){
     selEl.appendChild(og);
   });
 
-  // 絞り込み結果が少ない場合はsize調整
-  selEl.size=Math.min(Math.max(totalCount,1),8);
+  // フィルターなし+選択済みなら小さく、フィルター中は大きく
+  if(!q&&selEl.value) selEl.size=3;
+  else selEl.size=Math.min(Math.max(totalCount,1),8);
 }
 
 function matches(p,lc){
@@ -1111,7 +1259,8 @@ async function selectPoke(sfx,key){
     wrap.style.display='flex';
     if(side==='atk'){loadMoves(poke);autoCalcTypeInfo();}
     if(side==='def'){updField();autoCalcTypeInfo();}
-    tryAutoCalc();
+    tryAutoCalc();updateSpeedPanel();
+    collapseSelect(document.getElementById(sfx==='atk'?'as':'ds'));
     return;
   }
 
@@ -1140,7 +1289,8 @@ async function selectPoke(sfx,key){
     loadAbility(side,poke);
     if(side==='atk'){loadMoves(poke);autoCalcTypeInfo();}
     if(side==='def'){updField();autoCalcTypeInfo();}
-    tryAutoCalc();
+    tryAutoCalc();updateSpeedPanel();
+    collapseSelect(document.getElementById(sfx==='atk'?'as':'ds'));
   }catch(e){console.error(e);}
 }
 
@@ -1218,10 +1368,12 @@ function buildStatRows(side,defs){
     row.innerHTML=`<div class="svr__top">
       <span class="svname ${cls||''}">${jp}</span>
       <div class="ev-sw">
-        <button class="ev-e" data-side="${side}" data-stat="${id}" data-v="0">0</button>
-        <input type="range" class="ev-r" id="evr-${side}-${id}" min="0" max="32" step="1" value="0">
-        <button class="ev-e" data-side="${side}" data-stat="${id}" data-v="32">MAX</button>
+        <button class="ev-e ev-dec" data-side="${side}" data-stat="${id}">−</button>
         <span class="ev-v" id="ev-${side}-${id}">0</span>
+        <span class="ev-unit">段</span>
+        <button class="ev-e ev-inc" data-side="${side}" data-stat="${id}">＋</button>
+        <button class="ev-e ev-zero" data-side="${side}" data-stat="${id}">0</button>
+        <button class="ev-e ev-max" data-side="${side}" data-stat="${id}">MAX</button>
       </div>
       ${showNat?`<div class="nat3" id="nat3-${side}-${id}">
         <button class="nu" data-side="${side}" data-stat="${id}" data-n="up">↑</button>
@@ -1232,11 +1384,10 @@ function buildStatRows(side,defs){
     </div>`;
     grp.appendChild(row);
 
-    const slider=row.querySelector('.ev-r');
-    slider.addEventListener('input',()=>{EVS[side][id]=parseInt(slider.value);recRV(side,id);});
-    row.querySelectorAll('.ev-e').forEach(b=>{
-      b.addEventListener('click',()=>{EVS[side][id]=parseInt(b.dataset.v);slider.value=b.dataset.v;recRV(side,id);});
-    });
+    row.querySelector('.ev-dec').addEventListener('click',()=>{EVS[side][id]=Math.max(0,(EVS[side][id]||0)-1);recRV(side,id);});
+    row.querySelector('.ev-inc').addEventListener('click',()=>{EVS[side][id]=Math.min(32,(EVS[side][id]||0)+1);recRV(side,id);});
+    row.querySelector('.ev-zero').addEventListener('click',()=>{EVS[side][id]=0;recRV(side,id);});
+    row.querySelector('.ev-max').addEventListener('click',()=>{EVS[side][id]=32;recRV(side,id);});
     if(showNat){
       row.querySelectorAll('.nat3 button').forEach(b=>{
         b.addEventListener('click',()=>{
@@ -1264,8 +1415,6 @@ function recRV(side,stat){
   const nat=natMult(side,stat);
   const real=stat==='hp'?calcHP(base,step,lv):calcStat(base,step,nat,lv);
   document.getElementById(`ev-${side}-${stat}`).textContent=step;
-  const slider=document.getElementById(`evr-${side}-${stat}`);
-  if(slider)slider.value=step;
   const el=document.getElementById(`rv-${side}-${stat}`);
   if(el)el.value=real;
   if(side==='def')updField();
@@ -1419,6 +1568,7 @@ document.querySelectorAll('.lbtn').forEach(b=>{
   document.getElementById(id).addEventListener('change',()=>tryAutoCalc());
 });
 document.getElementById('wx').addEventListener('change',()=>tryAutoCalc());
+document.getElementById('field').addEventListener('change',()=>tryAutoCalc());
 document.getElementById('ai').addEventListener('change',()=>tryAutoCalc());
 document.getElementById('di').addEventListener('change',()=>tryAutoCalc());
 document.getElementById('arank').addEventListener('change',()=>tryAutoCalc());
@@ -1519,6 +1669,7 @@ function calc(){
   const burn=document.getElementById('mod-burn').checked;
   const screen=document.getElementById('mod-screen').checked;
   const wx=document.getElementById('wx').value;
+  const field=document.getElementById('field').value;
   const expertBelt=ai==='expert-belt'&&typeEff>1;
 
   // 特性
@@ -1585,11 +1736,16 @@ function calc(){
   else if(typeEff<=0.25)tags.push({t:`いまひとつ ×${typeEff}（4倍耐性）`,c:'rr'});
   else if(typeEff<1)tags.push({t:`いまひとつ ×${typeEff}`,c:'rr'});
   if(berryHalf){const nm=document.querySelector(`#di option[value="${di}"]`)?.textContent?.split('（')[0]||di;tags.push({t:`${nm} ×0.5`,c:'rb'});}
+  if(field==='electric'&&mtype==='electric'&&atkIsGrounded)tags.push({t:'⚡ エレキフィールド ×1.3',c:'ry'});
+  if(field==='grassy'&&mtype==='grass'&&atkIsGrounded)tags.push({t:'🌿 グラスフィールド ×1.3',c:'rg'});
+  if(field==='grassy'&&['earthquake','magnitude','bulldoze'].includes(SM.name))tags.push({t:'🌿 グラスフィールド ×0.5',c:'rr'});
+  if(field==='misty'&&mtype==='dragon'&&defIsGrounded)tags.push({t:'🌫 ミストフィールド ×0.5',c:'rb'});
+  if(field==='psychic'&&mtype==='psychic'&&atkIsGrounded)tags.push({t:'🔮 サイコフィールド ×1.3',c:'ry'});
   if(wx==='sun'&&mtype==='fire')tags.push({t:'☀ 晴れ強化',c:'ry'});
   if(wx==='rain'&&mtype==='water')tags.push({t:'🌧 雨強化',c:'rb'});
   if(wx==='sun'&&mtype==='water')tags.push({t:'☀ 晴れ弱体',c:'rr'});
   if(wx==='rain'&&mtype==='fire')tags.push({t:'🌧 雨弱体',c:'rr'});
-  if(burn)tags.push({t:'やけど ×0.5',c:'rr'});
+  if(burn&&cat==='physical'){tags.push({t:crit?'やけど（急所で無効）':'やけど ×0.5',c:'rr'});}
   if(screen)tags.push({t:'壁 ×0.5',c:'rb'});
   if(ai==='choice-band'&&cat==='physical')tags.push({t:'ハチマキ ×1.5',c:'ry'});
   if(ai==='choice-specs'&&cat==='special')tags.push({t:'メガネ ×1.5',c:'ry'});
@@ -1612,6 +1768,8 @@ function calc(){
 function showResult(minD,maxD,effHP,maxHP,rolls,tags,fd,di,ai){
   document.getElementById('rph').style.display='none';
   const rc=document.getElementById('rcard');rc.style.display='block';
+  updateTypeRow();
+  updateSpeedPanel();
   rc.style.animation='none';rc.offsetHeight;rc.style.animation='';
 
   document.getElementById('r-aspr').src=AP?.sprite||'';
@@ -1646,6 +1804,7 @@ function showResult(minD,maxD,effHP,maxHP,rolls,tags,fd,di,ai){
   document.getElementById('rtags').innerHTML=tags.map(t=>`<span class="rtag ${t.c||'rn'}">${t.t}</span>`).join('');
   document.getElementById('rrolls').innerHTML=rolls.map((v,i)=>`<span class="rc ${i===0?'lo':i===15?'hi':''}">${v}</span>`).join('');
 
+  updateBulkPanel(minD,maxD,effHP,maxHP);
   const ko=document.getElementById('rko');
   if(!rolls.length||maxD===0){ko.innerHTML='';return;}
   let html='';
@@ -1660,11 +1819,326 @@ function showResult(minD,maxD,effHP,maxHP,rolls,tags,fd,di,ai){
   ko.innerHTML=html||'<p style="font-size:11px;color:var(--tx3)">4発以内のKOなし</p>';
 }
 
+
+// ============================================================
+//  TYPE WEAKNESS DISPLAY
+// ============================================================
+function updateTypeRow(){
+  const el=document.getElementById('rtype-row');
+  if(!DP||!DP.types){el.innerHTML='';return;}
+  const types=Object.keys(TYPE_CHART);
+  const effs={};
+  types.forEach(at=>{
+    const e=getTypeEff(at,DP.types);
+    if(!effs[e])effs[e]=[];
+    effs[e].push(at);
+  });
+  let html='<span class="rtype-label">弱点/耐性</span>';
+  const order=[4,2,0.5,0.25];
+  const cls={4:'rtype-4x',2:'rtype-2x',0.5:'rtype-half',0.25:'rtype-half'};
+  const pfx={4:'4倍',2:'',0.5:'½',0.25:'¼'};
+  order.forEach(e=>{
+    (effs[e]||[]).forEach(t=>{
+      const c2=TC[t]||['#44444444','#aaa',''];
+      html+=`<span class="rtype-weak ${cls[e]}" style="background:${c2[0]};color:${c2[1]};border-color:${c2[2]}">${pfx[e]}${TJP[t]||t}</span>`;
+    });
+  });
+  if(effs[0])effs[0].forEach(t=>{
+    const c2=TC[t]||['#44444444','#aaa',''];
+    html+=`<span class="rtype-weak rtype-0">×0 ${TJP[t]||t}</span>`;
+  });
+  el.innerHTML=html;
+}
+
+// ============================================================
+//  SPEED COMPARISON
+// ============================================================
+function updateSpeedPanel(){
+  const panel=document.getElementById('speed-panel');
+  if(!AP||!DP){panel.style.display='none';return;}
+  panel.style.display='block';
+  const lv=parseInt(document.getElementById('alv').value)||50;
+  const atkSpe=parseInt(document.getElementById('rv-atk-spe')?.value)||calcStat(AP.stats['speed']||50,EVS.atk.spe,natMult('atk','spe'),lv);
+  const defSpe=parseInt(document.getElementById('rv-def-spe')?.value)||calcStat(DP.stats['speed']||50,EVS.def.spe,natMult('def','spe'),lv);
+
+  const scA=document.getElementById('spd-scarf-atk')?.checked;
+  const scD=document.getElementById('spd-scarf-def')?.checked;
+  const tw=document.getElementById('spd-tailwind')?.checked;
+  const tr=document.getElementById('spd-trick')?.checked;
+
+  let sA=atkSpe,sD=defSpe;
+  if(scA)sA=Math.floor(sA*1.5);
+  if(scD)sD=Math.floor(sD*1.5);
+  if(tw){sA*=2;sD*=2;}
+
+  document.getElementById('spd-atk-name').textContent=AP.jpName;
+  document.getElementById('spd-def-name').textContent=DP.jpName;
+  document.getElementById('spd-atk-val').textContent=sA;
+  document.getElementById('spd-def-val').textContent=sD;
+  document.getElementById('spd-atk-sub').textContent=scA?'スカーフ':'';
+  document.getElementById('spd-def-sub').textContent=scD?'スカーフ':'';
+
+  const el=document.getElementById('spd-result');
+  let msg='',cls='';
+  const effA=tr?-sA:sA, effD=tr?-sD:sD;
+  if(effA>effD){msg=`⚡ ${AP.jpName}が先攻 (+${sA-sD})`;cls='spd-faster';}
+  else if(effA<effD){msg=`⚡ ${DP.jpName}が先攻 (+${sD-sA})`;cls='spd-slower';}
+  else{msg='同速';cls='spd-tie';}
+  if(tr)msg='🔄 トリックルーム: '+msg.replace('先攻','後攻になる→実質先攻');
+  el.innerHTML=`<span class="${cls}">${msg}</span>`;
+}
+
+['spd-scarf-atk','spd-scarf-def','spd-tailwind','spd-trick'].forEach(id=>{
+  document.getElementById(id)?.addEventListener('change',updateSpeedPanel);
+});
+
+// ============================================================
+//  BULK / DURABILITY HELPER
+// ============================================================
+function updateBulkPanel(minD,maxD,effHP,maxHP){
+  const panel=document.getElementById('bulk-wrap');
+  const el=document.getElementById('bulk-rows');
+  if(!AP||!DP||!SM||!panel){return;}
+  if(minD===undefined||maxD===undefined){panel.style.display='none';return;}
+  panel.style.display='block';
+
+  const lv=parseInt(document.getElementById('alv').value)||50;
+  const cat=SM.cat;
+  const apiKey=cat==='physical'?'defense':'special-defense';
+  const natKey=cat==='physical'?'def':'spd';
+  const hpBase=DP.stats['hp']||50;
+  const defBase=DP.stats[apiKey]||50;
+  const defR=parseFloat(document.getElementById('drank').value)||1;
+  const defItemMult=getDefItemMult(document.getElementById('di').value,cat);
+  const defAblSlug=DP?.abilitySlug||'';
+  const ablCtx={cat,mtype:SM.type,power:SM.power,wx:document.getElementById('wx').value};
+  const defAblMult0=(ABILITY_EFFECTS[defAblSlug]?.side==='def')?(ABILITY_EFFECTS[defAblSlug].fn(ablCtx)||1):1;
+
+  // atkV, atkR, bp, mod は calc() と同じ値（現在の計算結果の再現）
+  const atkV=parseInt(document.getElementById(cat==='physical'?'rv-atk-atk':'rv-atk-spa')?.value)||1;
+  const atkR=parseFloat(document.getElementById('arank').value)||1;
+  const atk=F(atkV*atkR);
+  const bp=SM.power;
+  const wx=document.getElementById('wx').value;
+  const field=document.getElementById('field')?.value||'none';
+  const mtype=SM.type;
+  const stab=window._autoSTAB||false;
+  const typeEff=window._autoTypeEff||1;
+  const crit=document.getElementById('mod-crit').checked;
+  const burn=document.getElementById('mod-burn').checked;
+  const screen=document.getElementById('mod-screen').checked;
+  const ai=document.getElementById('ai').value;
+  const atkAblSlug=AP?.abilitySlug||'';
+  const atkAblMult=(ABILITY_EFFECTS[atkAblSlug]?.side==='atk')?(ABILITY_EFFECTS[atkAblSlug].fn(ablCtx)||1):1;
+  let aIMult=1;
+  if(ai==='choice-band'&&cat==='physical')aIMult=1.5;
+  if(ai==='choice-specs'&&cat==='special')aIMult=1.5;
+  if(ai==='life-orb')aIMult=1.3;
+  if(ai==='muscle-band'&&cat==='physical')aIMult=1.1;
+  if(ai==='wise-glasses'&&cat==='special')aIMult=1.1;
+  const tbi=TYPE_BOOST_ITEMS[ai];
+  if(tbi&&tbi===mtype)aIMult=1.2;
+  const expertBelt=ai==='expert-belt'&&typeEff>1;
+  let mod=1;
+  if(wx==='sun'&&mtype==='fire')mod*=1.5;
+  if(wx==='sun'&&mtype==='water')mod*=.5;
+  if(wx==='rain'&&mtype==='water')mod*=1.5;
+  if(wx==='rain'&&mtype==='fire')mod*=.5;
+  const atkIsGrounded=!AP.types.includes('flying')&&atkAblSlug!=='levitate';
+  const defIsGrounded=!DP.types.includes('flying')&&defAblSlug!=='levitate';
+  if(field==='electric'&&mtype==='electric'&&atkIsGrounded)mod*=1.3;
+  if(field==='grassy'&&mtype==='grass'&&atkIsGrounded)mod*=1.3;
+  if(field==='grassy'&&['earthquake','magnitude','bulldoze'].includes(SM.name))mod*=0.5;
+  if(field==='misty'&&mtype==='dragon'&&defIsGrounded)mod*=0.5;
+  if(field==='psychic'&&mtype==='psychic'&&atkIsGrounded)mod*=1.3;
+  const adaptStab=atkAblSlug==='adaptability'&&stab;
+  if(stab)mod*=adaptStab?2.0:1.5;
+  mod*=typeEff;
+  if(burn&&cat==='physical'&&!crit)mod*=.5;
+  if(screen&&!crit)mod*=.5;
+  mod*=aIMult*atkAblMult;
+  if(expertBelt)mod*=1.2;
+  if(crit)mod*=1.5;
+
+  // HPと防御の努力値段階から正確にダメージ計算
+  function calcDmgAt(hpStep, defStep){
+    const hp=calcHP(hpBase, hpStep, lv);
+    const dv=calcStat(defBase, defStep, natMult('def', natKey), lv);
+    const def=F(F(dv*defR)*defItemMult*defAblMult0);
+    const base=F(F(F(2*lv/5+2)*bp*atk/def)/50)+2;
+    const mn=F(base*mod*85/100);
+    const mx=F(base*mod*100/100);
+    return {mn, mx, hp, dv};
+  }
+
+  // 全33×33組み合わせ探索: 合計EV最小を返す
+  function findMinEv(useMax){
+    let best=null;
+    for(let hs=0;hs<=32;hs++){
+      for(let ds=0;ds<=32;ds++){
+        const {mn,mx,hp,dv}=calcDmgAt(hs,ds);
+        const dmg=useMax?mx:mn;
+        if(dmg<hp){
+          const total=hs*8+ds*8;
+          if(!best||total<best.total||(total===best.total&&hs<best.hs)){
+            best={hs,ds,total,hpEv:hs*8,defEv:ds*8,hp,dv,mn,mx};
+          }
+        }
+      }
+    }
+    return best;
+  }
+
+  const defLabel=cat==='physical'?'ぼうぎょ':'とくぼう';
+  const defChar=cat==='physical'?'B':'D';
+  const pct1=(minD/effHP*100).toFixed(1);
+  const pct2=(maxD/effHP*100).toFixed(1);
+  const rows=[];
+
+  rows.push(`<div class="bulk-item"><span class="bulk-label">現在のダメージ</span><span><span class="bulk-ev">${minD}〜${maxD}</span><span class="bulk-note"> (${pct1}〜${pct2}% / HP${effHP})</span></span></div>`);
+
+  // 確定耐え（最小ダメ < HP）
+  if(minD>=effHP){
+    const b=findMinEv(false);
+    if(b) rows.push(`<div class="bulk-item"><span class="bulk-label">✅ 確定耐え最小EV</span><span><span class="bulk-ev">H${b.hpEv} ${defChar}${b.defEv}</span><span class="bulk-note"> 合計${b.total}（HP${b.hp} ${defLabel}${b.dv}）</span></span></div>`);
+    else   rows.push(`<div class="bulk-item"><span class="bulk-label">✅ 確定耐え</span><span class="bulk-note">H252+${defChar}252でも不可</span></div>`);
+  } else {
+    const curTotal=(EVS.def.hp||0)*8+(EVS.def[natKey]||0)*8;
+    const b=findMinEv(false);
+    if(b&&b.total<curTotal)
+      rows.push(`<div class="bulk-item"><span class="bulk-label">✅ 確定耐え達成 / 節約案</span><span><span class="bulk-ev">H${b.hpEv} ${defChar}${b.defEv}</span><span class="bulk-note"> 合計${b.total}（現${curTotal}）</span></span></div>`);
+    else
+      rows.push(`<div class="bulk-item"><span class="bulk-label">✅ 確定耐え達成</span><span class="bulk-note">現在の振り方で最小</span></div>`);
+  }
+
+  // 乱数全耐え（最大ダメ < HP）
+  if(maxD>=effHP){
+    const b=findMinEv(true);
+    if(b) rows.push(`<div class="bulk-item"><span class="bulk-label">🎲 乱数全耐え最小EV</span><span><span class="bulk-ev">H${b.hpEv} ${defChar}${b.defEv}</span><span class="bulk-note"> 合計${b.total}（HP${b.hp} ${defLabel}${b.dv}）</span></span></div>`);
+    else   rows.push(`<div class="bulk-item"><span class="bulk-label">🎲 乱数全耐え</span><span class="bulk-note">H252+${defChar}252でも不可</span></div>`);
+  } else {
+    rows.push(`<div class="bulk-item"><span class="bulk-label">🎲 乱数全耐え達成</span><span class="spd-faster">✅</span></div>`);
+  }
+
+  el.innerHTML=rows.join('');
+}
+
+// ============================================================
+//  PT SAVE (localStorage)
+// ============================================================
+const PT_KEY='pokecalc_pt_v1';
+const PT_SLOTS=6;
+
+function ptLoad(){return JSON.parse(localStorage.getItem(PT_KEY)||'[]');}
+function ptSave(slots){localStorage.setItem(PT_KEY,JSON.stringify(slots));}
+
+function buildPtSlots(){
+  const el=document.getElementById('pt-slots');
+  const slots=ptLoad();
+  el.innerHTML='';
+  for(let i=0;i<PT_SLOTS;i++){
+    const s=slots[i];
+    const div=document.createElement('div');
+    div.className='pt-slot '+(s?'filled':'empty');
+    div.dataset.idx=i;
+    if(s){
+      div.innerHTML=`<div class="pt-slot-name">${s.jpName||'—'}</div>
+        <div class="pt-slot-item">${s.item||'なし'}</div>
+        <div class="pt-slot-item" style="font-size:9px;color:var(--tx3)">${s.side==='atk'?'⚔攻撃側':'🛡防御側'}</div>
+        <span class="pt-slot-del" data-idx="${i}" title="削除">✕</span>`;
+      div.addEventListener('click',e=>{
+        if(e.target.classList.contains('pt-slot-del'))return;
+        ptApply(i);
+      });
+      div.querySelector('.pt-slot-del').addEventListener('click',e=>{
+        e.stopPropagation();ptDelete(i);
+      });
+    } else {
+      div.innerHTML='<span class="pt-slot-empty">空きスロット</span>';
+    }
+    el.appendChild(div);
+  }
+}
+
+function ptCapture(side){
+  const poke=side==='atk'?AP:DP;
+  if(!poke){alert(`${side==='atk'?'攻撃側':'防御側'}のポケモンを選択してください`);return null;}
+  const isSel=document.getElementById(side==='atk'?'ai':'di');
+  const itemVal=isSel?.value||'none';
+  const itemText=isSel?.options[isSel.selectedIndex]?.textContent?.split('（')[0]||'なし';
+  const evs={...EVS[side]};
+  const nats={...NAT[side]};
+  const ablSlug=poke.abilitySlug||'';
+  const rankEl=document.getElementById(side==='atk'?'arank':'drank');
+  return{
+    key:poke.comboKey,jpName:poke.jpName,baseId:poke.baseId,
+    side,item:itemText,itemVal,
+    evs,nats,abilitySlug:ablSlug,
+    rank:rankEl?.value||'1',
+    lv:document.getElementById('alv')?.value||'50',
+  };
+}
+
+function ptSaveSlot(side){
+  const data=ptCapture(side);if(!data)return;
+  const slots=ptLoad();
+  // Find first empty slot
+  let idx=slots.findIndex(s=>!s);
+  if(idx<0){
+    if(slots.length>=PT_SLOTS){
+      if(!confirm('スロットが満杯です。最初のスロットを上書きしますか？'))return;
+      idx=0;
+    } else idx=slots.length;
+  }
+  slots[idx]=data;
+  ptSave(slots);
+  buildPtSlots();
+}
+
+async function ptApply(idx){
+  const slots=ptLoad();
+  const s=slots[idx];if(!s)return;
+  const sfx=s.side==='atk'?'atk':'def';
+  // Select pokemon
+  const selEl=document.getElementById(sfx==='atk'?'as':'ds');
+  if(selEl){selEl.value=s.key;}
+  await selectPoke(sfx,s.key);
+  const side=s.side;
+  // Restore EVs and NAT
+  Object.keys(s.evs).forEach(k=>{
+    EVS[side][k]=s.evs[k]||0;
+    recRV(side,k);
+  });
+  Object.keys(s.nats).forEach(k=>{
+    NAT[side][k]=s.nats[k]||'mid';
+  });
+  recAllRV(side);
+  // Restore item
+  const iSel=document.getElementById(side==='atk'?'ai':'di');
+  if(iSel&&s.itemVal)iSel.value=s.itemVal;
+  // Restore rank
+  const rkSel=document.getElementById(side==='atk'?'arank':'drank');
+  if(rkSel&&s.rank)rkSel.value=s.rank;
+  tryAutoCalc();
+}
+
+function ptDelete(idx){
+  const slots=ptLoad();
+  slots[idx]=null;
+  ptSave(slots);
+  buildPtSlots();
+}
+
+document.getElementById('pt-save-atk')?.addEventListener('click',()=>ptSaveSlot('atk'));
+document.getElementById('pt-save-def')?.addEventListener('click',()=>ptSaveSlot('def'));
+
+
 // ============================================================
 //  Init
 // ============================================================
 buildStatRows('atk',ATK_STATS);
 buildStatRows('def',DEF_STATS);
+buildPtSlots();
 (async()=>{await loadList();})();
 </script>
 </body>
